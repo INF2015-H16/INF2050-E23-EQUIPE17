@@ -76,7 +76,6 @@ public class Main {
 
         return montantDeplacement;
     }
-}
 
     /**
      * 6. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
@@ -111,3 +110,6 @@ public class Main {
 
         return montantHeuresSupplementaires;
     }
+}
+
+    
