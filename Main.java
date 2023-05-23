@@ -55,4 +55,25 @@ public class Main {
         return montantRegulier;
     }
 
+    /**
+     * 5. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * @param typeEmploye
+     * @param distanceDeplacement
+     * @param montantRegulier
+     * @return
+     */
+    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement, double montantRegulier){
+        double montantDeplacement = 0;
+
+        // Calculer le montant de déplacement en fonction du type d'employé
+        if (typeEmploye == 0){
+            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier));
+        } else if (typeEmploye == 1) {
+            montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
+        } else if (typeEmploye == 2) {
+            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+        }
+
+        return montantDeplacement;
+    }
 }
