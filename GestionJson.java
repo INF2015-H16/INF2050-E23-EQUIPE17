@@ -6,50 +6,50 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.*;
 
 public class GestionJson {
-    public static int lecture(String json)
+    public static String[][] lecture(String json)
     {
         int j;
-
-        int matricule = 0, type, distance = 0, overtime = 0,hours = 0;
-        String horaire_min, horaire_max;
-        String code = null, date;
+        String [][] tableau = new String[9][1];
+        String matricule ,type ,horaire_min ,horaire_max;
 
         JSONObject employee;
         
         employee = JSONObject.fromObject(json);
 
-        matricule = employee.getInt("matricule_employe");
-        type = employee.getInt("type_employe");
-        horaire_min = employee.getString("taux_horaire_min");
-        horaire_max = employee.getString("taux_horaire_max");
+        tableau[0][0] = employee.getString("matricule_employe");
+        tableau[1][0] = employee.getString("type_employe");
+        tableau[2][0] = employee.getString("taux_horaire_min");
+        tableau[3][0] = employee.getString("taux_horaire_max");
         JSONArray interventions = employee.getJSONArray("interventions");
+        String [][] intervention = new String [5][interventions.size()];
+
         for(j=0; j<interventions.size() ; j++)
         {
-            JSONObject intervention = interventions.getJSONObject(j);
+            JSONObject Intervention = interventions.getJSONObject(j);
 
             try
             {
-                code = intervention.getString("code_client");
+                intervention[0][j] = Intervention.getString("code_client");
             }
 
             catch(Exception e)
             {
-                code = intervention.getString("code_projet");
+                intervention[0][j] = Intervention.getString("code_projet");
             }
-            distance = intervention.getInt("distance_deplacement");
-            overtime = intervention.getInt("overtime");
-            hours = intervention.getInt("nombre_heures");
-            date = intervention.optString("date_intervention", intervention.optString("date_affectation"));
+            intervention[1][j] = Intervention.getString("distance_deplacement");
+            intervention[2][j] = Intervention.getString("overtime");
+            intervention[3][j] = Intervention.getString("nombre_heures");
+            intervention[4][j] = Intervention.optString("date_intervention", Intervention.optString("date_affectation"));
         }
 
+        tableau[4] = intervention[0];
+        tableau[5] = intervention[1];
+        tableau[6] = intervention[2];
+        tableau[7] = intervention[3];
+        tableau[8] = intervention[4];
 
-        System.out.println(matricule + " " + type + " ");
-        for(int i=0; i< interventions.size() ;i++)
-        {
-            System.out.println(distance +" " +overtime +" "+ hours +" "+ code);
-        }
 
-        return j;
+        return tableau;
     }
+    
 }
-
