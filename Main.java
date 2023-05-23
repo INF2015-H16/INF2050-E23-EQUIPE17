@@ -77,3 +77,37 @@ public class Main {
         return montantDeplacement;
     }
 }
+
+    /**
+     * 6. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * @param typeEmploye
+     * @param overtime
+     * @return
+     */
+    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime) {
+        double montantHeuresSupplementaires = 0.0;
+
+        if (typeEmploye == 0) {
+            // Superviseur : Pas de montant pour les heures supplémentaires
+            montantHeuresSupplementaires = 0.0;
+        } else if (typeEmploye == 1) {
+            // Permanent
+            if (overtime > 4 && overtime <= 8) {
+                montantHeuresSupplementaires = 50.0 * overtime;
+            } else if (overtime > 8) {
+                montantHeuresSupplementaires = 100.0 * overtime;
+            }
+        } else if (typeEmploye == 2) {
+            // Contractuel
+            if (overtime <= 4) {
+                montantHeuresSupplementaires = 75.0 * overtime;
+            } else if (overtime > 4) {
+                montantHeuresSupplementaires = 150.0 * overtime;
+            }
+        }
+
+        // Limiter le montant des heures supplémentaires à 1500.00
+        montantHeuresSupplementaires = Math.min(montantHeuresSupplementaires, 1500.0);
+
+        return montantHeuresSupplementaires;
+    }
