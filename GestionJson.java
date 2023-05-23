@@ -1,15 +1,14 @@
-import java.io.*;
-
 import net.sf.json.JSONArray;
+import java.io.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.*;
 
 public class GestionJson {
-    public static void lecture(String json)
+    public static int lecture(String json)
     {
-        System.out.println();
+        int j;
 
         int matricule = 0, type, distance = 0, overtime = 0,hours = 0;
         String horaire_min, horaire_max;
@@ -24,9 +23,9 @@ public class GestionJson {
         horaire_min = employee.getString("taux_horaire_min");
         horaire_max = employee.getString("taux_horaire_max");
         JSONArray interventions = employee.getJSONArray("interventions");
-        for(int i=0; i<interventions.size() ; i++)
+        for(j=0; j<interventions.size() ; j++)
         {
-            JSONObject intervention = interventions.getJSONObject(i);
+            JSONObject intervention = interventions.getJSONObject(j);
 
             try
             {
@@ -49,5 +48,8 @@ public class GestionJson {
         {
             System.out.println(distance +" " +overtime +" "+ hours +" "+ code);
         }
+
+        return j;
     }
 }
+
