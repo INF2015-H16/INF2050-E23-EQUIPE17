@@ -29,6 +29,30 @@ public class Main {
         GestionJson.lecture(json);
     }
 
+    /**
+     * 4. Cette méthode calculera le montant régulier en fonction du type d'employé, du nombre d'heures travaillées et des taux horaires min et max.
+     *
+     * @params typeEmploye,
+     * @params nombreHeures
+     * @params tauxHoraireMin
+     * @params tauxHoraireMax
+     */
+    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax) {
+        double tauxHoraire = 0;
 
+        //Selectionner type d'employer
+        if (typeEmploye == 0){
+            tauxHoraire = tauxHoraireMin;
+        } else if (typeEmploye == 1) {
+            tauxHoraire = (tauxHoraireMin + tauxHoraireMax)/2;
+        } else if (typeEmploye == 2) {
+            tauxHoraire = tauxHoraireMax;
+        }
+
+        // Calculer le montant régulier en multipliant le taux horaire par le nombre d'heures
+        double montantRegulier = tauxHoraire * nombreHeures;
+
+        return montantRegulier;
+    }
 
 }
