@@ -7,11 +7,11 @@ public class Main {
     public static void main(String[] args)
     {
 
-        String arugument = "test.json";
+        String argument = "test.json";
         String json="",buffer;
 
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(arugument))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
 
             while ((buffer =reader.readLine()) != null)
             {
@@ -110,6 +110,19 @@ public class Main {
 
         return montantHeuresSupplementaires;
     }
+
+
+    /**
+     * 11. Calcule le coût variable en fonction de l'état total du compte.
+     *
+     * @param etatCompteTotal   L'état total du compte pour lequel le coût variable doit être calculé.
+     * @return                  Le coût variable calculé.
+     */
+    public static double calculerCoutVariable(double etatCompteTotal) {
+        double coutVar = (2.5/100 * etatCompteTotal);
+        return Math.ceil(coutVar * 20) / 20;
+    }
+
 }
 
     
