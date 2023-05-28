@@ -26,6 +26,15 @@ Pour utiliser le logiciel, suivez les étapes suivantes :
    3- Exécutez la commande suivante : commande_d'exécution, en spécifiant le fichier d'entrée et le fichier de sortie souhaités.
    4- Le logiciel traitera les données d'entrée et générera un fichier de sortie contenant les états de compte par client et l'état de compte total suggéré pour la facturation.
 
+
+## Aide
+Pour toute aide supplémentaire reliée à l'utilisation de ce logiciel, veuillez contacter l'un des auteurs mentionnés ci-dessus.
+
+## Auteurs
+Zakariae BOUARGAN   https://github.com/brainchemist2005
+ALIBAY PATEL HOUSSEN   https://github.com/AlibayPatelHoussen
+RICKY VINH-AN NGUYEN   https://github.com/ricky-the-god
+Steve Marvyn Kenfack Nandjou   https://github.com/KennyIdo
 ## Date limite
 
 La date limite pour livrer les fonctionnalités demandées est le 5 juin 2023 à 23h55.
