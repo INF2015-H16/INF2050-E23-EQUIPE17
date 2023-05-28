@@ -1,7 +1,5 @@
 # Logiciel de Calcul d'État de Compte d'Employé
 
-!License(https://img.shields.io/badge/License-MIT-blue.svg)(LICENSE)
-
 ## Description
 
 Ce logiciel a été développé pour calculer l'état de compte d'un employé en fonction de ses interventions chez les clients. L'état de compte est utilisé comme base de facturation pour les clients et englobe une partie importante du coût du service offert, ainsi que des coûts fixes et variables de l'entreprise. Ce logiciel est conçu pour être invoqué à partir d'une application web et ne possède pas d'interface utilisateur propre.
