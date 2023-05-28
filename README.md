@@ -14,16 +14,16 @@ Ce logiciel a été développé pour calculer l'état de compte d'un employé en
 
 ## Installation
 
-Pour installer le logiciel, suivez les étapes suivantes :
-Clonez le dépôt GIT fourni : https://github.com/INF2015-H16/INF2050-E23-EQUIPE17.git
+Pour installer le logiciel, suivez les étapes suivantes :  
+Clonez le dépôt GIT fourni : https://github.com/INF2015-H16/INF2050-E23-EQUIPE17.git  
 Assurez-vous d'avoir JDK-8 et les librairies installé sur votre machine.
 
 ## Utilisation
 
-Pour utiliser le logiciel, suivez les étapes suivantes :
-   1- Placez votre fichier d'entrée JSON contenant les interventions de l'employé dans le répertoire spécifié.
-   2- Ouvrez une ligne de commande et naviguez vers le répertoire contenant le logiciel.
-   3- Exécutez la commande suivante : commande_d'exécution, en spécifiant le fichier d'entrée et le fichier de sortie souhaités.
+Pour utiliser le logiciel, suivez les étapes suivantes :  
+   1- Placez votre fichier d'entrée JSON contenant les interventions de l'employé dans le répertoire spécifié.  
+   2- Ouvrez une ligne de commande et naviguez vers le répertoire contenant le logiciel.  
+   3- Exécutez la commande suivante : commande_d'exécution, en spécifiant le fichier d'entrée et le fichier de sortie souhaités.  
    4- Le logiciel traitera les données d'entrée et générera un fichier de sortie contenant les états de compte par client et l'état de compte total suggéré pour la facturation.
 
 
@@ -31,9 +31,9 @@ Pour utiliser le logiciel, suivez les étapes suivantes :
 Pour toute aide supplémentaire reliée à l'utilisation de ce logiciel, veuillez contacter l'un des auteurs mentionnés ci-dessus.
 
 ## Auteurs
-Zakariae BOUARGAN   https://github.com/brainchemist2005
-ALIBAY PATEL HOUSSEN   https://github.com/AlibayPatelHoussen
-RICKY VINH-AN NGUYEN   https://github.com/ricky-the-god
+Zakariae BOUARGAN   https://github.com/brainchemist2005  
+ALIBAY PATEL HOUSSEN   https://github.com/AlibayPatelHoussen  
+RICKY VINH-AN NGUYEN   https://github.com/ricky-the-god  
 Steve Marvyn Kenfack Nandjou   https://github.com/KennyIdo
 ## Date limite
 
