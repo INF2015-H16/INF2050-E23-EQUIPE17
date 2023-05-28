@@ -1,4 +1,5 @@
 # Logiciel de Calcul d'État de Compte d'Employé
+Ce logiciel vous permettra de calculer la valeur d'état de compte d'un employé.
 
 ## Description
 
