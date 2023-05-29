@@ -155,6 +155,15 @@ public class Main {
         }
         return montantTotal;
     }
+    public static double calculerEtatCompteTotal(double[] etatsParClient) {
+        double etatCompteTotal = 0.0;
+
+        for (double etatParClient : etatsParClient) {
+            etatCompteTotal += etatParClient;
+        }
+
+        return etatCompteTotal;
+    }
 
 }
 
