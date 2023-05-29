@@ -165,6 +165,23 @@ public class Main {
         return etatCompteTotal;
     }
 
+    public static double calculerCoutFixe(double etatCompteTotal) {
+        double coutFixe;
+
+        // Calcul du coût fixe en fonction de l'État de compte total
+        if (etatCompteTotal >= 1000.0) {
+            coutFixe = etatCompteTotal * 0.012;
+        } else if (etatCompteTotal >= 500.0) {
+            coutFixe = etatCompteTotal * 0.008;
+        } else {
+            coutFixe = etatCompteTotal * 0.004;
+        }
+
+        // Arrondir le coût fixe au 5 sous supérieur
+        coutFixe = arrondirMontant(coutFixe);
+
+        return coutFixe;
+    }
 }
 
     
