@@ -123,6 +123,11 @@ public class Main {
         return Math.ceil(coutVar * 20) / 20;
     }
 
+    public static double arrondirMontant(double montant) {
+        // On multiplie par 20 pour déplacer la décimale au deuxième chiffre après la virgule
+        return Math.ceil(montant * 20) / 20;
+    }
+
 }
 
     
