@@ -128,6 +128,34 @@ public class Main {
         return Math.ceil(montant * 20) / 20;
     }
 
+    public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
+                                               double tauxHoraireMin, double tauxHoraireMax,
+                                               double distanceDeplacement, double overtime, double montantregulier) {
+        double montantTotal = 0.0;
+
+        // Calcul du montant des heures travaillées
+        double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
+                tauxHoraireMin, tauxHoraireMax);
+        montantTotal += montantHeuresTravaillees;
+
+        // Calcul du montant des heures supplémentaires
+        double montantHeuresSupplementaires = calculerMontantHeuresSupplementaires(typeEmploye, overtime);
+        montantTotal += montantHeuresSupplementaires;
+
+        // Calcul du montant de déplacement
+        double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
+        montantTotal += montantDeplacement;
+
+        // Calcul du montant total en fonction du type d'employé
+        if (typeEmploye == 1) {
+            // Type d'employé 1 - Ajouter un montant fixe
+            montantTotal += 733.77;
+        } else if (typeEmploye == 2) {
+            // Type d'employé 2 - Pas de modification du montant total
+        }
+        return montantTotal;
+    }
+
 }
 
     
