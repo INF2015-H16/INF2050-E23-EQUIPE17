@@ -29,8 +29,66 @@ public class Main {
 
         donnees = GestionJson.lecture(json);
 
+        executer(donnees);
     }
 
+    public static void executer(String[][] data)
+    {
+        int status,matricule_employe,type_employe,itterations=Integer.parseInt(data[data.length-1][0]);
+        int [] distance_deplacement = new int[Integer.parseInt(data[data.length-1][0])],
+                overtime = new int[Integer.parseInt(data[data.length-1][0])],
+                nombre_heures = new int[Integer.parseInt(data[data.length-1][0])];
+        double taux_horaire_min,taux_horaire_max, montantDeplacement = 0, coutVariable, montantRegulier = 0, montantHeureSupplementaire = 0;
+        String[] code = new String[Integer.parseInt(data[data.length-1][0])];
+        double[] EtatParClient = new double[code.length];
+
+        matricule_employe = Integer.parseInt(data[0][0]);
+        type_employe = Integer.parseInt(data[1][0]);
+        taux_horaire_min = Double.parseDouble(data[2][0].substring(0,5));
+        taux_horaire_max = Double.parseDouble(data[3][0].substring(0,5));
+
+        for(int i=0,j=4; j< data.length-1;j++, i++)
+        {
+            status = checker(data,j);
+            if(status != -1)
+            {
+                System.out.println(data[j][0] + " " + i);
+                code[i] = data[j][0];
+                distance_deplacement[i] = Integer.parseInt(data[j][1] + data[status][1]);
+                overtime[i] = Integer.parseInt(data[j][2] + data[status][2]);
+                nombre_heures[i] = Integer.parseInt(data[j][3] + data[status][3]);// i am not sure of this
+                itterations--;
+            }
+            else //if(data[j][0] != null)
+            {
+                System.out.println(data[j][0] +" " + i);
+                code[i] = data[j][0];
+                distance_deplacement[i] = Integer.parseInt(data[j][1]);
+                overtime[i] = Integer.parseInt(data[j][2]);
+                nombre_heures[i] = Integer.parseInt(data[j][3]);
+            }
+        }
+
+
+        for(int i=0 ; i<code.length ; i++)
+        {
+            montantRegulier += calculerMontantRegulier(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max);
+            montantDeplacement += calculerMontantDeplacement(type_employe,distance_deplacement[i], montantRegulier);
+            montantHeureSupplementaire += calculerMontantHeuresSupplementaires(type_employe,overtime[i]);
+            EtatParClient[i] = calculerEtatParClient(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max,distance_deplacement[i],overtime[i],montantRegulier);
+        }
+
+        double etatCompteTotal = calculerEtatCompteTotal(EtatParClient);
+        coutVariable = calculerCoutVariable(etatCompteTotal);
+        double coutFixe = calculerCoutFixe(etatCompteTotal);
+
+
+        for(int i=0 ; i<EtatParClient.length ; i++)
+            EtatParClient[i] = arrondirMontant(EtatParClient[i]);
+
+        GestionJson.ecriture(matricule_employe,arrondirMontant(etatCompteTotal),arrondirMontant(coutFixe),arrondirMontant(coutVariable),code,EtatParClient,itterations);
+
+    }
 
 
 
