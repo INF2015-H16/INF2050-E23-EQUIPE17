@@ -46,8 +46,9 @@ public class GestionJson {
     }
     public static void ecriture(int matricule_employe, double etat_compte,
                                 double cout_fixe,double cout_variable,String[] code
-            ,double[] etat_par_client)
+            ,double[] etat_par_client,int j)
     {
+
         JSONObject employee = new JSONObject();
 
         employee.accumulate("matricule_employe",matricule_employe);
@@ -58,24 +59,16 @@ public class GestionJson {
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
 
-        client.accumulate("code_client",code[0]);
-        client.accumulate("etat_par_client",etat_par_client[0] + "$");
-        clients.add(client);
-        client.clear();
-
-        client.accumulate("code_client",code[1]);
-        client.accumulate("etat_par_client",etat_par_client[1] + "$");
-        clients.add(client);
-        client.clear();
-
-        client.accumulate("code_client",code[2]);
-        client.accumulate("etat_par_client",etat_par_client[2] + "$");
-        clients.add(client);
-        client.clear();
+        for(int i=0; i<j ; i++) {
+            client.accumulate("code_client", code[i]);
+            client.accumulate("etat_par_client", etat_par_client[i] + "$");
+            clients.add(client);
+            client.clear();
+        }
 
         employee.accumulate("clients", clients);
         try {
-            FileUtils.writeStringToFile(new File("Sortie"),
+            FileUtils.writeStringToFile(new File("sortie.json"),
                     employee.toString(2), /*le 2 dans la methode toString est pour le formattage*/"UTF-8");
         }
         catch(IOException e)
