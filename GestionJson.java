@@ -1,3 +1,4 @@
+import jdk.internal.cmm.SystemResourcePressureImpl;
 import net.sf.json.JSONArray;
 import java.io.*;
 
@@ -11,7 +12,7 @@ public class GestionJson {
     public static String[][] lecture(String json)
     {
         int j;
-        String [][] tableau = new String[10][5];
+        String [][] tableau = new String[9][5];
 
         JSONObject employee;
         
@@ -50,25 +51,25 @@ public class GestionJson {
         JSONObject employee = new JSONObject();
 
         employee.accumulate("matricule_employe",matricule_employe);
-        employee.accumulate("etat_compte",etat_compte);
-        employee.accumulate("cout_fixe",cout_fixe);
-        employee.accumulate("cout_variable",cout_variable);
+        employee.accumulate("etat_compte",etat_compte + "$");
+        employee.accumulate("cout_fixe",cout_fixe + "$");
+        employee.accumulate("cout_variable",cout_variable + "$");
 
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
 
         client.accumulate("code_client",code[0]);
-        client.accumulate("etat_par_client",etat_par_client[0]);
+        client.accumulate("etat_par_client",etat_par_client[0] + "$");
         clients.add(client);
         client.clear();
 
         client.accumulate("code_client",code[1]);
-        client.accumulate("etat_par_client",etat_par_client[1]);
+        client.accumulate("etat_par_client",etat_par_client[1] + "$");
         clients.add(client);
         client.clear();
 
         client.accumulate("code_client",code[2]);
-        client.accumulate("etat_par_client",etat_par_client[2]);
+        client.accumulate("etat_par_client",etat_par_client[2] + "$");
         clients.add(client);
         client.clear();
 
