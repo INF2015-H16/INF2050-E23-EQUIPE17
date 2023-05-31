@@ -3,13 +3,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.io.*;
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args)
     {
-
+        String[][] donnees;
         String argument = "test.json";
         String json="",buffer;
-
 
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
 
@@ -26,11 +27,28 @@ public class Main {
             e.printStackTrace();
         }
 
-        GestionJson.lecture(json);
+        donnees = GestionJson.lecture(json);
+
+    }
+
+
+
+
+    public static int checker(String[][] array,int z)
+    {
+        for (int i = z+1; i < array.length - 1; i++)
+        {
+            System.out.println(i + " " + z);
+                if (array[z][0].equals( array[i][0])) ///wait to be continued
+                {
+                    return i;
+                }
+        }
+        return -1;
     }
 
     /**
-     * 4. Cette méthode calculera le montant régulier en fonction du type d'employé, du nombre d'heures travaillées et des taux horaires min et max.
+     * Cette méthode calculera le montant régulier en fonction du type d'employé, du nombre d'heures travaillées et des taux horaires min et max.
      *
      * @params typeEmploye,
      * @params nombreHeures
@@ -56,7 +74,7 @@ public class Main {
     }
 
     /**
-     * 5. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
      * @param typeEmploye
      * @param distanceDeplacement
      * @param montantRegulier
@@ -78,7 +96,7 @@ public class Main {
     }
 
     /**
-     * 6. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
      * @param typeEmploye
      * @param overtime
      * @return
@@ -113,7 +131,7 @@ public class Main {
 
 
     /**
-     * 11. Calcule le coût variable en fonction de l'état total du compte.
+     * Calcule le coût variable en fonction de l'état total du compte.
      *
      * @param etatCompteTotal   L'état total du compte pour lequel le coût variable doit être calculé.
      * @return                  Le coût variable calculé.
