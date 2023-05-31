@@ -11,7 +11,7 @@ public class GestionJson {
     public static String[][] lecture(String json)
     {
         int j;
-        String [][] tableau = new String[10][1];
+        String [][] tableau = new String[10][5];
 
         JSONObject employee;
         
@@ -22,40 +22,30 @@ public class GestionJson {
         tableau[2][0] = employee.getString("taux_horaire_min");
         tableau[3][0] = employee.getString("taux_horaire_max");
         JSONArray interventions = employee.getJSONArray("interventions");
-        String [][] intervention = new String [5][interventions.size()];
+        String [][] intervention = new String [interventions.size()][5];
 
         for(j=0; j<interventions.size() ; j++)
         {
             JSONObject Intervention = interventions.getJSONObject(j);
 
-            try
-            {
-                intervention[0][j] = Intervention.getString("code_client");
-            }
-
-            catch(Exception e)
-            {
-                intervention[0][j] = Intervention.getString("code_projet");
-            }
-            intervention[1][j] = Intervention.getString("distance_deplacement");
-            intervention[2][j] = Intervention.getString("overtime");
-            intervention[3][j] = Intervention.getString("nombre_heures");
-            intervention[4][j] = Intervention.optString("date_intervention",
-                    Intervention.optString("date_affectation"));
+            intervention[j][0] = Intervention.getString("code_client");
+            intervention[j][1] = Intervention.getString("distance_deplacement");
+            intervention[j][2] = Intervention.getString("overtime");
+            intervention[j][3] = Intervention.getString("nombre_heures");
+            intervention[j][4] = Intervention.optString("date_intervention");
         }
 
         tableau[4] = intervention[0];
         tableau[5] = intervention[1];
         tableau[6] = intervention[2];
         tableau[7] = intervention[3];
-        tableau[8] = intervention[4];
-        tableau[9][0] = String.valueOf(j);
+        tableau[8][0] = String.valueOf(j);
 
         return tableau;
     }
     public static void ecriture(int matricule_employe, double etat_compte,
                                 double cout_fixe,double cout_variable,String[] code
-            ,int[] etat_par_client)
+            ,double[] etat_par_client)
     {
         JSONObject employee = new JSONObject();
 
