@@ -80,6 +80,8 @@ public class Main {
 
         double etatCompteTotal = calculerEtatCompteTotal(EtatParClient);
         coutVariable = calculerCoutVariable(etatCompteTotal);
+        coutVariable = arrondirMontant(coutVariable);
+        System.out.println(coutVariable);
         double coutFixe = calculerCoutFixe(etatCompteTotal);
 
 
@@ -97,10 +99,10 @@ public class Main {
         for (int i = z+1; i < array.length - 1; i++)
         {
             System.out.println(i + " " + z);
-                if (array[z][0].equals( array[i][0])) ///wait to be continued
-                {
-                    return i;
-                }
+            if (array[z][0].equals( array[i][0])) ///wait to be continued
+            {
+                return i;
+            }
         }
         return -1;
     }
@@ -143,13 +145,14 @@ public class Main {
 
         // Calculer le montant de déplacement en fonction du type d'employé
         if (typeEmploye == 0){
-            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier));
+            montantDeplacement = (distanceDeplacement * (0.05 * montantRegulier)) - 200;
         } else if (typeEmploye == 1) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
+            montantDeplacement = (distanceDeplacement * (0.10 * montantRegulier)) - 200;
         } else if (typeEmploye == 2) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+            montantDeplacement = (distanceDeplacement * (0.15 * montantRegulier)) - 200;
         }
 
+        //System.out.println(distanceDeplacement +" " + montantRegulier);
         return montantDeplacement;
     }
 
@@ -196,7 +199,7 @@ public class Main {
      */
     public static double calculerCoutVariable(double etatCompteTotal) {
         double coutVar = (2.5/100 * etatCompteTotal);
-        return Math.ceil(coutVar * 20) / 20;
+        return coutVar;
     }
 
     public static double arrondirMontant(double montant) {
@@ -212,6 +215,7 @@ public class Main {
         // Calcul du montant des heures travaillées
         double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
                 tauxHoraireMin, tauxHoraireMax);
+
         montantTotal += montantHeuresTravaillees;
 
         // Calcul du montant des heures supplémentaires
@@ -229,6 +233,7 @@ public class Main {
         } else if (typeEmploye == 2) {
             // Type d'employé 2 - Pas de modification du montant total
         }
+
         return montantTotal;
     }
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
