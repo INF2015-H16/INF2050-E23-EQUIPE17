@@ -106,7 +106,7 @@ public class Main {
     }
 
     /**
-     * Cette méthode calculera le montant régulier en fonction du type d'employé, du nombre d'heures travaillées et des taux horaires min et max.
+     * 4. Cette méthode calculera le montant régulier en fonction du type d'employé, du nombre d'heures travaillées et des taux horaires min et max.
      *
      * @params typeEmploye,
      * @params nombreHeures
@@ -132,7 +132,7 @@ public class Main {
     }
 
     /**
-     * Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * 5. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
      * @param typeEmploye
      * @param distanceDeplacement
      * @param montantRegulier
@@ -154,7 +154,7 @@ public class Main {
     }
 
     /**
-     * Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
+     * 6. Cette méthode calculera le montant pour les heures supplémentaires en fonction du type d'employé et du nombre d'heures supplémentaires.
      * @param typeEmploye
      * @param overtime
      * @return
@@ -189,21 +189,26 @@ public class Main {
 
 
     /**
-     * Calcule le coût variable en fonction de l'état total du compte.
-     *
-     * @param etatCompteTotal   L'état total du compte pour lequel le coût variable doit être calculé.
-     * @return                  Le coût variable calculé.
+     * 7. Cette méthode arrondira un montant au 5 sous supérieur.
+     * @param montant
+     * @return
      */
-    public static double calculerCoutVariable(double etatCompteTotal) {
-        double coutVar = (2.5/100 * etatCompteTotal);
-        return Math.ceil(coutVar * 20) / 20;
-    }
-
     public static double arrondirMontant(double montant) {
         // On multiplie par 20 pour déplacer la décimale au deuxième chiffre après la virgule
         return Math.ceil(montant * 20) / 20;
     }
 
+    /**
+     * 8. Cette méthode calculera l'état par client en utilisant les méthodes de calcul précédentes.
+     * @param typeEmploye
+     * @param nombreHeures
+     * @param tauxHoraireMin
+     * @param tauxHoraireMax
+     * @param distanceDeplacement
+     * @param overtime
+     * @param montantregulier
+     * @return
+     */
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
                                                double tauxHoraireMin, double tauxHoraireMax,
                                                double distanceDeplacement, double overtime, double montantregulier) {
@@ -231,6 +236,12 @@ public class Main {
         }
         return montantTotal;
     }
+
+    /**
+     * 9. Cette méthode calculera l'état de compte total en sommant les états par client.
+     * @param etatsParClient
+     * @return
+     */
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
         double etatCompteTotal = 0.0;
 
@@ -241,6 +252,11 @@ public class Main {
         return etatCompteTotal;
     }
 
+    /**
+     * 10. Cette méthode calculera le coût fixe en fonction de l'état de compte total.
+     * @param etatCompteTotal
+     * @return
+     */
     public static double calculerCoutFixe(double etatCompteTotal) {
         double coutFixe;
 
@@ -258,6 +274,20 @@ public class Main {
 
         return coutFixe;
     }
+
+    /**
+     * 11. Calcule le coût variable en fonction de l'état total du compte.
+     *
+     * @param etatCompteTotal   L'état total du compte pour lequel le coût variable doit être calculé.
+     * @return                  Le coût variable calculé.
+     */
+    public static double calculerCoutVariable(double etatCompteTotal) {
+        double coutVar = (2.5/100 * etatCompteTotal);
+        return Math.ceil(coutVar * 20) / 20;
+    }
+
 }
+
+
 
     
