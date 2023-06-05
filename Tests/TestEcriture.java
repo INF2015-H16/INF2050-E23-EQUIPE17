@@ -18,13 +18,11 @@ public class TestEcriture {
         String[] code = {"C123", "C456", "C789"};
         double[] etat_par_client = {1266.45, 9000.00, 47004.00};
         int j = 3;
+        String arg = "test.json";
 
-        GestionJson.ecriture(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j);
+        GestionJson.ecriture(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j,arg);
 
-        // Assert the contents of the output file (sortie.json)
-        // Implement your own logic to read and compare the file contents, or use a library like JSONAssert or Jackson
 
-        // Example using JSONAssert:
         String expectedOutput = "{\n" +
                 "    \"matricule_employe\":123456789,\n" +
                 "    \"etat_compte\":\"58004.20 $\",\n" +
@@ -48,7 +46,6 @@ public class TestEcriture {
         String content = null;
         try {
             content = TestEcriture.readFileToString("path/to/your/file.txt");
-            System.out.println(content);
         } catch (IOException e) {
             e.printStackTrace();
         }
