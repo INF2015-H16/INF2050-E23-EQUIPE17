@@ -225,6 +225,14 @@ public class Main {
 
         return montantTotal;
     }
+
+
+    /**
+     * Calcule la somme totale des états de compte pour tous les clients.
+     *
+     * @param etatsParClient un tableau de doubles représentant les états de compte par client
+     * @return la somme totale des états de compte pour tous les clients
+     */
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
         double etatCompteTotal = 0.0;
 
@@ -236,6 +244,7 @@ public class Main {
         // Retourne la somme totale des valeurs du tableau
         return etatCompteTotal;
     }
+
 
 
     /**
