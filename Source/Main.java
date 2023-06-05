@@ -228,12 +228,15 @@ public class Main {
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
         double etatCompteTotal = 0.0;
 
+        // Parcours de chaque élément du tableau et ajout à etatCompteTotal
         for (double etatParClient : etatsParClient) {
             etatCompteTotal += etatParClient;
         }
 
+        // Retourne la somme totale des valeurs du tableau
         return etatCompteTotal;
     }
+
 
     /**
      * Calcule le coût fixe en fonction de l'état du compte total.
