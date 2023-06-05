@@ -1,14 +1,11 @@
 package Source;
 
-import jdk.internal.cmm.SystemResourcePressureImpl;
 import net.sf.json.JSONArray;
-import java.io.*;
-
 import net.sf.json.JSONObject;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.*;
 import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public class GestionJson {
     public static String[][] lecture(String json)
