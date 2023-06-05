@@ -235,15 +235,27 @@ public class Main {
         return etatCompteTotal;
     }
 
+    /**
+     * Calcule le coût fixe en fonction de l'état du compte total.
+     *
+     * @param etatCompteTotal l'état du compte total
+     * @return le coût fixe calculé
+     */
     public static double calculerCoutFixe(double etatCompteTotal) {
         double coutFixe;
 
         // Calcul du coût fixe en fonction de l'État de compte total
+
+        // Si l'état de compte total est supérieur ou égal à 1000.0
         if (etatCompteTotal >= 1000.0) {
             coutFixe = etatCompteTotal * 0.012;
-        } else if (etatCompteTotal >= 500.0) {
+        }
+        // Si l'état de compte total est supérieur ou égal à 500.0 mais inférieur à 1000.0
+        else if (etatCompteTotal >= 500.0) {
             coutFixe = etatCompteTotal * 0.008;
-        } else {
+        }
+        // Si l'état de compte total est inférieur à 500.0
+        else {
             coutFixe = etatCompteTotal * 0.004;
         }
 
