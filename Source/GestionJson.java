@@ -45,7 +45,7 @@ public class GestionJson {
     }
     public static void ecriture(int matricule_employe, double etat_compte,
                                 double cout_fixe,double cout_variable,String[] code
-            ,double[] etat_par_client,int j)
+            ,double[] etat_par_client,int j,String arg)
     {
 
         JSONObject employee = new JSONObject();
@@ -67,7 +67,7 @@ public class GestionJson {
 
         employee.accumulate("clients", clients);
         try {
-            FileUtils.writeStringToFile(new File("sortie.json"),
+            FileUtils.writeStringToFile(new File(arg),
                     employee.toString(2), /*le 2 dans la methode toString est pour le formattage*/"UTF-8");
         }
         catch(IOException e)

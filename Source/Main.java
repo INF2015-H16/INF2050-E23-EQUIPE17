@@ -1,17 +1,13 @@
 package Source;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import java.io.*;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args)
     {
         String[][] donnees;
-        String argument = "test.json";
+        String argument = args[0];
+        String argument2 = args[1];
         String json="",buffer;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
@@ -31,10 +27,10 @@ public class Main {
 
         donnees = GestionJson.lecture(json);
 
-        executer(donnees);
+        executer(donnees,argument2);
     }
 
-    public static void executer(String[][] data)
+    public static void executer(String[][] data, String argument2)
     {
         int status,matricule_employe,type_employe,itterations=Integer.parseInt(data[data.length-1][0]);
         int [] distance_deplacement = new int[Integer.parseInt(data[data.length-1][0])],
@@ -54,16 +50,14 @@ public class Main {
             status = checker(data,j);
             if(status != -1)
             {
-                System.out.println(data[j][0] + " " + i);
                 code[i] = data[j][0];
-                distance_deplacement[i] = Integer.parseInt(data[j][1] + data[status][1]);
-                overtime[i] = Integer.parseInt(data[j][2] + data[status][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3] + data[status][3]);// i am not sure of this
+                distance_deplacement[i] = Integer.parseInt(data[j][1]) +Integer.parseInt( data[status][1]);
+                overtime[i] = Integer.parseInt(data[j][2])  + Integer.parseInt(data[status][2]);
+                nombre_heures[i] = Integer.parseInt(data[j][3]) + Integer.parseInt(data[status][3]);// i am not sure of this
                 itterations--;
             }
             else //if(data[j][0] != null)
             {
-                System.out.println(data[j][0] +" " + i);
                 code[i] = data[j][0];
                 distance_deplacement[i] = Integer.parseInt(data[j][1]);
                 overtime[i] = Integer.parseInt(data[j][2]);
@@ -72,24 +66,25 @@ public class Main {
         }
 
 
-        for(int i=0 ; i<code.length ; i++)
+        for(int i=0 ; i<itterations; i++)
         {
-            montantRegulier += calculerMontantRegulier(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max);
-            montantDeplacement += calculerMontantDeplacement(type_employe,distance_deplacement[i], montantRegulier);
-            montantHeureSupplementaire += calculerMontantHeuresSupplementaires(type_employe,overtime[i]);
+            //montantRegulier = calculerMontantRegulier(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max);
+            //montantDeplacement = calculerMontantDeplacement(type_employe,distance_deplacement[i], montantRegulier);
+            //montantHeureSupplementaire = calculerMontantHeuresSupplementaires(type_employe,overtime[i],nombre_heures[i]);
             EtatParClient[i] = calculerEtatParClient(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max,distance_deplacement[i],overtime[i],montantRegulier);
+            System.out.println(EtatParClient[i]);
         }
 
         double etatCompteTotal = calculerEtatCompteTotal(EtatParClient);
         coutVariable = calculerCoutVariable(etatCompteTotal);
+        coutVariable = arrondirMontant(coutVariable);
         double coutFixe = calculerCoutFixe(etatCompteTotal);
 
 
         for(int i=0 ; i<EtatParClient.length ; i++)
             EtatParClient[i] = arrondirMontant(EtatParClient[i]);
 
-        GestionJson.ecriture(matricule_employe,arrondirMontant(etatCompteTotal),arrondirMontant(coutFixe),arrondirMontant(coutVariable),code,EtatParClient,itterations);
-
+        GestionJson.ecriture(matricule_employe,arrondirMontant(etatCompteTotal),arrondirMontant(coutFixe),arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2);
     }
 
 
@@ -98,11 +93,10 @@ public class Main {
     {
         for (int i = z+1; i < array.length - 1; i++)
         {
-            System.out.println(i + " " + z);
-                if (array[z][0].equals( array[i][0])) ///wait to be continued
-                {
-                    return i;
-                }
+            if (array[z][0].equals(array[i][0])) ///wait to be continued
+            {
+                return i;
+            }
         }
         return -1;
     }
@@ -145,11 +139,11 @@ public class Main {
 
         // Calculer le montant de déplacement en fonction du type d'employé
         if (typeEmploye == 0){
-            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier));
+            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier)) ;
         } else if (typeEmploye == 1) {
             montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         } else if (typeEmploye == 2) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+            montantDeplacement = 200 -(distanceDeplacement * (0.15 * montantRegulier));
         }
 
         return montantDeplacement;
@@ -161,7 +155,7 @@ public class Main {
      * @param overtime
      * @return
      */
-    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime) {
+    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {
         double montantHeuresSupplementaires = 0.0;
 
         if (typeEmploye == 0) {
@@ -169,16 +163,20 @@ public class Main {
             montantHeuresSupplementaires = 0.0;
         } else if (typeEmploye == 1) {
             // Permanent
-            if (overtime > 4 && overtime <= 8) {
+            if (nombre_heures > 4 && nombre_heures <= 8) {
                 montantHeuresSupplementaires = 50.0 * overtime;
-            } else if (overtime > 8) {
+            } else if (nombre_heures > 8) {
                 montantHeuresSupplementaires = 100.0 * overtime;
             }
         } else if (typeEmploye == 2) {
             // Contractuel
-            if (overtime <= 4) {
+            if (overtime <= 4)
+            {
                 montantHeuresSupplementaires = 75.0 * overtime;
-            } else if (overtime > 4) {
+            }
+
+            else if (overtime > 4)
+            {
                 montantHeuresSupplementaires = 150.0 * overtime;
             }
         }
@@ -189,7 +187,6 @@ public class Main {
         return montantHeuresSupplementaires;
     }
 
-
     /**
      * Calcule le coût variable en fonction de l'état total du compte.
      *
@@ -198,7 +195,7 @@ public class Main {
      */
     public static double calculerCoutVariable(double etatCompteTotal) {
         double coutVar = (2.5/100 * etatCompteTotal);
-        return Math.ceil(coutVar * 20) / 20;
+        return coutVar;
     }
 
     public static double arrondirMontant(double montant) {
@@ -214,23 +211,18 @@ public class Main {
         // Calcul du montant des heures travaillées
         double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
                 tauxHoraireMin, tauxHoraireMax);
+
         montantTotal += montantHeuresTravaillees;
 
         // Calcul du montant des heures supplémentaires
-        double montantHeuresSupplementaires = calculerMontantHeuresSupplementaires(typeEmploye, overtime);
+        double montantHeuresSupplementaires = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
         montantTotal += montantHeuresSupplementaires;
 
         // Calcul du montant de déplacement
         double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
         montantTotal += montantDeplacement;
 
-        // Calcul du montant total en fonction du type d'employé
-        if (typeEmploye == 1) {
-            // Type d'employé 1 - Ajouter un montant fixe
-            montantTotal += 733.77;
-        } else if (typeEmploye == 2) {
-            // Type d'employé 2 - Pas de modification du montant total
-        }
+
         return montantTotal;
     }
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
@@ -261,5 +253,3 @@ public class Main {
         return coutFixe;
     }
 }
-
-    
