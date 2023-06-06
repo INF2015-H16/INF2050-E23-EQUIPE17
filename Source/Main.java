@@ -87,22 +87,36 @@ public class Main {
     }
 
 
-    public static int checker(String[][] array,int z)
-    {
-        for (int i = 0; i < array.length - 1; i++)
-        {
-            if(i == z)
+    /**
+     * Vérifie s'il existe une occurrence précédente d'un élément spécifié dans le tableau multidimensionnel.
+     *
+     * @param array Le tableau multidimensionnel à vérifier.
+     * @param z     L'index de l'élément à vérifier dans le tableau.
+     * @return L'index de l'occurrence précédente si elle existe, -2 si l'occurrence précédente
+     * se trouve avant l'élément actuel,
+     *         ou -1 si aucune occurrence précédente n'est trouvée.
+     */
+    public static int checker(String[][] array, int z) {
+        for (int i = 0; i < array.length - 1; i++) {
+            // Si l'index i correspond à l'index actuel z, on passe à l'index suivant
+            if (i == z)
                 i++;
-            if (array[z][0].equals(array[i][0]))
-            {
-                if(i < z)
+
+            // Comparaison de la valeur de array[z][0] avec les éléments précédents dans le tableau
+            if (array[z][0].equals(array[i][0])) {
+                // Si l'occurrence précédente se trouve avant l'élément actuel, on renvoie -2
+                if (i < z)
                     return -2;
                 else
+                    // Sinon, on renvoie l'index de l'occurrence précédente
                     return i;
             }
         }
+
+        // Si aucune occurrence précédente n'est trouvée, on renvoie -1
         return -1;
     }
+
 
     /**
      * Cette méthode calculera le montant régulier en fonction du type d'employé,
