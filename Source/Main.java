@@ -3,32 +3,32 @@ package Source;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args)
-    {
-        String[][] donnees;
-        String argument = "Source/test.json";
-        String argument2 = "sortie.json";
-        String json="",buffer;
+
+    public static void main(String[] args) {
+        String[][] donnees; // Déclaration d'une variable pour stocker les données
+        String argument = "Source/test.json"; // Chemin vers le fichier d'entrée
+        String argument2 = "sortie.json"; // Nom du fichier de sortie
+        String json = ""; // Variable pour stocker le contenu du fichier JSON
+        String buffer;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
-
-            while ((buffer =reader.readLine()) != null)
-            {
-                if(buffer != null)
+            // Lecture du contenu du fichier JSON ligne par ligne
+            while ((buffer = reader.readLine()) != null) {
+                if (buffer != null)
                     json += buffer;
                 json += "\n";
-
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // Conversion du contenu JSON en tableau de données
         donnees = GestionJson.lecture(json);
 
-        executer(donnees,argument2);
+        // Appel de la méthode "executer" pour traiter les données et générer les résultats
+        executer(donnees, argument2);
     }
+
 
     /**
      * Effectue le traitement des données et génère les résultats correspondants.
