@@ -56,22 +56,32 @@ public class GestionJson {
 
 
 
-    public static void ecriture(int matricule_employe, double etat_compte,
-                                double cout_fixe,double cout_variable,String[] code
-            ,double[] etat_par_client,int j,String arg)
-    {
-
+    /**
+     * Écrit les données fournies dans un fichier JSON.
+     *
+     * @param matricule_employe   Le matricule de l'employé.
+     * @param etat_compte         L'état du compte de l'employé.
+     * @param cout_fixe           Le coût fixe de l'employé.
+     * @param cout_variable       Le coût variable de l'employé.
+     * @param code                Les codes des clients.
+     * @param etat_par_client     Les états par client.
+     * @param j                   Le nombre de clients.
+     * @param arg                 Le nom du fichier de sortie.
+     */
+    public static void ecriture(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable,
+                                String[] code, double[] etat_par_client, int j, String arg) {
         JSONObject employee = new JSONObject();
 
-        employee.accumulate("matricule_employe",matricule_employe);
-        employee.accumulate("etat_compte",etat_compte + "$");
-        employee.accumulate("cout_fixe",cout_fixe + "$");
-        employee.accumulate("cout_variable",cout_variable + "$");
+        employee.accumulate("matricule_employe", matricule_employe);
+        employee.accumulate("etat_compte", etat_compte + "$");
+        employee.accumulate("cout_fixe", cout_fixe + "$");
+        employee.accumulate("cout_variable", cout_variable + "$");
 
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
 
-        for(int i=0; i<j ; i++) {
+        // Ajout des données de chaque client
+        for (int i = 0; i < j; i++) {
             client.accumulate("code_client", code[i]);
             client.accumulate("etat_par_client", etat_par_client[i] + "$");
             clients.add(client);
@@ -79,13 +89,13 @@ public class GestionJson {
         }
 
         employee.accumulate("clients", clients);
+
         try {
-            FileUtils.writeStringToFile(new File(arg),
-                    employee.toString(2), /*le 2 dans la methode toString est pour le formattage*/"UTF-8");
-        }
-        catch(IOException e)
-        {
+            // Écriture du contenu JSON dans le fichier spécifié
+            FileUtils.writeStringToFile(new File(arg), employee.toString(2), "UTF-8");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }
