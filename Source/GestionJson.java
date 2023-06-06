@@ -8,24 +8,33 @@ import java.io.File;
 import java.io.IOException;
 
 public class GestionJson {
-    public static String[][] lecture(String json)
-    {
+
+
+    /**
+     * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
+     *
+     * @param json La chaîne JSON à convertir.
+     * @return Un tableau à deux dimensions contenant les données extraites du JSON.
+     */
+    public static String[][] lecture(String json) {
         int j;
-        String [][] tableau = new String[9][5];
+        String[][] tableau = new String[9][5];
 
         JSONObject employee;
-        
+
         employee = JSONObject.fromObject(json);
 
+        // Extraction des données de l'employé
         tableau[0][0] = employee.getString("matricule_employe");
         tableau[1][0] = employee.getString("type_employe");
         tableau[2][0] = employee.getString("taux_horaire_min");
         tableau[3][0] = employee.getString("taux_horaire_max");
-        JSONArray interventions = employee.getJSONArray("interventions");
-        String [][] intervention = new String [interventions.size()][5];
 
-        for(j=0; j<interventions.size() ; j++)
-        {
+        JSONArray interventions = employee.getJSONArray("interventions");
+        String[][] intervention = new String[interventions.size()][5];
+
+        // Extraction des données des interventions
+        for (j = 0; j < interventions.size(); j++) {
             JSONObject Intervention = interventions.getJSONObject(j);
 
             intervention[j][0] = Intervention.getString("code_client");
@@ -35,6 +44,7 @@ public class GestionJson {
             intervention[j][4] = Intervention.optString("date_intervention");
         }
 
+        // Copie des données d'intervention dans le tableau principal
         tableau[4] = intervention[0];
         tableau[5] = intervention[1];
         tableau[6] = intervention[2];
@@ -43,6 +53,9 @@ public class GestionJson {
 
         return tableau;
     }
+
+
+
     public static void ecriture(int matricule_employe, double etat_compte,
                                 double cout_fixe,double cout_variable,String[] code
             ,double[] etat_par_client,int j,String arg)
