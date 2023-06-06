@@ -62,7 +62,7 @@ public class GestionJson {
      * @param arg                 Le nom du fichier de sortie.
      */
     public static void ecriture(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable,
-                                String[] code, double[] etat_par_client, int j, String arg) {
+                                String[] code, double[] etat_par_client, int j, String arg, int[] nbrs) {
         JSONObject employee = new JSONObject();
 
         employee.accumulate("matricule_employe", matricule_employe);
@@ -71,13 +71,17 @@ public class GestionJson {
         employee.accumulate("cout_variable", cout_variable + "$");
 
         JSONArray clients = new JSONArray();
+        JSONObject client = new JSONObject();
 
         // Ajout des données de chaque client
-        for (int i = 0; i < j; i++) {
-            JSONObject client = new JSONObject(); // Créer un nouvel objet client à chaque itération
-            client.accumulate("code_client", code[i]);
-            client.accumulate("etat_par_client", etat_par_client[i] + "$");
-            clients.add(client);
+        for(int i=0; i<j ; i++) {
+            if(Main.verification(nbrs,i))
+            {
+                client.accumulate("code_client", code[i]);
+                client.accumulate("etat_par_client", etat_par_client[i] + "$");
+                clients.add(client);
+                client.clear();
+            }
         }
 
         employee.accumulate("clients", clients);

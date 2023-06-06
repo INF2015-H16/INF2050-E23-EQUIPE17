@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class TestEcriture {
     @Test
@@ -19,8 +20,10 @@ public class TestEcriture {
         double[] etat_par_client = {1266.45, 9000.00, 47004.00};
         int j = 3;
         String arg = "test.json";
+        int[] nbrs = new int[30];
+        Arrays.fill(nbrs, -1);
 
-        GestionJson.ecriture(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j,arg);
+        GestionJson.ecriture(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j,arg, nbrs);
 
 
         String expectedOutput = "{\n" +

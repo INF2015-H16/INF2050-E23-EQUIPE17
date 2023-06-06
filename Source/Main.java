@@ -1,6 +1,7 @@
 package Source;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class Main {
 
@@ -54,6 +55,8 @@ public class Main {
      * @param argument2  Le fichier sortie.json a remplir.
      */
     public static void executer(String[][] data, String argument2) {
+        int[] nbrs = new int[30];
+        Arrays.fill(nbrs, -1);
         int status, matricule_employe, type_employe, itterations = Integer.parseInt(data[data.length - 1][0]);
         int[] distance_deplacement = new int[Integer.parseInt(data[data.length - 1][0])];
         int[] overtime = new int[Integer.parseInt(data[data.length - 1][0])];
@@ -70,21 +73,31 @@ public class Main {
         taux_horaire_max = Double.parseDouble(data[3][0].substring(0, 5));
 
         // Traitement des données
-        for (int i = 0, j = 4; j < data.length - 1; j++, i++) {
-            status = checker(data, j);
-
-            if (status != -1 && status != -2) {
+        for(int i=0,j=4; j< data.length-1;j++, i++)
+        {
+            status = checker(data,j,nbrs);
+            if(status != -1 && status != -2)
+            {
                 code[i] = data[j][0];
-                distance_deplacement[i] = Integer.parseInt(data[j][1]) + Integer.parseInt(data[status][1]);
-                overtime[i] = Integer.parseInt(data[j][2]) + Integer.parseInt(data[status][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3]) + Integer.parseInt(data[status][3]);
-                itterations--;
-            } else if (status == -1) {
+                distance_deplacement[i] = Integer.parseInt(data[j][1]) +Integer.parseInt( data[status][1]);
+                overtime[i] = Integer.parseInt(data[j][2])  + Integer.parseInt(data[status][2]);
+                nombre_heures[i] = Integer.parseInt(data[j][3]) + Integer.parseInt(data[status][3]);// i am not sure of this
+                //itterations--;
+            }
+            else if(status == -1)
+            {
                 code[i] = data[j][0];
                 distance_deplacement[i] = Integer.parseInt(data[j][1]);
                 overtime[i] = Integer.parseInt(data[j][2]);
                 nombre_heures[i] = Integer.parseInt(data[j][3]);
             }
+        }
+
+
+        for(int i=0 ; i<itterations; i++)
+        {
+            if(verification(nbrs,i))
+                EtatParClient[i] = calculerEtatParClient(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max,distance_deplacement[i],overtime[i],montantRegulier);
         }
 
         // Calcul de l'état par client pour chaque itération
@@ -100,39 +113,38 @@ public class Main {
 
         // Écriture des résultats dans un fichier JSON
         GestionJson.ecriture(matricule_employe, arrondirMontant(etatCompteTotal), arrondirMontant(coutFixe),
-                arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2);
+                arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2, nbrs);
     }
 
 
     /**
-     * Vérifie s'il existe une occurrence précédente d'un élément spécifié dans le tableau multidimensionnel.
+     * Vérifie s'il existe une occurrence précédente du code client dans le tableau à deux dimensions.
+     * Si une occurrence est trouvée, elle met à jour le tableau `nbr` avec l'index de l'occurrence précédente.
      *
-     * @param array Le tableau multidimensionnel à vérifier.
-     * @param z     L'index de l'élément à vérifier dans le tableau.
-     * @return L'index de l'occurrence précédente si elle existe, -2 si l'occurrence précédente
-     * se trouve avant l'élément actuel,
-     *         ou -1 si aucune occurrence précédente n'est trouvée.
+     * @param array Le tableau à deux dimensions contenant les données.
+     * @param z     L'index actuel dans le tableau.
+     * @param nbr   Le tableau de numéros de référence pour les occurrences précédentes.
+     * @return L'index de l'occurrence précédente si elle existe, -1 si aucune occurrence précédente n'est trouvée,
+     * -2 si une occurrence est trouvée mais son index est inférieur à l'index actuel.
      */
-    public static int checker(String[][] array, int z) {
+    public static int checker(String[][] array, int z, int[] nbr) {
         for (int i = 0; i < array.length - 1; i++) {
-            // Si l'index i correspond à l'index actuel z, on passe à l'index suivant
             if (i == z)
                 i++;
 
-            // Comparaison de la valeur de array[z][0] avec les éléments précédents dans le tableau
+            // Vérifie si le code client à l'index z est égal au code client à l'index i
             if (array[z][0].equals(array[i][0])) {
-                // Si l'occurrence précédente se trouve avant l'élément actuel, on renvoie -2
                 if (i < z)
-                    return -2;
-                else
-                    // Sinon, on renvoie l'index de l'occurrence précédente
-                    return i;
+                    return -2; // Une occurrence précédente a été trouvée, mais son index est inférieur à l'index actuel
+                else {
+                    nbr[z] = i - 4; // Met à jour le tableau de numéros de référence avec l'index de l'occurrence précédente
+                    return i; // Retourne l'index de l'occurrence précédente
+                }
             }
         }
-
-        // Si aucune occurrence précédente n'est trouvée, on renvoie -1
-        return -1;
+        return -1; // Aucune occurrence précédente n'a été trouvée
     }
+
 
 
     /**
