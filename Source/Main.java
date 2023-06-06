@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
         String[][] donnees; // Déclaration d'une variable pour stocker les données
-        String argument = "Source/test.json"; // Chemin vers le fichier d'entrée
-        String argument2 = "sortie.json"; // Nom du fichier de sortie
+        String argument = args[0]; // Chemin vers le fichier d'entrée
+        String argument2 = args[1]; // Nom du fichier de sortie
         String json = ""; // Variable pour stocker le contenu du fichier JSON
         String buffer;
 
