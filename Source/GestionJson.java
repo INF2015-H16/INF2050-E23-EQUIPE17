@@ -20,9 +20,7 @@ public class GestionJson {
         int j;
         String[][] tableau = new String[9][5];
 
-        JSONObject employee;
-
-        employee = JSONObject.fromObject(json);
+        JSONObject employee = JSONObject.fromObject(json);
 
         // Extraction des données de l'employé
         tableau[0][0] = employee.getString("matricule_employe");
@@ -31,28 +29,23 @@ public class GestionJson {
         tableau[3][0] = employee.getString("taux_horaire_max");
 
         JSONArray interventions = employee.getJSONArray("interventions");
-        String[][] intervention = new String[interventions.size()][5];
 
         // Extraction des données des interventions
         for (j = 0; j < interventions.size(); j++) {
-            JSONObject Intervention = interventions.getJSONObject(j);
+            JSONObject intervention = interventions.getJSONObject(j);
 
-            intervention[j][0] = Intervention.getString("code_client");
-            intervention[j][1] = Intervention.getString("distance_deplacement");
-            intervention[j][2] = Intervention.getString("overtime");
-            intervention[j][3] = Intervention.getString("nombre_heures");
-            intervention[j][4] = Intervention.optString("date_intervention");
+            tableau[4 + j][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
+            tableau[4 + j][1] = intervention.getString("distance_deplacement");
+            tableau[4 + j][2] = intervention.getString("overtime");
+            tableau[4 + j][3] = intervention.getString("nombre_heures");
+            tableau[4 + j][4] = intervention.optString("date_intervention");
         }
 
-        // Copie des données d'intervention dans le tableau principal
-        tableau[4] = intervention[0];
-        tableau[5] = intervention[1];
-        tableau[6] = intervention[2];
-        tableau[7] = intervention[3];
-        tableau[8][0] = String.valueOf(j);
+        tableau[8][0] = String.valueOf(interventions.size());
 
         return tableau;
     }
+
 
 
 
@@ -78,14 +71,13 @@ public class GestionJson {
         employee.accumulate("cout_variable", cout_variable + "$");
 
         JSONArray clients = new JSONArray();
-        JSONObject client = new JSONObject();
 
         // Ajout des données de chaque client
         for (int i = 0; i < j; i++) {
+            JSONObject client = new JSONObject(); // Créer un nouvel objet client à chaque itération
             client.accumulate("code_client", code[i]);
             client.accumulate("etat_par_client", etat_par_client[i] + "$");
             clients.add(client);
-            client.clear();
         }
 
         employee.accumulate("clients", clients);
@@ -97,5 +89,6 @@ public class GestionJson {
             e.printStackTrace();
         }
     }
+
 
 }

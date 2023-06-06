@@ -31,6 +31,23 @@ public class Main {
 
 
     /**
+     * Vérifie si un entier `j` est présent dans le tableau `nbrs`.
+     *
+     * @param nbrs Le tableau d'entiers à vérifier.
+     * @param j    L'entier à rechercher.
+     * @return `true` si l'entier `j` n'est pas présent dans le tableau `nbrs`, `false` sinon.
+     */
+    public static boolean verification(int[] nbrs, int j) {
+        for (int i = 0; i < nbrs.length; i++) {
+            if (nbrs[i] == j)
+                return false;
+        }
+        return true;
+    }
+
+
+
+    /**
      * Effectue le traitement des données et génère les résultats correspondants.
      *
      * @param data       Les données d'entrée sous forme de tableau à deux dimensions.
