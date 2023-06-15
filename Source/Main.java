@@ -156,7 +156,7 @@ public class Main {
      * @params tauxHoraireMin
      * @params tauxHoraireMax
      */
-    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
+    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,      //TO-DO Ajouter la validation -Ricky
                                                  double tauxHoraireMin, double tauxHoraireMax) {
         double tauxHoraire = 0;
 
@@ -183,7 +183,7 @@ public class Main {
      * @param montantRegulier
      * @return
      */
-    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
+    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement, //TO-DO Ajouter la validation -Ricky
                                                     double montantRegulier){
         double montantDeplacement = 0;
 
@@ -206,7 +206,7 @@ public class Main {
      * @param overtime
      * @return
      */
-    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {
+    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {      //TO-DO Ajouter la validation -Ricky
         double montantHeuresSupplementaires = 0.0;
 
         if (typeEmploye == 0) {
