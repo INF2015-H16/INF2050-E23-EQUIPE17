@@ -156,9 +156,14 @@ public class Main {
      * @params tauxHoraireMin
      * @params tauxHoraireMax
      */
-    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,      //TO-DO Ajouter la validation -Ricky
+    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
                                                  double tauxHoraireMin, double tauxHoraireMax) {
+        if (tauxHoraireMin < 0 || tauxHoraireMax < 0 || nombreHeures < 0){
+            throw new IllegalArgumentException("Le taux horaire ou le nombre d'heure n'est pas valide.");
+        }
+
         double tauxHoraire = 0;
+
 
         //Selectionner type d'employe
         if (typeEmploye == 0){
@@ -167,6 +172,8 @@ public class Main {
             tauxHoraire = (tauxHoraireMin + tauxHoraireMax)/2;
         } else if (typeEmploye == 2) {
             tauxHoraire = tauxHoraireMax;
+        } else {
+            throw new IllegalArgumentException("La valeur n'est pas valide. La valeur ne peut pas etre plus petite que 0 et plus grande que 2.");
         }
 
         // Calculer le montant régulier en multipliant le taux horaire par le nombre d'heures
@@ -183,8 +190,12 @@ public class Main {
      * @param montantRegulier
      * @return
      */
-    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement, //TO-DO Ajouter la validation -Ricky
+    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
                                                     double montantRegulier){
+        if (distanceDeplacement < 0 || montantRegulier < 0){
+            throw new IllegalArgumentException("La valeur n'est pas valide.");
+        }
+
         double montantDeplacement = 0;
 
         // Calculer le montant de déplacement en fonction du type d'employé
@@ -193,7 +204,9 @@ public class Main {
         } else if (typeEmploye == 1) {
             montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         } else if (typeEmploye == 2) {
-            montantDeplacement = 200 -(distanceDeplacement * (0.15 * montantRegulier));
+            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+        } else {
+            throw new IllegalArgumentException("La valeur n'est pas valide.");
         }
 
         return montantDeplacement;
@@ -206,8 +219,12 @@ public class Main {
      * @param overtime
      * @return
      */
-    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {      //TO-DO Ajouter la validation -Ricky
+    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {
         double montantHeuresSupplementaires = 0.0;
+
+        if (overtime < 0 || nombre_heures < 0){
+            throw new IllegalArgumentException("Overtime ou nombre d'heure n'est pas valide.");
+        }
 
         if (typeEmploye == 0) {
             // Superviseur : Pas de montant pour les heures supplémentaires
@@ -230,6 +247,8 @@ public class Main {
             {
                 montantHeuresSupplementaires = 150.0 * overtime;
             }
+        } else {
+            throw new IllegalArgumentException("Type d'employer n'est pas valide.");
         }
 
         // Limiter le montant des heures supplémentaires à 1500.00
