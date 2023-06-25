@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
         String[][] donnees; // Déclaration d'une variable pour stocker les données
-        String argument = args[0]; // Chemin vers le fichier d'entrée
-        String argument2 = args[1]; // Nom du fichier de sortie
+        String argument = "test.json"; // Chemin vers le fichier d'entrée
+        String argument2 = "sortie.json"; // Nom du fichier de sortie
         String json = ""; // Variable pour stocker le contenu du fichier JSON
         String buffer;
 
@@ -61,7 +61,7 @@ public class Main {
         int[] distance_deplacement = new int[Integer.parseInt(data[data.length - 1][0])];
         int[] overtime = new int[Integer.parseInt(data[data.length - 1][0])];
         int[] nombre_heures = new int[Integer.parseInt(data[data.length - 1][0])];
-        double taux_horaire_min, taux_horaire_max, montantDeplacement = 0, coutVariable, montantRegulier = 0,
+        double taux_horaire_min = 0, taux_horaire_max = 0, montantDeplacement = 0, coutVariable, montantRegulier = 0,
                 montantHeureSupplementaire = 0;
         String[] code = new String[Integer.parseInt(data[data.length - 1][0])];
         double[] EtatParClient = new double[code.length];
@@ -69,8 +69,25 @@ public class Main {
         // Récupération des données d'entrée
         matricule_employe = Integer.parseInt(data[0][0]);
         type_employe = Integer.parseInt(data[1][0]);
-        taux_horaire_min = Double.parseDouble(data[2][0].substring(0, 5));
-        taux_horaire_max = Double.parseDouble(data[3][0].substring(0, 5));
+
+        try {
+            taux_horaire_min = Double.parseDouble(data[2][0].substring(0, 5));
+            System.out.println(taux_horaire_min);
+        }
+        catch (Exception e)
+        {
+            taux_horaire_min = Double.parseDouble(data[2][0].substring(0,2) + "." +data[2][0].substring(3,5));// Sa c'est pour gerer le virgule
+
+        }
+
+        try {
+            taux_horaire_max = Double.parseDouble(data[3][0].substring(0, 5));
+            System.out.println(taux_horaire_max);
+        }
+       catch (Exception e)
+        {
+            taux_horaire_max = Double.parseDouble(data[3][0].substring(0,2) + "." +data[3][0].substring(3,5)); // Sa c'est pour gerer le virgule
+        }
 
         // Traitement des données
         for(int i=0,j=4; j< data.length-1;j++, i++)
