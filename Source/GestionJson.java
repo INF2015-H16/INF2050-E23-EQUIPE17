@@ -1,13 +1,30 @@
 package Source;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-public class GestionJson {
+public class GestionJson{
+    public static int calculInterventions(String json) {
+        int nombreinterventions = 0;
+
+        try {
+            JSONObject jsonObject = JSONObject.fromObject(json);
+            JSONArray interventions = jsonObject.getJSONArray("interventions");
+            nombreinterventions = interventions.size();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(nombreinterventions);
+
+        return nombreinterventions;
+    }
+
 
 
     /**
@@ -18,11 +35,13 @@ public class GestionJson {
      */
     public static String[][] lecture(String json) {
         int j;
-        String[][] tableau = new String[9][5];
+
+        String[][] tableau = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
+                                                                        // le 5 c'est pour le type, marticule et les taux
+        System.out.println(tableau.length);
 
         JSONObject employee = JSONObject.fromObject(json);
 
-        // Extraction des données de l'employé
         tableau[0][0] = employee.getString("matricule_employe");
         tableau[1][0] = employee.getString("type_employe");
         tableau[2][0] = employee.getString("taux_horaire_min");
@@ -30,7 +49,6 @@ public class GestionJson {
 
         JSONArray interventions = employee.getJSONArray("interventions");
 
-        // Extraction des données des interventions
         for (j = 0; j < interventions.size(); j++) {
             JSONObject intervention = interventions.getJSONObject(j);
 
@@ -41,7 +59,7 @@ public class GestionJson {
             tableau[4 + j][4] = intervention.optString("date_intervention");
         }
 
-        tableau[8][0] = String.valueOf(interventions.size());
+        tableau[tableau.length-1][0] = String.valueOf(interventions.size());
 
         return tableau;
     }
