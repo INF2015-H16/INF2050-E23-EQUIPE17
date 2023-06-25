@@ -34,34 +34,34 @@ public class GestionJson{
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
     public static String[][] lecture(String json) {
-        int j;
+        int compteurInterventions;
 
-        String[][] tableau = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
+        String[][] attributsJson = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
                                                                         // le 5 c'est pour le type, marticule et les taux
-        System.out.println(tableau.length);
+        System.out.println(attributsJson.length);
 
         JSONObject employee = JSONObject.fromObject(json);
 
-        tableau[0][0] = employee.getString("matricule_employe");
-        tableau[1][0] = employee.getString("type_employe");
-        tableau[2][0] = employee.getString("taux_horaire_min");
-        tableau[3][0] = employee.getString("taux_horaire_max");
+        attributsJson[0][0] = employee.getString("matricule_employe");
+        attributsJson[1][0] = employee.getString("type_employe");
+        attributsJson[2][0] = employee.getString("taux_horaire_min");
+        attributsJson[3][0] = employee.getString("taux_horaire_max");
 
         JSONArray interventions = employee.getJSONArray("interventions");
 
-        for (j = 0; j < interventions.size(); j++) {
-            JSONObject intervention = interventions.getJSONObject(j);
+        for (compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
+            JSONObject intervention = interventions.getJSONObject(compteurInterventions);
 
-            tableau[4 + j][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
-            tableau[4 + j][1] = intervention.getString("distance_deplacement");
-            tableau[4 + j][2] = intervention.getString("overtime");
-            tableau[4 + j][3] = intervention.getString("nombre_heures");
-            tableau[4 + j][4] = intervention.optString("date_intervention");
+            attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
+            attributsJson[4 + compteurInterventions][1] = intervention.getString("distance_deplacement");
+            attributsJson[4 + compteurInterventions][2] = intervention.getString("overtime");
+            attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
+            attributsJson[4 + compteurInterventions][4] = intervention.optString("date_intervention");
         }
 
-        tableau[tableau.length-1][0] = String.valueOf(interventions.size());
+        attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
 
-        return tableau;
+        return attributsJson;
     }
 
 
