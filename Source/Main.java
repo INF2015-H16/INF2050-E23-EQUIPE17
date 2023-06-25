@@ -95,6 +95,9 @@ public class Main {
         return taux_horaire;
     }
 
+
+    //TODO: rendre la methode executer plus courte en creant des sous methodes
+
     public static void executer(String[][] data, String argument2) throws JsonException {
         int[] nbrs = new int[30];
         Arrays.fill(nbrs, -1);
