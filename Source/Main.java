@@ -41,7 +41,7 @@ public class Main {
      * @param j    L'entier à rechercher.
      * @return `true` si l'entier `j` n'est pas présent dans le tableau `nbrs`, `false` sinon.
      */
-    public static boolean verification(int[] nbrs, int j) { //l'argument j refere au code client dans le fichier JSON
+    public static boolean verification(int[] nbrs, int j) { //l'argument "j" refere au code client dans le fichier JSON
         for (int i = 0; i < nbrs.length; i++) {
             if (nbrs[i] == j)
                 return false;
@@ -182,18 +182,15 @@ public class Main {
                 EtatParClient[i] = calculerEtatParClient(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max,distance_deplacement[i],overtime[i],montantRegulier);
         }
 
-        // Calcul de l'état par client pour chaque itération
         for (int i = 0; i < itterations; i++) {
             EtatParClient[i] = calculerEtatParClient(type_employe, nombre_heures[i],
                     taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
         }
 
-        // Calcul de l'état de compte total et des coûts
         double etatCompteTotal = calculerEtatCompteTotal(EtatParClient);
         coutVariable = calculerCoutVariable(etatCompteTotal);
         double coutFixe = calculerCoutFixe(etatCompteTotal);
 
-        // Écriture des résultats dans un fichier JSON
         GestionJson.ecriture(matricule_employe, arrondirMontant(etatCompteTotal), arrondirMontant(coutFixe),
                 arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2, nbrs);
     }
@@ -253,7 +250,6 @@ public class Main {
         double tauxHoraire = 0;
 
 
-        //Selectionner type d'employe
         if (typeEmploye == 0){
             tauxHoraire = tauxHoraireMin;
         } else if (typeEmploye == 1) {
@@ -264,7 +260,6 @@ public class Main {
             throw new IllegalArgumentException("La valeur n'est pas valide. La valeur ne peut pas etre plus petite que 0 et plus grande que 2.");
         }
 
-        // Calculer le montant régulier en multipliant le taux horaire par le nombre d'heures
         double montantRegulier = tauxHoraire * nombreHeures;
 
         return montantRegulier;
@@ -286,7 +281,6 @@ public class Main {
 
         double montantDeplacement = 0;
 
-        // Calculer le montant de déplacement en fonction du type d'employé
         if (typeEmploye == 0){
             montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier)) ;
         } else if (typeEmploye == 1) {
@@ -311,17 +305,14 @@ public class Main {
         double montantHeuresSupplementaires = 0.0;
 
         if (typeEmploye == 0) {
-            // Superviseur : Pas de montant pour les heures supplémentaires
             montantHeuresSupplementaires = 0.0;
         } else if (typeEmploye == 1) {
-            // Permanent
             if (nombre_heures > 4 && nombre_heures <= 8) {
                 montantHeuresSupplementaires = 50.0 * overtime;
             } else if (nombre_heures > 8) {
                 montantHeuresSupplementaires = 100.0 * overtime;
             }
         } else if (typeEmploye == 2) {
-            // Contractuel
             if (overtime <= 4)
             {
                 montantHeuresSupplementaires = 75.0 * overtime;
@@ -335,7 +326,6 @@ public class Main {
             throw new IllegalArgumentException("Type d'employer n'est pas valide.");
         }
 
-        // Limiter le montant des heures supplémentaires à 1500.00
         montantHeuresSupplementaires = Math.min(montantHeuresSupplementaires, 1500.0);
 
         return montantHeuresSupplementaires;
@@ -363,17 +353,14 @@ public class Main {
                                                double distanceDeplacement, double overtime, double montantregulier) {
         double montantTotal = 0.0;
 
-        // Calcul du montant des heures travaillées
         double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
                 tauxHoraireMin, tauxHoraireMax);
 
         montantTotal += montantHeuresTravaillees;
 
-        // Calcul du montant des heures supplémentaires
         double montantHeuresSupplementaires = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
         montantTotal += montantHeuresSupplementaires;
 
-        // Calcul du montant de déplacement
         double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
         montantTotal += montantDeplacement;
 
@@ -400,22 +387,16 @@ public class Main {
     public static double calculerCoutFixe(double etatCompteTotal) {
         double coutFixe;
 
-        // Calcul du coût fixe en fonction de l'État de compte total
-
-        // Si l'état de compte total est supérieur ou égal à 1000.0
         if (etatCompteTotal >= 1000.0) {
             coutFixe = etatCompteTotal * 0.012;
         }
-        // Si l'état de compte total est supérieur ou égal à 500.0 mais inférieur à 1000.0
         else if (etatCompteTotal >= 500.0) {
             coutFixe = etatCompteTotal * 0.008;
         }
-        // Si l'état de compte total est inférieur à 500.0
         else {
             coutFixe = etatCompteTotal * 0.004;
         }
 
-        // Arrondir le coût fixe au 5 sous supérieur
         coutFixe = arrondirMontant(coutFixe);
 
         return coutFixe;
