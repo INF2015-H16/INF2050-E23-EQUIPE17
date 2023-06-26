@@ -23,7 +23,7 @@ public class TestEcriture {
         int[] nbrs = new int[30];
         Arrays.fill(nbrs, -1);
 
-        GestionJson.ecriture(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j,arg, nbrs);
+        GestionJson.ecrireFichierSortieJson(matricule_employe, etat_compte, cout_fixe, cout_variable, code, etat_par_client, j,arg, nbrs);
 
 
         String expectedOutput = "{\n" +
