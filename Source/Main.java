@@ -77,7 +77,6 @@ public class Main {
         return nbr;
     }
 
-
     public static double checkerTaux(String[][] data,int i) throws JsonException
     {
         double taux_horaire;
@@ -101,6 +100,11 @@ public class Main {
         }
     }
 
+    public static void validerNombreInterventions(int nombre) throws JsonException {
+        if (nombre > 10) {
+            throw new JsonException("Nombre d'interventions invalide");
+        }
+    }
 
     //TODO: rendre la methode executer plus courte en creant des sous methodes
 
