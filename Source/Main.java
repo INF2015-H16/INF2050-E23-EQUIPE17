@@ -70,7 +70,7 @@ public class Main {
 
     public static int checkNombreHeures(int nbr) throws JsonException
     {
-        if (nbr < 0) {
+        if (nbr >= 0  && nbr <= 8) {
             throw new JsonException("Nombre d'heures invalide");
         }
 
