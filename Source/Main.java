@@ -52,7 +52,7 @@ public class Main {
 
     public static int checkDistance(int nbr) throws JsonException
     {
-            if (nbr < 0) {
+            if (nbr < 0 || nbr > 100) {
                 throw new JsonException("Distance deplacement invalide");
             }
 
