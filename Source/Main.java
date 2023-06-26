@@ -9,6 +9,7 @@ public class Main {
         CalculEmploye calculEmploye = new CalculEmploye();
 
         String[][] donnees;
+        //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet.
         String argument = "test.json";
         String argument2 = "sortie.json";
         String json = "";
