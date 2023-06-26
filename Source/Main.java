@@ -86,13 +86,19 @@ public class Main {
         }
         catch (Exception e)
         {
-            taux_horaire = Double.parseDouble(data[i][0].substring(0,data[i][0].length()-5) + "." +data[i][0].substring(data[i][0].length()-4,data[i][0].length()-1));// Sa c'est pour gerer le virgule
+            taux_horaire = Double.parseDouble(data[i][0].substring(0,data[i][0].length()-5) + "." +data[i][0].substring(data[i][0].length()-4,data[i][0].length()-1));// Sa c'est pour gerer la virgule
         }
 
         if(taux_horaire < 0)
             throw new JsonException("Taux horaire invalide");
 
         return taux_horaire;
+    }
+
+    public static void checkerTypeEmploye(int type) throws JsonException {
+        if (type < 0 || type > 2) {
+            throw new JsonException("Type d'employé invalide");
+        }
     }
 
 
