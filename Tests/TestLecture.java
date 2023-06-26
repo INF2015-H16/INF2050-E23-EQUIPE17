@@ -37,7 +37,7 @@ public class TestLecture {
         expectedTableau[7][4] = "2023-04-20";
         expectedTableau[8][0] = "4";
 
-        String[][] result = GestionJson.lecture(json);
+        String[][] result = GestionJson.lireFichierEntreeJson(json);
 
         // Assert that the two-dimensional arrays are equal
         Assert.assertArrayEquals(expectedTableau, result);
