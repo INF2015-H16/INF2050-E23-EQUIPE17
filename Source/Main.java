@@ -87,11 +87,7 @@ public class Main {
         }
         catch (Exception e)
         {
-<<<<<<< HEAD
             taux_horaire = Double.parseDouble(data[i][0].replace(",", ".").replace("$", ""));// Sa c'est pour gerer le virgule
-=======
-            taux_horaire = Double.parseDouble(data[i][0].substring(0,data[i][0].length()-5) + "." +data[i][0].substring(data[i][0].length()-4,data[i][0].length()-1));// Sa c'est pour gerer la virgule
->>>>>>> f8a0a9186e94dad64749ada957605ac27e56a903
         }
 
         if(taux_horaire < 0)
