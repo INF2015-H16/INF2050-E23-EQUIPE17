@@ -36,6 +36,10 @@ public class Main {
         }
     }
 
+    public static boolean verifierFichierEntree(String nomFichierEntree) {
+        File fichier = new File(nomFichierEntree);
+        return fichier.exists() && fichier.isFile();
+    }
 
     /**
      * Vérifie si un entier `j` est présent dans le tableau `nbrs`.
