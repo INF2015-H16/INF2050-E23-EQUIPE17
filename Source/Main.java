@@ -15,6 +15,13 @@ public class Main {
 
         String buffer;
 
+        boolean fichierExiste = verifierFichierEntree(argument);
+
+        if(!fichierExiste){
+            System.out.println("Le fichier d'entree n'existe pas.");
+            System.exit(0);
+        }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
             // Lecture du contenu du fichier JSON ligne par ligne
             while ((buffer = reader.readLine()) != null) {
