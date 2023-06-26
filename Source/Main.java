@@ -52,16 +52,16 @@ public class Main {
 
     public static int checkDistance(int nbr) throws JsonException
     {
-            if (nbr < 0 || nbr > 100) {
-                throw new JsonException("Distance deplacement invalide");
-            }
+        if (nbr < 0 || nbr > 100) {
+            throw new JsonException("Distance deplacement invalide");
+        }
 
         return nbr;
     }
 
     public static int checkOvertime(int nbr) throws JsonException
     {
-        if (nbr >= 0 && nbr <= 4) {
+        if (nbr < 0 || nbr > 4) {
             throw new JsonException("Overtime invalide");
         }
 
@@ -70,7 +70,7 @@ public class Main {
 
     public static int checkNombreHeures(int nbr) throws JsonException
     {
-        if (nbr >= 0  && nbr <= 8) {
+        if (nbr < 0  || nbr > 8) {
             throw new JsonException("Nombre d'heures invalide");
         }
 
@@ -256,9 +256,7 @@ public class Main {
      */
     public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
                                                  double tauxHoraireMin, double tauxHoraireMax) {
-        if (tauxHoraireMin < 0 || tauxHoraireMax < 0 || nombreHeures < 0){
-            throw new IllegalArgumentException("Le taux horaire ou le nombre d'heure n'est pas valide.");
-        }
+
 
         double tauxHoraire = 0;
 
@@ -269,8 +267,6 @@ public class Main {
             tauxHoraire = (tauxHoraireMin + tauxHoraireMax)/2;
         } else if (typeEmploye == 2) {
             tauxHoraire = tauxHoraireMax;
-        } else {
-            throw new IllegalArgumentException("La valeur n'est pas valide. La valeur ne peut pas etre plus petite que 0 et plus grande que 2.");
         }
 
         double montantRegulier = tauxHoraire * nombreHeures;
