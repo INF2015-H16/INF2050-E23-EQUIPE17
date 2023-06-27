@@ -96,8 +96,8 @@ public class Main {
         return taux_horaire;
     }
 
-    public static void checkerTypeEmploye(int type) throws JsonException {
-        if (type < 0 || type > 2) {
+    public static void checkerTypeEmploye(double type) throws JsonException {
+        if (type < 0.0 || type > 2.0) {
             throw new JsonException("Type d'employé invalide");
         }
     }
