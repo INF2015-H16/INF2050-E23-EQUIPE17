@@ -90,6 +90,8 @@ public class Main {
         return nbr;
     }
 
+    //TODO: FORMAT A respecter 0.00$
+
     public static double checkerTaux(String[][] data,int i) throws JsonException
     {
         double taux_horaire;
