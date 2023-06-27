@@ -7,10 +7,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 
-public class GestionJson{
+public class GestionJson {
     public static int calculInterventions(String json) {
         int nombreinterventions = 0;
-
         try {
             JSONObject jsonObject = JSONObject.fromObject(json);
             JSONArray interventions = jsonObject.getJSONArray("interventions");
@@ -18,12 +17,9 @@ public class GestionJson{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         System.out.println(nombreinterventions);
-
         return nombreinterventions;
     }
-
 
 
     /**
@@ -63,125 +59,42 @@ public class GestionJson{
         return attributsJson;
     }
 
-    /**
-     * Écrit les données fournies dans un fichier JSON.
-     *
-     * @param matricule_employe   Le matricule de l'employé.
-     * @param etat_compte         L'état du compte de l'employé.
-     * @param cout_fixe           Le coût fixe de l'employé.
-     * @param cout_variable       Le coût variable de l'employé.
-     * @param code                Les codes des clients.
-     * @param etat_par_client     Les états par client.
-     * @param j                   Le nombre de clients.
-     * @param arg                 Le nom du fichier de sortie.
-     */
-    public static void ecrireFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable,
-                                               String[] code, double[] etat_par_client, int j, String arg, int[] nbrs) {
+
+    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs) {
         JSONObject employee = new JSONObject();
         CalculEmploye calculEmploye = new CalculEmploye();
+        employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee);
+        JSONArray clients = new JSONArray();
+        JSONObject client = new JSONObject();
+        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, employee, calculEmploye, clients, client));
+        ecritureFichierSortieJson(arg,employee);
+    }
 
+    private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee) {
         employee.accumulate("matricule_employe", matricule_employe);
         employee.accumulate("etat_compte", etat_compte + "$");
         employee.accumulate("cout_fixe", cout_fixe + "$");
         employee.accumulate("cout_variable", cout_variable + "$");
+        return employee;
+    }
 
-        JSONArray clients = new JSONArray();
-        JSONObject client = new JSONObject();
-
-        // Ajout des données de chaque client
-        for(int i=0; i<j ; i++) {
-            if(calculEmploye.verification(nbrs,i))
-            {
+    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONObject employee, CalculEmploye calculEmploye, JSONArray clients, JSONObject client) {
+        for(int i = 0; i< j; i++) {
+            if(CalculEmploye.verification(nbrs,i)) {
                 client.accumulate("code_client", code[i]);
                 client.accumulate("etat_par_client", etat_par_client[i] + "$");
                 clients.add(client);
                 client.clear();
             }
         }
+        return clients;
+    }
 
-        employee.accumulate("clients", clients);
-
+    private static void ecritureFichierSortieJson(String arg,JSONObject employee) {
         try {
-            // Écriture du contenu JSON dans le fichier spécifié
-            FileUtils.writeStringToFile(new File(arg), employee.toString(2), "UTF-8");
+            FileUtils.writeStringToFile(new File(arg), employee.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public static void validerInterventions(JSONObject objetJSON) { //TODO faire la validation s'il y a des lettres dans les objets
-        // Validation du type d'employé
-        int typeEmploye = objetJSON.getInt("typeEmploye");
-        if (typeEmploye != 0 && typeEmploye != 1 && typeEmploye != 2) {
-            System.out.println("Erreur: le type d'employé n'est pas valide.");
-        }
-
-        // Validation du nombre distance_deplacement
-        if (!objetJSON.has("distanceDeplacement")) {
-            System.out.println("Erreur: la propriété distanceDeplacement est manquante dans l'objet JSON.");
-        } else {
-            int distanceDeplacement = objetJSON.getInt("distanceDeplacement");
-            if (distanceDeplacement < 0) {
-                System.out.println("Erreur: le nombre de distanceDeplacement ne peut pas être négatif.");
-            }
-        }
-
-        // Validation des overtimes
-        if (!objetJSON.has("overtime")) {
-            System.out.println("Erreur: la propriété overtime est manquante dans l'objet JSON.");
-        } else {
-            int overtime = objetJSON.getInt("overtime");
-            if (overtime < 0) {
-                System.out.println("Erreur: le nombre de overtime ne peut pas être négatif.");
-            }
-        }
-
-        // Validation du nombre d'heures
-        if (!objetJSON.has("nombreHeures")) {
-            System.out.println("Erreur: la propriété nombreHeures est manquante dans l'objet JSON.");
-        } else {
-            int nombreHeures = objetJSON.getInt("nombreHeures");
-            if (nombreHeures <= 0) {
-                System.out.println("Erreur: Le nombre d'heures doit être supérieur à zéro.");
-            }
-        }
-
-        // Validation du nombre d'interventions
-        if (!objetJSON.has("interventions")) {
-            System.out.println("Erreur: la propriété interventions est manquante dans l'objet JSON.");
-        } else {
-            String interventions = objetJSON.getString("interventions");
-            int nombreInterventions = 0;
-            for (int i = 0; i < interventions.length(); i++) {
-                if (Character.isLetter(interventions.charAt(i))) {
-                    nombreInterventions++;
-                }
-            }
-
-            if (nombreInterventions == 0) {
-                System.out.println("Erreur : Aucune intervention valide n'a été détectée.");
-            }
-        }
-    }
-
-    public static double convertirMontantEnDecimal(String montant){
-        if (montant.contains(",")){
-            montant.replace(",",".");
-        }
-        return Double.parseDouble(montant);
-    }
-
-    public static void modifierProprietesJSONEnMinuscule(JSONObject objetJSON) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(objetJSON)));
-        String valeurJson = reader.readLine();
-        while (valeurJson != null) {
-            valeurJson.toLowerCase();
-            if (valeurJson.contains(" ")){
-                valeurJson.replace(" ","");
-            }
-        }
-
-    }
-
-
 }
