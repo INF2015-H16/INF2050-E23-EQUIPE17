@@ -33,7 +33,9 @@ public class Main {
         try {
             executer(donnees, argument2);
         } catch (JsonException e) {
-            throw new RuntimeException(e);
+            System.out.println("Il y'a un probleme dans le fichier JSON");
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -42,12 +44,12 @@ public class Main {
      * Vérifie si un entier `j` est présent dans le tableau `nbrs`.
      *
      * @param nbrs Le tableau d'entiers à vérifier.
-     * @param j    L'entier à rechercher.
+     * @param codeClient    L'entier à rechercher.
      * @return `true` si l'entier `j` n'est pas présent dans le tableau `nbrs`, `false` sinon.
      */
-    public static boolean verification(int[] nbrs, int j) { //l'argument "j" refere au code client dans le fichier JSON
+    public static boolean verification(int[] nbrs, int codeClient) { //l'argument "j" refere au code client dans le fichier JSON
         for (int i = 0; i < nbrs.length; i++) {
-            if (nbrs[i] == j)
+            if (nbrs[i] == codeClient)
                 return false;
         }
         return true;
@@ -62,7 +64,7 @@ public class Main {
         }
     }
 
-    public static double checkDistance(double nbr) throws JsonException
+    public static int checkDistance(int nbr) throws JsonException
     {
         if (nbr < 0.0 || nbr > 100.0) {
             throw new JsonException("Distance deplacement invalide");
@@ -70,7 +72,7 @@ public class Main {
         return nbr;
     }
 
-    public static double checkOvertime(double nbr) throws JsonException
+    public static int checkOvertime(int nbr) throws JsonException
     {
         if (nbr < 0.0 || nbr > 4.0) {
             throw new JsonException("Overtime invalide");
@@ -79,7 +81,7 @@ public class Main {
         return nbr;
     }
 
-    public static double checkNombreHeures(double nbr) throws JsonException
+    public static int checkNombreHeures(int nbr) throws JsonException
     {
         if (nbr < 0.0  || nbr > 8.0) {
             throw new JsonException("Nombre d'heures invalide");
@@ -101,14 +103,16 @@ public class Main {
 
         if(taux_horaire < 0)
             throw new JsonException("Taux horaire invalide");
-
         return taux_horaire;
     }
 
-    public static void checkerTypeEmploye(int type) throws JsonException {
-        if (type < 0 || type > 2) {
+    public static int checkerTypeEmploye(String[][] data) throws JsonException {
+        int type = Integer.parseInt(data[1][0]);
+        if (type < 0 || type > 2)
             throw new JsonException("Type d'employé invalide");
-        }
+
+        else
+            return type;
     }
 
     public static void validerNombreInterventions(int nombre) throws JsonException {
@@ -120,56 +124,25 @@ public class Main {
     //TODO: rendre la methode executer plus courte en creant des sous methodes
 
     public static void executer(String[][] data, String argument2) throws JsonException {
-        int[] nbrs = new int[30];
-        Arrays.fill(nbrs, -1);
         int status, matricule_employe, type_employe, itterations = Integer.parseInt(data[data.length - 1][0]);
-        int[] distance_deplacement = new int[Integer.parseInt(data[data.length - 1][0])];
-        int[] overtime = new int[Integer.parseInt(data[data.length - 1][0])];
-        int[] nombre_heures = new int[Integer.parseInt(data[data.length - 1][0])];
+        int[] nbrs = new int[30], distance_deplacement = new int[Integer.parseInt(data[data.length - 1][0])],overtime = new int[Integer.parseInt(data[data.length - 1][0])],nombre_heures = new int[Integer.parseInt(data[data.length - 1][0])];
         String[] code = new String[Integer.parseInt(data[data.length - 1][0])];
-
-
+        Arrays.fill(nbrs, -1);
 
         // Traitement des données
-        for(int i=0,j=4; j< data.length-1;j++, i++)
-        {
+        for(int i=0,j=4; j< data.length-1;j++, i++)  {
             status = checker(data,j,nbrs);
-            if(status != -1 && status != -2)
-            {
+            if(status != -1 && status != -2) {
                 code[i] = data[j][0];
-                try
-                {
-                    checkDistance(Integer.parseInt(data[j][1]));
-                    checkOvertime(Integer.parseInt(data[j][2]));
-                    checkNombreHeures(Integer.parseInt(data[j][3]));
-                }
-                catch (JsonException e)
-                {
-                    System.out.println(e.getMessage());
-                    System.exit(1);
-                }
-
-                distance_deplacement[i] = Integer.parseInt(data[j][1]) +Integer.parseInt( data[status][1]);
-                overtime[i] = Integer.parseInt(data[j][2])  + Integer.parseInt(data[status][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3]) + Integer.parseInt(data[status][3]);// i am not sure of this
+                distance_deplacement[i] = checkDistance(Integer.parseInt(data[j][1])) +checkDistance(Integer.parseInt( data[status][1]));
+                overtime[i] = checkOvertime(Integer.parseInt(data[j][2])) + checkOvertime(Integer.parseInt(data[status][2]));
+                nombre_heures[i] = checkNombreHeures(Integer.parseInt(data[j][3])) + checkNombreHeures(Integer.parseInt(data[status][3]));
             }
-            else if(status == -1)
-            {
+            else if(status == -1) {
                 code[i] = data[j][0];
-                try
-                {
-                    checkDistance(Integer.parseInt(data[j][1]));
-                    checkOvertime(Integer.parseInt(data[j][2]));
-                    checkNombreHeures(Integer.parseInt(data[j][3]));
-                }
-                catch (JsonException e)
-                {
-                    System.out.println(e.getMessage());
-                    System.exit(1);
-                }
-                distance_deplacement[i] = Integer.parseInt(data[j][1]);
-                overtime[i] = Integer.parseInt(data[j][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3]);
+                distance_deplacement[i] = checkDistance(Integer.parseInt(data[j][1]));
+                overtime[i] = checkOvertime(Integer.parseInt(data[j][2]));;
+                nombre_heures[i] = checkNombreHeures(Integer.parseInt(data[j][3]));
             }
         }
 
@@ -179,25 +152,10 @@ public class Main {
 
         // Récupération des données d'entrée
         matricule_employe = Integer.parseInt(data[0][0]);
-        type_employe = Integer.parseInt(data[1][0]);
 
-        try {
-            checkerTaux(data, 2);
-        }
-        catch (JsonException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            checkerTaux(data, 3);
-        }
-        catch (JsonException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
+        type_employe = checkerTypeEmploye(data);
+        checkerTaux(data, 2);
+        checkerTaux(data, 3);
 
 
         for(int i=0 ; i<itterations; i++)
@@ -215,7 +173,7 @@ public class Main {
         coutVariable = calculerCoutVariable(etatCompteTotal);
         double coutFixe = calculerCoutFixe(etatCompteTotal);
 
-        GestionJson.ecrireFichierSortieJson(matricule_employe, arrondirMontant(etatCompteTotal), arrondirMontant(coutFixe),
+        GestionJson.formattageFichierSortieJson(matricule_employe, arrondirMontant(etatCompteTotal), arrondirMontant(coutFixe),
                 arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2, nbrs);
     }
 
@@ -305,8 +263,6 @@ public class Main {
             CalculemontantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         } else if (typeEmploye == 2) {
             CalculemontantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
-        } else {
-            montantDeplacement = checkDistance(CalculemontantDeplacement);
         }
 
         return montantDeplacement;
@@ -340,10 +296,7 @@ public class Main {
             {
                 montantHeuresSupplementaires = 150.0 * overtime;
             }
-        } else {
-            throw new IllegalArgumentException("Type d'employer n'est pas valide.");
         }
-
         montantHeuresSupplementaires = Math.min(montantHeuresSupplementaires, 1500.0);
 
         return montantHeuresSupplementaires;
