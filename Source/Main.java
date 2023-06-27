@@ -70,9 +70,9 @@ public class Main {
         return nbr;
     }
 
-    public static int checkNombreHeures(int nbr) throws JsonException
+    public static double checkNombreHeures(double nbr) throws JsonException
     {
-        if (nbr < 0  || nbr > 8) {
+        if (nbr < 0.0  || nbr > 8.0) {
             throw new JsonException("Nombre d'heures invalide");
         }
 
