@@ -355,8 +355,13 @@ public class Main {
     }
 
     public static double arrondirMontant(double montant) {
-        // On multiplie par 20 pour déplacer la décimale au deuxième chiffre après la virgule
-        return Math.ceil(montant * 20) / 20;
+        double arrondi = Math.ceil(montant * 20) / 20; // Arrondi à 2 décimales
+        double difference = arrondi - Math.floor(arrondi); // Partie décimale
+        if (difference < 0.05) {
+            return Math.floor(arrondi * 20) / 20; // Arrondi au multiple inférieur de 0,05
+        } else {
+            return Math.ceil(arrondi * 20) / 20; // Arrondi au multiple supérieur de 0,05
+        }
     }
 
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
