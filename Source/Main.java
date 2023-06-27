@@ -361,7 +361,7 @@ public class Main {
 
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
                                                double tauxHoraireMin, double tauxHoraireMax,
-                                               double distanceDeplacement, double overtime, double montantregulier) {
+                                               double distanceDeplacement, double overtime, double montantregulier) throws JsonException {
         double montantTotal = 0.0;
 
         double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
@@ -376,6 +376,10 @@ public class Main {
         montantTotal += montantDeplacement;
 
         montantTotal = arrondirMontant(montantTotal);
+
+        if (montantTotal < 0) {
+            throw new JsonException ("Le montant total ne peut pas être négatif");
+        }
 
         return montantTotal;
     }
