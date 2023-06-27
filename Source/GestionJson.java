@@ -17,7 +17,6 @@ public class GestionJson {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(nombreinterventions);
         return nombreinterventions;
     }
 
@@ -28,34 +27,33 @@ public class GestionJson {
      * @param json La chaîne JSON à convertir.
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json) {
-        int compteurInterventions;
-
+    public static String[][] lireFichierEntreeJson(String json) {               // le 5 c'est pour le type, marticule et les taux
         String[][] attributsJson = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
-                                                                        // le 5 c'est pour le type, marticule et les taux
-        System.out.println(attributsJson.length);
-
         JSONObject employee = JSONObject.fromObject(json);
-
-        attributsJson[0][0] = employee.getString("matricule_employe");
-        attributsJson[1][0] = employee.getString("type_employe");
-        attributsJson[2][0] = employee.getString("taux_horaire_min");
-        attributsJson[3][0] = employee.getString("taux_horaire_max");
-
+        attributsJson = recuperationInfo(attributsJson, employee);
         JSONArray interventions = employee.getJSONArray("interventions");
+        attributsJson = recuperationInfo2(attributsJson, interventions);
+        attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
+        return attributsJson;
+    }
 
-        for (compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
+    private static String[][] recuperationInfo2(String[][] attributsJson, JSONArray interventions) {
+        for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
             JSONObject intervention = interventions.getJSONObject(compteurInterventions);
-
             attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
             attributsJson[4 + compteurInterventions][1] = intervention.getString("distance_deplacement");
             attributsJson[4 + compteurInterventions][2] = intervention.getString("overtime");
             attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
             attributsJson[4 + compteurInterventions][4] = intervention.optString("date_intervention");
         }
+        return attributsJson;
+    }
 
-        attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
-
+    private static String[][] recuperationInfo(String[][] attributsJson, JSONObject employee) {
+        attributsJson[0][0] = employee.getString("matricule_employe");
+        attributsJson[1][0] = employee.getString("type_employe");
+        attributsJson[2][0] = employee.getString("taux_horaire_min");
+        attributsJson[3][0] = employee.getString("taux_horaire_max");
         return attributsJson;
     }
 
