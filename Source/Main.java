@@ -61,9 +61,9 @@ public class Main {
         return nbr;
     }
 
-    public static int checkOvertime(int nbr) throws JsonException
+    public static double checkOvertime(double nbr) throws JsonException
     {
-        if (nbr < 0 || nbr > 4) {
+        if (nbr < 0.0 || nbr > 4.0) {
             throw new JsonException("Overtime invalide");
         }
 
