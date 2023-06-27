@@ -53,9 +53,9 @@ public class Main {
     }
 
 
-    public static int checkDistance(int nbr) throws JsonException
+    public static double checkDistance(double nbr) throws JsonException
     {
-        if (nbr < 0 || nbr > 100) {
+        if (nbr < 0.0 || nbr > 100.0) {
             throw new JsonException("Distance deplacement invalide");
         }
         return nbr;
@@ -285,15 +285,19 @@ public class Main {
      * @return
      */
     public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
-                                                    double montantRegulier){
-        double montantDeplacement = 0;
+                                                    double montantRegulier) throws JsonException {
+        double CalculemontantDeplacement = 0;
 
-        if (typeEmploye == 0){
-            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier)) ;
+        double montantDeplacement = 0.0;
+
+        if (typeEmploye == 0) {
+            CalculemontantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier));
         } else if (typeEmploye == 1) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
+            CalculemontantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         } else if (typeEmploye == 2) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+            CalculemontantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
+        } else {
+            montantDeplacement = checkDistance(CalculemontantDeplacement);
         }
 
         return montantDeplacement;
