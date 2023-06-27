@@ -113,7 +113,7 @@ public class Main {
 
     public static void validerNombreInterventions(int nombre) throws JsonException {
         if (nombre > 10) {
-            throw new JsonException("Nombre d'interventions invalide");
+            throw new JsonException("Le nombre d’interventions est supérieur à 10.");
         }
     }
 
