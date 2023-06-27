@@ -364,6 +364,7 @@ public class Main {
         }
     }
 
+
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
                                                double tauxHoraireMin, double tauxHoraireMax,
                                                double distanceDeplacement, double overtime, double montantregulier) {
