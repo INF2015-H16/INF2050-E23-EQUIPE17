@@ -286,10 +286,6 @@ public class Main {
      */
     public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
                                                     double montantRegulier){
-        if (montantRegulier < 0){
-            throw new IllegalArgumentException("La valeur n'est pas valide.");
-        }       //come  back here
-
         double montantDeplacement = 0;
 
         if (typeEmploye == 0){
@@ -298,8 +294,6 @@ public class Main {
             montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         } else if (typeEmploye == 2) {
             montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
-        } else {
-            throw new IllegalArgumentException("La valeur n'est pas valide.");
         }
 
         return montantDeplacement;
