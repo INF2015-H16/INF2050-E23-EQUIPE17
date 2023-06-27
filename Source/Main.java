@@ -1,7 +1,8 @@
 package Source;
-
 import java.io.*;
 import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class Main {
 
@@ -52,6 +53,14 @@ public class Main {
         return true;
     }
 
+    public static boolean validerFormatDate(String dateStr) {
+        try {
+            LocalDate.parse(dateStr);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
 
     public static double checkDistance(double nbr) throws JsonException
     {
