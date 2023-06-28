@@ -78,7 +78,7 @@ public class GestionJson {
 
     private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONObject employee, CalculEmploye calculEmploye, JSONArray clients, JSONObject client) {
         for(int i = 0; i< j; i++) {
-            if(CalculEmploye.verification(nbrs,i)) {
+            if(GestionProgramme.verification(nbrs,i)) {
                 client.accumulate("code_client", code[i]);
                 client.accumulate("etat_par_client", etat_par_client[i] + "$");
                 clients.add(client);
