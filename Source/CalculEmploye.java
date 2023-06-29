@@ -116,6 +116,9 @@ public class CalculEmploye {
             return Math.ceil(arrondi * 20) / 20; // Arrondi au multiple supérieur de 0.05
         }
     }
+    public static String formaterMontant(double montant) {
+        return String.format("%.2f$", montant);
+    }
 
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
                                                double tauxHoraireMin, double tauxHoraireMax,
