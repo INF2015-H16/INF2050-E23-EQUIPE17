@@ -39,7 +39,7 @@ public class JsonException extends Exception{
         return nbr;
     }
 
-    public static double checkerTaux(String[][] data, int i) throws JsonException
+    public static double checkTaux(String[][] data, int i) throws JsonException
     {
         double taux_horaire;
         try {
@@ -55,7 +55,7 @@ public class JsonException extends Exception{
         return taux_horaire;
     }
 
-    public static int checkerTypeEmploye(String[][] data) throws JsonException {
+    public static int checkTypeEmploye(String[][] data) throws JsonException {
         int type = Integer.parseInt(data[1][0]);
         if (type < 0 || type > 2)
             throw new JsonException("Type d'employé invalide");
