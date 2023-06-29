@@ -5,11 +5,12 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws Exception {
         String[][] donnees;
-        String argument = "test-.json",argument2 = "sortie.json",json = "",buffer = "";
+        String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
         try {
             json = lecteurFichier(argument, json,buffer);
             donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
-            GestionProgramme.executer(donnees, argument2);
+            GestionProgramme.executer(donnees, argument2, json);
+            JsonException.validationDate(donnees,json);
         } catch (JsonException e) {
             JsonException.erreurJson(e.getMessage(),argument2);
         }
@@ -27,10 +28,4 @@ public class Main {
         }
         return json;
     }
-
-    //TODO: FORMAT A respecter 0.00$
-
-    //TODO: rendre la methode executer plus courte en creant des sous methodes
-
-    //TODO: ajouter une methode qui check l'occurence
 }
