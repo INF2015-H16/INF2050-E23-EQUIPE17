@@ -54,8 +54,27 @@ public class Main {
         return fichier.exists() && fichier.isFile();
     }
 
+    public static void validerFichierSortieDispo(String cheminFichierSortie) {
+        File fichierSortie = new File(cheminFichierSortie);
 
-    public static boolean validerFichierEntreeNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
+        try {
+            if (!fichierSortie.exists()) {
+                boolean fichierCree = fichierSortie.createNewFile();
+
+                if (!fichierCree) {
+                    System.out.println("Impossible de créer le fichier de sortie.");
+                    System.out.println("Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+                    System.exit(0);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Une erreur s'est produite lors de la création du fichier de sortie.");
+            System.out.println("Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+            System.exit(0);
+        }
+    }
+
+    public static boolean validerInterventionsNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
         JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
 
         if (interventionsArray.size() == 0) {
