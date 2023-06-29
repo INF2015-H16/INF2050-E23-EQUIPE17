@@ -117,6 +117,15 @@ public class Main {
         jsonObject.accumulate("message", messageObjet);
     }
 
+    private static void ecrireFichierJsonSortie(String cheminFichierSortie, JSONObject jsonObjectSortie) {
+        try (FileWriter fileWriter = new FileWriter(cheminFichierSortie)) {
+            fileWriter.write(jsonObjectSortie.toString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean validerInterventionsNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
         JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
 
