@@ -75,7 +75,7 @@ public class Main {
     }
 
 
-    public static void validerProprietesJSONPresentes(JSONObject jsonObject) {
+    public static void validerProprietesJsonPresentes(JSONObject jsonObject) {
         boolean attributsManquants = false;
 
         if (!jsonObject.has("matricule_employe")) {
@@ -109,7 +109,14 @@ public class Main {
                     "\\sortie.json", jsonObject);
         }
     }
-    
+
+    private static void ajouterMessage(JSONObject jsonObject, String message) {
+        JSONObject messageObjet = new JSONObject();
+        messageObjet.accumulate("message", message);
+
+        jsonObject.accumulate("message", messageObjet);
+    }
+
     public static boolean validerInterventionsNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
         JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
 
