@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         CalculEmploye calculEmploye = new CalculEmploye();
 
         String[][] donnees;
@@ -21,7 +21,7 @@ public class Main {
 
         String buffer;
 
-        boolean fichierExiste = verifierFichierEntree(argument);
+        boolean fichierExiste = validerFichierEntreeDisponible(argument);
 
         if(!fichierExiste){
             System.out.println("Le fichier d'entree n'existe pas.");
@@ -42,7 +42,6 @@ public class Main {
 
         // Conversion du contenu JSON en tableau de données
         donnees = GestionJson.lireFichierEntreeJson(json);
-
         try {
             executer(donnees, argument2);
         } catch (JsonException e) {
@@ -50,9 +49,23 @@ public class Main {
         }
     }
 
-    public static boolean verifierFichierEntree(String nomFichierEntree) {
+    public static boolean validerFichierEntreeDisponible(String nomFichierEntree) {
         File fichier = new File(nomFichierEntree);
         return fichier.exists() && fichier.isFile();
+    }
+
+
+    public static boolean validerFichierEntreeNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
+        JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
+
+        if (interventionsArray.size() == 0) {
+            JSONObject messageObj = new JSONObject();
+            messageObj.accumulate("message", "Aucune intervention trouvée dans le fichier JSON");
+            jsonObjectSortie.put("message", messageObj);
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean validerComboCodeClientDateIntervention(JSONObject jsonObject, String cheminJson)
@@ -71,7 +84,7 @@ public class Main {
             if (codeClients.contains(codeClient) && dates.contains(dateIntervention)) {
                 JSONObject messageObj = new JSONObject();
                 messageObj.accumulate("message", "Intervention non valide : même code client et même date");
-                FileWriter.saveStringIntoFile(cheminJson, messageObj.toString());
+                FilesWriter.saveStringIntoFile(cheminJson, messageObj.toString());
                 return false;
             }
 
