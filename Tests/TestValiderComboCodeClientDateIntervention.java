@@ -2,7 +2,7 @@ package Tests;
 
 import Source.FilesReader;
 import Source.GestionJson;
-import Source.Validations;
+import Source.Main;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Assert;
@@ -56,7 +56,7 @@ public class TestValiderComboCodeClientDateIntervention {
             System.out.println("\t" + codeClient + "," + distDeplacement + "," + overtime + "," + nbrHeures + "," +
                     dateIntervention);
 
-            boolean interventionsValides = Validations.validerComboCodeClientDateIntervention(contenuJson,
+            boolean interventionsValides = Main.validerComboCodeClientDateIntervention(contenuJson,
                     "C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17\\sortie.json");
             if (interventionsValides) {
                 GestionJson.ecrireFichierSortieJson(matricule_employe, etat_compte, cout_fixe, cout_variable, code,
@@ -110,7 +110,7 @@ public class TestValiderComboCodeClientDateIntervention {
             System.out.println("\t" + codeClient + "," + distDeplacement + "," + overtime + "," + nbrHeures + "," +
                     dateIntervention);
 
-            boolean interventionsValides = Validations.validerComboCodeClientDateIntervention(contenuJson,
+            boolean interventionsValides = Main.validerComboCodeClientDateIntervention(contenuJson,
                     "C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17\\sortie2.json");
             if (interventionsValides) {
                 GestionJson.ecrireFichierSortieJson(matricule_employe, etat_compte, cout_fixe, cout_variable, code,

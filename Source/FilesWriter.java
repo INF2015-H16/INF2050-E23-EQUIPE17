@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class FileWriter {
+public class FilesWriter {
     public static void saveStringIntoFile(String filePath, String contentToSave)
             throws FileNotFoundException, IOException {
         File f = new File(filePath);
