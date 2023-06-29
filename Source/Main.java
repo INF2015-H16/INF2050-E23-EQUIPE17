@@ -6,9 +6,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String[][] donnees;
         String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
-        json = lecteurFichier(argument, json,buffer);
-        donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
         try {
+            json = lecteurFichier(argument, json,buffer);
+            donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
             GestionProgramme.executer(donnees, argument2);
         } catch (JsonException e) {
             JsonException.erreurJson(e.getMessage(),argument2);
