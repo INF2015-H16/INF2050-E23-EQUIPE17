@@ -74,6 +74,42 @@ public class Main {
         }
     }
 
+
+    public static void validerProprietesJSONPresentes(JSONObject jsonObject) {
+        boolean attributsManquants = false;
+
+        if (!jsonObject.has("matricule_employe")) {
+            ajouterMessage(jsonObject, "Attribut 'matricule_employe' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("type_employe")) {
+            ajouterMessage(jsonObject, "Attribut 'type_employe' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("taux_horaire_min")) {
+            ajouterMessage(jsonObject, "Attribut 'taux_horaire_min' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("taux_horaire_max")) {
+            ajouterMessage(jsonObject, "Attribut 'taux_horaire_max' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("interventions")) {
+            ajouterMessage(jsonObject, "Attribut 'interventions' manquant");
+            attributsManquants = true;
+        }
+
+        if (attributsManquants) {
+            // Méthode pour écrire l'objet JSONObject dans un fichier JSON de sortie
+            ecrireFichierJsonSortie("C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17" +
+                    "\\sortie.json", jsonObject);
+        }
+    }
+    
     public static boolean validerInterventionsNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
         JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
 
