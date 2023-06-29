@@ -25,7 +25,8 @@ public class GestionJson {
      * @param json La chaîne JSON à convertir.
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json) throws JsonException{               // le 5 c'est pour le type, marticule et les taux
+    public static String[][] lireFichierEntreeJson(String json) throws JsonException{
+        // le 5 c'est pour le type, marticule et les taux
         String[][] attributsJson = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
         JSONObject employee = JSONObject.fromObject(json);
         attributsJson = recuperationInfo(attributsJson, employee);
