@@ -3,7 +3,7 @@ import java.io.*;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String[][] donnees;
         String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
         json = lecteurFichier(argument, json,buffer);
@@ -11,9 +11,7 @@ public class Main {
         try {
             GestionProgramme.executer(donnees, argument2);
         } catch (JsonException e) {
-            System.out.println("Il y'a un probleme dans le fichier JSON");
-            e.printStackTrace();
-            System.exit(1);
+            JsonException.erreurJson(e.getMessage(),argument2);
         }
     }
 

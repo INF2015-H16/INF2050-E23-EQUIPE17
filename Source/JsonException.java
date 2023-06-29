@@ -1,5 +1,8 @@
 package Source;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -104,5 +107,15 @@ public class JsonException extends Exception{
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    public static void erreurJson(String erreur,String arg) throws Exception{
+        File file = new File(arg);
+        FileWriter fileWriter = new FileWriter(file);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+        bufferedWriter.write("{\"message\": "+"\"" + erreur +"\""+ "}");
+
+        bufferedWriter.close();
     }
 }
