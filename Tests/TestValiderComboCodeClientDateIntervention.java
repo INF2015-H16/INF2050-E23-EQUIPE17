@@ -56,7 +56,6 @@ public class TestValiderComboCodeClientDateIntervention {
             System.out.println("\t" + codeClient + "," + distDeplacement + "," + overtime + "," + nbrHeures + "," +
                     dateIntervention);
 
-            // Appeler la méthode à tester
             boolean interventionsValides = Validations.validerComboCodeClientDateIntervention(contenuJson,
                     "C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17\\sortie.json");
             if (interventionsValides) {
@@ -65,7 +64,6 @@ public class TestValiderComboCodeClientDateIntervention {
             }
         }
 
-        // Vérifier que les interventions sont valides
         Assert.assertTrue(interventionsValides);
     }
 
@@ -112,7 +110,6 @@ public class TestValiderComboCodeClientDateIntervention {
             System.out.println("\t" + codeClient + "," + distDeplacement + "," + overtime + "," + nbrHeures + "," +
                     dateIntervention);
 
-            // Appeler la méthode à tester
             boolean interventionsValides = Validations.validerComboCodeClientDateIntervention(contenuJson,
                     "C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17\\sortie2.json");
             if (interventionsValides) {
@@ -120,7 +117,6 @@ public class TestValiderComboCodeClientDateIntervention {
                         etat_par_client, j, arg, nbrs);
             }
 
-            // Vérifier que les interventions sont non valides
             Assert.assertFalse(interventionsValides);
         }
     }
