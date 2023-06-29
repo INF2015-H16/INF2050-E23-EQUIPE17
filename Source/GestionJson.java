@@ -1,22 +1,20 @@
 package Source;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 
 public class GestionJson {
-    public static int calculInterventions(String json) {
-        int nombreinterventions = 0;
-        try {
-            JSONObject jsonObject = JSONObject.fromObject(json);
-            JSONArray interventions = jsonObject.getJSONArray("interventions");
-            nombreinterventions = interventions.size();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static int calculInterventions(String json) throws JsonException{
+        int nombreinterventions;
+
+        JSONObject jsonObject = JSONObject.fromObject(json);
+        JSONArray interventions = jsonObject.getJSONArray("interventions");
+        nombreinterventions = interventions.size();
+        if(nombreinterventions > 10)
+            throw new JsonException("Le nombre d’interventions est supérieur à 10.");
         return nombreinterventions;
     }
 
@@ -27,17 +25,17 @@ public class GestionJson {
      * @param json La chaîne JSON à convertir.
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json) {               // le 5 c'est pour le type, marticule et les taux
+    public static String[][] lireFichierEntreeJson(String json) throws JsonException{               // le 5 c'est pour le type, marticule et les taux
         String[][] attributsJson = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
         JSONObject employee = JSONObject.fromObject(json);
         attributsJson = recuperationInfo(attributsJson, employee);
         JSONArray interventions = employee.getJSONArray("interventions");
-        attributsJson = recuperationInfo2(attributsJson, interventions);
+        attributsJson = recuperationInfo(attributsJson, interventions);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
         return attributsJson;
     }
 
-    private static String[][] recuperationInfo2(String[][] attributsJson, JSONArray interventions) {
+    private static String[][] recuperationInfo(String[][] attributsJson, JSONArray interventions) {
         for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
             JSONObject intervention = interventions.getJSONObject(compteurInterventions);
             attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
