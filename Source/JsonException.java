@@ -64,12 +64,6 @@ public class JsonException extends Exception{
             return type;
     }
 
-    public static void validerNombreInterventions(int nombre) throws JsonException {
-        if (nombre > 10) {
-            throw new JsonException("Le nombre d’interventions est supérieur à 10.");
-        }
-    }
-
     /**
      * Vérifie s'il existe une occurrence précédente du code client dans le tableau à deux dimensions.
      * Si une occurrence est trouvée, elle met à jour le tableau `nbr` avec l'index de l'occurrence précédente.
@@ -113,9 +107,16 @@ public class JsonException extends Exception{
         File file = new File(arg);
         FileWriter fileWriter = new FileWriter(file);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
         bufferedWriter.write("{\"message\": "+"\"" + erreur +"\""+ "}");
-
         bufferedWriter.close();
+    }
+
+    public static void validationDate(String [][] donnees,String json) throws JsonException{
+        for(int i=4; i< GestionJson.calculInterventions(json) + 4; i++) { //+4 pour que je puisse itterer vers tous les itterations
+            if(!(validerFormatDate(donnees[i][4]))) {
+                i = i-3; // pour que j'ai le nombre correct de l'intervention
+                throw new JsonException("Format de date invalide dans l'intervention " + i+ ".");
+            }
+        }
     }
 }
