@@ -1,4 +1,5 @@
 package Source;
+<<<<<<< HEAD
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,8 +29,26 @@ public class Main {
             System.exit(0);
         }
 
+=======
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        String[][] donnees;
+        String argument = "test-.json",argument2 = "sortie.json",json = "",buffer = "";
+        try {
+            json = lecteurFichier(argument, json,buffer);
+            donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
+            GestionProgramme.executer(donnees, argument2);
+        } catch (JsonException e) {
+            JsonException.erreurJson(e.getMessage(),argument2);
+        }
+    }
+
+    private static String lecteurFichier(String argument, String json, String buffer) throws JsonException {
+>>>>>>> 393e922146a6793f5382238bcb3a5299c9b1fd6a
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
-            // Lecture du contenu du fichier JSON ligne par ligne
             while ((buffer = reader.readLine()) != null) {
         //
                 if (buffer != null)
@@ -37,6 +56,7 @@ public class Main {
                 json += "\n";
             }
         } catch (IOException e) {
+<<<<<<< HEAD
             e.printStackTrace();
         }
 
@@ -46,9 +66,14 @@ public class Main {
             executer(donnees, argument2);
         } catch (JsonException e) {
             throw new RuntimeException(e);
+=======
+            throw new JsonException("Fichier Introuvable.");
+>>>>>>> 393e922146a6793f5382238bcb3a5299c9b1fd6a
         }
+        return json;
     }
 
+<<<<<<< HEAD
     public static boolean validerFichierEntreeDisponible(String nomFichierEntree) {
         File fichier = new File(nomFichierEntree);
         return fichier.exists() && fichier.isFile();
@@ -239,309 +264,11 @@ public class Main {
             throw new JsonException("Nombre d'interventions invalide");
         }
     }
+=======
+    //TODO: FORMAT A respecter 0.00$
+>>>>>>> 393e922146a6793f5382238bcb3a5299c9b1fd6a
 
     //TODO: rendre la methode executer plus courte en creant des sous methodes
 
-    public static void executer(String[][] data, String argument2) throws JsonException {
-        int[] nbrs = new int[30];
-        Arrays.fill(nbrs, -1);
-        int status, matricule_employe, type_employe, itterations = Integer.parseInt(data[data.length - 1][0]);
-        int[] distance_deplacement = new int[Integer.parseInt(data[data.length - 1][0])];
-        int[] overtime = new int[Integer.parseInt(data[data.length - 1][0])];
-        int[] nombre_heures = new int[Integer.parseInt(data[data.length - 1][0])];
-        String[] code = new String[Integer.parseInt(data[data.length - 1][0])];
-
-
-
-        // Traitement des données
-        for(int i=0,j=4; j< data.length-1;j++, i++)
-        {
-            status = checker(data,j,nbrs);
-            if(status != -1 && status != -2)
-            {
-                code[i] = data[j][0];
-                try
-                {
-                    checkDistance(Integer.parseInt(data[j][1]));
-                    checkOvertime(Integer.parseInt(data[j][2]));
-                    checkNombreHeures(Integer.parseInt(data[j][3]));
-                }
-                catch (JsonException e)
-                {
-                    System.out.println(e.getMessage());
-                    System.exit(1);
-                }
-
-                distance_deplacement[i] = Integer.parseInt(data[j][1]) +Integer.parseInt( data[status][1]);
-                overtime[i] = Integer.parseInt(data[j][2])  + Integer.parseInt(data[status][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3]) + Integer.parseInt(data[status][3]);// i am not sure of this
-            }
-            else if(status == -1)
-            {
-                code[i] = data[j][0];
-                try
-                {
-                    checkDistance(Integer.parseInt(data[j][1]));
-                    checkOvertime(Integer.parseInt(data[j][2]));
-                    checkNombreHeures(Integer.parseInt(data[j][3]));
-                }
-                catch (JsonException e)
-                {
-                    System.out.println(e.getMessage());
-                    System.exit(1);
-                }
-                distance_deplacement[i] = Integer.parseInt(data[j][1]);
-                overtime[i] = Integer.parseInt(data[j][2]);
-                nombre_heures[i] = Integer.parseInt(data[j][3]);
-            }
-        }
-
-        double taux_horaire_min = 0, taux_horaire_max = 0, montantDeplacement = 0, coutVariable, montantRegulier = 0,
-                montantHeureSupplementaire = 0;
-        double[] EtatParClient = new double[code.length];
-
-        // Récupération des données d'entrée
-        matricule_employe = Integer.parseInt(data[0][0]);
-        type_employe = Integer.parseInt(data[1][0]);
-
-        try {
-            checkerTaux(data, 2);
-        }
-        catch (JsonException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            checkerTaux(data, 3);
-        }
-        catch (JsonException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-
-
-        for(int i=0 ; i<itterations; i++)
-        {
-            if(verification(nbrs,i))
-                EtatParClient[i] = calculerEtatParClient(type_employe,nombre_heures[i],taux_horaire_min,taux_horaire_max,distance_deplacement[i],overtime[i],montantRegulier);
-        }
-
-        for (int i = 0; i < itterations; i++) {
-            EtatParClient[i] = calculerEtatParClient(type_employe, nombre_heures[i],
-                    taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
-        }
-
-        double etatCompteTotal = calculerEtatCompteTotal(EtatParClient);
-        coutVariable = calculerCoutVariable(etatCompteTotal);
-        double coutFixe = calculerCoutFixe(etatCompteTotal);
-
-        GestionJson.ecrireFichierSortieJson(matricule_employe, arrondirMontant(etatCompteTotal), arrondirMontant(coutFixe),
-                arrondirMontant(coutVariable),code,EtatParClient,itterations, argument2, nbrs);
-    }
-
-
-    /**
-     * Vérifie s'il existe une occurrence précédente du code client dans le tableau à deux dimensions.
-     * Si une occurrence est trouvée, elle met à jour le tableau `nbr` avec l'index de l'occurrence précédente.
-     *
-     * @param array Le tableau à deux dimensions contenant les données.
-     * @param z     L'index actuel dans le tableau.
-     * @param nbr   Le tableau de numéros de référence pour les occurrences précédentes.
-     * @return L'index de l'occurrence précédente si elle existe, -1 si aucune occurrence précédente n'est trouvée,
-     * -2 si une occurrence est trouvée mais son index est inférieur à l'index actuel.
-     */
-    public static int checker(String[][] array, int z, int[] nbr) {
-        for (int i = 0; i < array.length - 1; i++) {
-            if (i == z)
-                i++;
-
-            // Vérifie si le code client à l'index z est égal au code client à l'index i
-            if (array[z][0].equals(array[i][0])) {
-                if (i < z)
-                    return -2; // Une occurrence précédente a été trouvée, mais son index est inférieur à l'index actuel
-                else {
-                    nbr[z] = i - 4; // Met à jour le tableau de numéros de référence avec l'index de l'occurrence précédente
-                    return i; // Retourne l'index de l'occurrence précédente
-                }
-            }
-        }
-        return -1; // Aucune occurrence précédente n'a été trouvée
-
-        //TODO: enlever le return -1 et la remplacer par un try catch statement
-    }
-
-
-
     //TODO: ajouter une methode qui check l'occurence
-
-
-
-    /**
-     * Cette méthode calculera le montant régulier en fonction du type d'employé,
-     * du nombre d'heures travaillées et des taux horaires min et max.
-     *
-     * @params typeEmploye,
-     * @params nombreHeures
-     * @params tauxHoraireMin
-     * @params tauxHoraireMax
-     */
-    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
-                                                 double tauxHoraireMin, double tauxHoraireMax) {
-
-
-        double tauxHoraire = 0;
-
-
-        if (typeEmploye == 0){
-            tauxHoraire = tauxHoraireMin;
-        } else if (typeEmploye == 1) {
-            tauxHoraire = (tauxHoraireMin + tauxHoraireMax)/2;
-        } else if (typeEmploye == 2) {
-            tauxHoraire = tauxHoraireMax;
-        }
-
-        double montantRegulier = tauxHoraire * nombreHeures;
-
-        return montantRegulier;
-    }
-
-    /**
-     * Cette méthode calculera le montant pour les heures supplémentaires en fonction du
-     * type d'employé et du nombre d'heures supplémentaires.
-     * @param typeEmploye
-     * @param distanceDeplacement
-     * @param montantRegulier
-     * @return
-     */
-    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
-                                                    double montantRegulier){
-        if (montantRegulier < 0){
-            throw new IllegalArgumentException("La valeur n'est pas valide.");
-        }       //come  back here
-
-        double montantDeplacement = 0;
-
-        if (typeEmploye == 0){
-            montantDeplacement = 200 - (distanceDeplacement * (0.05 * montantRegulier)) ;
-        } else if (typeEmploye == 1) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
-        } else if (typeEmploye == 2) {
-            montantDeplacement = 200 - (distanceDeplacement * (0.15 * montantRegulier));
-        } else {
-            throw new IllegalArgumentException("La valeur n'est pas valide.");
-        }
-
-        return montantDeplacement;
-    }
-
-    /**
-     * Cette méthode calculera le montant pour les heures supplémentaires en fonction
-     * du type d'employé et du nombre d'heures supplémentaires.
-     * @param typeEmploye
-     * @param overtime
-     * @return
-     */
-    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {
-        double montantHeuresSupplementaires = 0.0;
-
-        if (typeEmploye == 0) {
-            montantHeuresSupplementaires = 0.0;
-        } else if (typeEmploye == 1) {
-            if (nombre_heures > 4 && nombre_heures <= 8) {
-                montantHeuresSupplementaires = 50.0 * overtime;
-            } else if (nombre_heures > 8) {
-                montantHeuresSupplementaires = 100.0 * overtime;
-            }
-        } else if (typeEmploye == 2) {
-            if (overtime <= 4)
-            {
-                montantHeuresSupplementaires = 75.0 * overtime;
-            }
-
-            else if (overtime > 4)
-            {
-                montantHeuresSupplementaires = 150.0 * overtime;
-            }
-        } else {
-            throw new IllegalArgumentException("Type d'employer n'est pas valide.");
-        }
-
-        montantHeuresSupplementaires = Math.min(montantHeuresSupplementaires, 1500.0);
-
-        return montantHeuresSupplementaires;
-    }
-
-    /**
-     * Calcule le coût variable en fonction de l'état total du compte.
-     *
-     * @param etatCompteTotal   L'état total du compte pour lequel le coût variable doit être calculé.
-     * @return                  Le coût variable calculé.
-     */
-    public static double calculerCoutVariable(double etatCompteTotal) {
-        double coutVar = (2.5/100 * etatCompteTotal);
-        coutVar = arrondirMontant(coutVar);
-        return coutVar;
-    }
-
-    public static double arrondirMontant(double montant) {
-        // On multiplie par 20 pour déplacer la décimale au deuxième chiffre après la virgule
-        return Math.ceil(montant * 20) / 20;
-    }
-
-    public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
-                                               double tauxHoraireMin, double tauxHoraireMax,
-                                               double distanceDeplacement, double overtime, double montantregulier) {
-        double montantTotal = 0.0;
-
-        double montantHeuresTravaillees = calculerMontantRegulier(typeEmploye, nombreHeures,
-                tauxHoraireMin, tauxHoraireMax);
-
-        montantTotal += montantHeuresTravaillees;
-
-        double montantHeuresSupplementaires = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
-        montantTotal += montantHeuresSupplementaires;
-
-        double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
-        montantTotal += montantDeplacement;
-
-        montantTotal = arrondirMontant(montantTotal);
-
-        return montantTotal;
-    }
-    public static double calculerEtatCompteTotal(double[] etatsParClient) {
-        double etatCompteTotal = 0.0;
-
-        for (double etatParClient : etatsParClient) {
-            etatCompteTotal += etatParClient;
-        }
-
-        return etatCompteTotal;
-    }
-
-    /**
-     * Calcule le coût fixe en fonction de l'état du compte total.
-     *
-     * @param etatCompteTotal l'état du compte total
-     * @return le coût fixe calculé
-     */
-    public static double calculerCoutFixe(double etatCompteTotal) {
-        double coutFixe;
-
-        if (etatCompteTotal >= 1000.0) {
-            coutFixe = etatCompteTotal * 0.012;
-        }
-        else if (etatCompteTotal >= 500.0) {
-            coutFixe = etatCompteTotal * 0.008;
-        }
-        else {
-            coutFixe = etatCompteTotal * 0.004;
-        }
-
-        coutFixe = arrondirMontant(coutFixe);
-
-        return coutFixe;
-    }
 }
