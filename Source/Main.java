@@ -1,7 +1,12 @@
 package Source;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
@@ -9,7 +14,7 @@ public class Main {
         CalculEmploye calculEmploye = new CalculEmploye();
 
         String[][] donnees;
-        //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet.
+        //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet
         String argument = "test.json";
         String argument2 = "sortie.json";
         String json = "";
@@ -26,6 +31,7 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
             // Lecture du contenu du fichier JSON ligne par ligne
             while ((buffer = reader.readLine()) != null) {
+        //
                 if (buffer != null)
                     json += buffer;
                 json += "\n";
@@ -48,6 +54,36 @@ public class Main {
         File fichier = new File(nomFichierEntree);
         return fichier.exists() && fichier.isFile();
     }
+
+    public static boolean validerComboCodeClientDateIntervention(JSONObject jsonObject, String cheminJson)
+            throws IOException {
+
+        JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
+
+        Set<String> codeClients = new HashSet<>();
+        Set<String> dates = new HashSet<>();
+
+        for (int i = 0; i < interventionsArray.size(); i++) {
+            JSONObject intervention = interventionsArray.getJSONObject(i);
+            String codeClient = intervention.getString("code_client");
+            String dateIntervention = intervention.getString("date_intervention");
+
+            if (codeClients.contains(codeClient) && dates.contains(dateIntervention)) {
+                JSONObject messageObj = new JSONObject();
+                messageObj.accumulate("message", "Intervention non valide : même code client et même date");
+                FileWriter.saveStringIntoFile(cheminJson, messageObj.toString());
+                return false;
+            }
+
+            codeClients.add(codeClient);
+            dates.add(dateIntervention);
+        }
+
+
+        return true;
+    }
+
+
 
     /**
      * Vérifie si un entier `j` est présent dans le tableau `nbrs`.

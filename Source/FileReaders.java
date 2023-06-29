@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class FileReader {
+public class FileReaders {
     public static String loadFileIntoString(String filePath, String fileEncoding) throws
             FileNotFoundException, IOException {
         return IOUtils.toString(new FileInputStream(filePath), fileEncoding);

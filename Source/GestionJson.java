@@ -172,7 +172,7 @@ public class GestionJson{
     }
 
     public static void modifierProprietesJSONEnMinuscule(JSONObject objetJSON) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(objetJSON)));
+        BufferedReader reader = new BufferedReader(new FileReaders(String.valueOf(objetJSON)));
         String valeurJson = reader.readLine();
         while (valeurJson != null) {
             valeurJson.toLowerCase();

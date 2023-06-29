@@ -10,7 +10,7 @@ public class TestVerifierFichierEntree {
     public void testVerifierFichierEntree(){
 
         boolean fichierExiste;
-        //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet.
+        //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet
         String argument = "test.json";
         fichierExiste = Main.verifierFichierEntree(argument);
         //S'assurer d'avoir le fichier d'entree ¨entree.json¨ dans le repertoire du projet pour verifier si le fichier
