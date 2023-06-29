@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 
 public class CalculEmploye {
 
+//TODO verifier que les methodes suivent les conventions et normes
 
     /**
      * Cette méthode calculera le montant régulier en fonction du type d'employé,
@@ -18,10 +19,7 @@ public class CalculEmploye {
      */
     public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
                                                  double tauxHoraireMin, double tauxHoraireMax) {
-
-
         double tauxHoraire = 0;
-
 
         if (typeEmploye == 0){
             tauxHoraire = tauxHoraireMin;
@@ -30,7 +28,6 @@ public class CalculEmploye {
         } else if (typeEmploye == 2) {
             tauxHoraire = tauxHoraireMax;
         }
-
         double montantRegulier = tauxHoraire * nombreHeures;
 
         return montantRegulier;
@@ -68,29 +65,42 @@ public class CalculEmploye {
      * @param overtime
      * @return
      */
-    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime,double nombre_heures) {
+    public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime, double nombre_heures) {
         double montantHeuresSupplementaires = 0.0;
 
         if (typeEmploye == 0) {
             montantHeuresSupplementaires = 0.0;
         } else if (typeEmploye == 1) {
-            if (nombre_heures > 4 && nombre_heures <= 8) {
-                montantHeuresSupplementaires = 50.0 * overtime;
-            } else if (nombre_heures > 8) {
-                montantHeuresSupplementaires = 100.0 * overtime;
-            }
+            montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType1(overtime);
         } else if (typeEmploye == 2) {
-            if (overtime <= 4)
-            {
-                montantHeuresSupplementaires = 75.0 * overtime;
-            }
-
-            else if (overtime > 4)
-            {
-                montantHeuresSupplementaires = 150.0 * overtime;
-            }
+            montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType2(overtime);
         }
+
         montantHeuresSupplementaires = Math.min(montantHeuresSupplementaires, 1500.0);
+
+        return montantHeuresSupplementaires;
+    }
+
+    private static double calculerMontantHeuresSupplementairesType1(double overtime) {
+        double montantHeuresSupplementaires = 0.0;
+
+        if (overtime > 4 && overtime <= 8) {
+            montantHeuresSupplementaires = 50.0 * overtime;
+        } else if (overtime > 8) {
+            montantHeuresSupplementaires = 100.0 * overtime;
+        }
+
+        return montantHeuresSupplementaires;
+    }
+
+    private static double calculerMontantHeuresSupplementairesType2(double overtime) {
+        double montantHeuresSupplementaires = 0.0;
+
+        if (overtime <= 4) {
+            montantHeuresSupplementaires = 75.0 * overtime;
+        } else if (overtime > 4) {
+            montantHeuresSupplementaires = 150.0 * overtime;
+        }
 
         return montantHeuresSupplementaires;
     }
@@ -159,20 +169,15 @@ public class CalculEmploye {
      * @return le coût fixe calculé
      */
     public static double calculerCoutFixe(double etatCompteTotal) {
-        double coutFixe;
+        double coutFixe = 0.0;
 
-        if (etatCompteTotal >= 1000.0) {
+        if (etatCompteTotal >= 1000.0)
             coutFixe = etatCompteTotal * 0.012;
-        }
-        else if (etatCompteTotal >= 500.0) {
+        else if (etatCompteTotal >= 500.0)
             coutFixe = etatCompteTotal * 0.008;
-        }
-        else {
+        else
             coutFixe = etatCompteTotal * 0.004;
-        }
 
-        coutFixe = arrondirMontant(coutFixe);
-
-        return coutFixe;
+        return arrondirMontant(coutFixe);
     }
 }

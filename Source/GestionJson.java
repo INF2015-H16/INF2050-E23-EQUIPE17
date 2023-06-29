@@ -8,18 +8,16 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 
 public class GestionJson {
+
     public static int calculInterventions(String json) {
         int nombreinterventions = 0;
         try {
-            JSONObject jsonObject = JSONObject.fromObject(json);
-            JSONArray interventions = jsonObject.getJSONArray("interventions");
-            nombreinterventions = interventions.size();
+            nombreinterventions = JSONObject.fromObject(json).getJSONArray("interventions").size();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return nombreinterventions;
     }
-
 
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
