@@ -5,7 +5,7 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws Exception {
         String[][] donnees;
-        String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
+        String argument = "test-.json",argument2 = "sortie.json",json = "",buffer = "";
         try {
             json = lecteurFichier(argument, json,buffer);
             donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
@@ -15,7 +15,7 @@ public class Main {
         }
     }
 
-    private static String lecteurFichier(String argument, String json, String buffer) {
+    private static String lecteurFichier(String argument, String json, String buffer) throws JsonException {
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
             while ((buffer = reader.readLine()) != null) {
                 if (buffer != null)
@@ -23,7 +23,7 @@ public class Main {
                 json += "\n";
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new JsonException("Fichier Introuvable.");
         }
         return json;
     }
