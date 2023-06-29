@@ -3,16 +3,16 @@ package Tests;
 import Source.Main;
 import org.junit.Test;
 
-public class TestVerifierFichierEntree {
+public class TestValiderFichierEntreeDisponible {
 
     @Test
 
-    public void testVerifierFichierEntree(){
+    public void testValiderFichierEntreeDisponible(){
 
         boolean fichierExiste;
         //TODO renommer "test.json" en "entree.json" partout ou il figure avant la remise du projet
         String argument = "test.json";
-        fichierExiste = Main.verifierFichierEntree(argument);
+        fichierExiste = Main.validerFichierEntreeDisponible(argument);
         //S'assurer d'avoir le fichier d'entree ¨entree.json¨ dans le repertoire du projet pour verifier si le fichier
         //existe.
         if(fichierExiste){
