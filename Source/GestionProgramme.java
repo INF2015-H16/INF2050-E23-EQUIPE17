@@ -3,14 +3,15 @@ package Source;
 import java.util.Arrays;
 
 public class GestionProgramme {
+
     /**
-     * Vérifie si un entier `j` est présent dans le tableau `nbrs`.
+     * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
      * @param nbrs Le tableau d'entiers à vérifier.
      * @param codeClient    L'entier à rechercher.
-     * @return `true` si l'entier `j` n'est pas présent dans le tableau `nbrs`, `false` sinon.
+     * @return `true` si le codeClient n'est pas présent dans le tableau `nbrs`, `false` sinon.
      */
-    public static boolean verification(int[] nbrs, int codeClient) { //l'argument "j" refere au code client dans le fichier JSON
+    public static boolean verification(int[] nbrs, int codeClient) {
         for (int nbr : nbrs) {
             if (nbr == codeClient)
                 return false;
