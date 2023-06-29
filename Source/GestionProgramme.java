@@ -76,9 +76,8 @@ public class GestionProgramme {
     }
 
     private static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code, double[] EtatParClient, int matricule_employe) {
-        double coutVariable;
         double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(EtatParClient);
-        coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
+        double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
                 CalculEmploye.arrondirMontant(coutVariable), code, EtatParClient, itterations, argument2, nbrs);

@@ -27,8 +27,8 @@ public class CalculEmploye {
      * @param etatsParClient   L'état par clients pour lequel le coût variable doit être calculé.
      * @return                  Le coût variable calculé.
      */
-    public static double calculerCoutVariable(double[] etatsParClient) {
-        double coutVar = (2.5/100 * calculerEtatCompteTotal(etatsParClient));
+    public static double calculerCoutVariable(double etatCompteTotal) {
+        double coutVar = (2.5/100 * etatCompteTotal);
 
         return arrondirMontant(coutVar);
     }
@@ -39,15 +39,15 @@ public class CalculEmploye {
      * @param etatCompteTotal l'état du compte total
      * @return le coût fixe calculé
      */
-    public static double calculerCoutFixe(double[] etatsParClient) {
+    public static double calculerCoutFixe(double etatCompteTotal) {
         double coutFixe = 0.0;
 
-        if (calculerEtatCompteTotal(etatsParClient) >= 1000.0) {
+        if (etatCompteTotal >= 1000.0) {
             coutFixe = etatCompteTotal * 0.012;
-        } else if (calculerEtatCompteTotal(etatsParClient) >= 500.0) {
-            coutFixe = calculerEtatCompteTotal(etatsParClient) * 0.008;
+        } else if (etatCompteTotal >= 500.0) {
+            coutFixe = etatCompteTotal * 0.008;
         } else
-            coutFixe = calculerEtatCompteTotal(etatsParClient) * 0.004;
+            coutFixe = etatCompteTotal * 0.004;
 
         return arrondirMontant(coutFixe);
     }
