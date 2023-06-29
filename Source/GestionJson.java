@@ -68,23 +68,25 @@ public class GestionJson {
 
     private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee) {
         employee.accumulate("matricule_employe", matricule_employe);
-        employee.accumulate("etat_compte", etat_compte + "$");
-        employee.accumulate("cout_fixe", cout_fixe + "$");
-        employee.accumulate("cout_variable", cout_variable + "$");
+        employee.accumulate("etat_compte", String.format("%.2f$", etat_compte));
+        employee.accumulate("cout_fixe", String.format("%.2f$", cout_fixe));
+        employee.accumulate("cout_variable", String.format("%.2f$", cout_variable));
         return employee;
     }
 
+
     private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONObject employee, CalculEmploye calculEmploye, JSONArray clients, JSONObject client) {
-        for(int i = 0; i< j; i++) {
-            if(GestionProgramme.verification(nbrs,i)) {
+        for(int i = 0; i < j; i++) {
+            if(GestionProgramme.verification(nbrs, i)) {
                 client.accumulate("code_client", code[i]);
-                client.accumulate("etat_par_client", etat_par_client[i] + "$");
+                client.accumulate("etat_par_client", String.format("%.2f$", etat_par_client[i]));
                 clients.add(client);
                 client.clear();
             }
         }
         return clients;
     }
+
 
     private static void ecritureFichierSortieJson(String arg,JSONObject employee) {
         try {
