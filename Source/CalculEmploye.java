@@ -68,7 +68,8 @@ public class CalculEmploye {
                                                double tauxHoraireMin, double tauxHoraireMax,
                                                double distanceDeplacement, double overtime, double montantregulier) throws JsonException {
 
-        double montantTotal += calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
+        double montantTotal = 0.0;
+        montantTotal += calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
         montantTotal += calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
         montantTotal += calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
 
