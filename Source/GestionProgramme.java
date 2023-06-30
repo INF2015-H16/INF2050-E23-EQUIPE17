@@ -58,9 +58,9 @@ public class GestionProgramme {
     private static void recuperationInfoEmploye(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient) throws JsonException {
         int type_employe, matricule_employe;
         matricule_employe = Integer.parseInt(donnees[0][0]);        // Récupération des données d'entrée
-        type_employe = JsonException.checkerTypeEmploye(donnees);
-        JsonException.checkerTaux(donnees, 2);
-        JsonException.checkerTaux(donnees, 3);
+        type_employe = JsonException.checkTypeEmploye(donnees);
+        JsonException.checkTaux(donnees, 2);
+        JsonException.checkTaux(donnees, 3);
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe);
     }
 
