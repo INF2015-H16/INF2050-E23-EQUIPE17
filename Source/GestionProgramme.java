@@ -11,7 +11,7 @@ public class GestionProgramme {
      * @param codeClient    L'entier à rechercher.
      * @return `true` si le codeClient n'est pas présent dans le tableau `nbrs`, `false` sinon.
      */
-    public static boolean verification(int[] nbrs, int codeClient) {
+    public static boolean verificationCodeClient(int[] nbrs, int codeClient) {
         for (int nbr : nbrs) {
             if (nbr == codeClient)
                 return false;
@@ -19,14 +19,22 @@ public class GestionProgramme {
         return true;
     }
 
-    public static void executer(String[][] donnees, String argument2, String json) throws JsonException {
+    /**
+     * Exécute la récupération des interventions à partir des données fournies.
+     *
+     * @param donnees   Les données d'entrée sous forme de tableau 2D.
+     * @param argument2 L'argument 2 spécifique à la récupération des interventions.
+     * @param json      Le fichier JSON contenant les informations nécessaires.
+     * @throws JsonException Si une exception JSON se produit lors de la récupération des données.
+     */
+    public static void executerRecuperationInterventions(String[][] donnees, String argument2, String json) throws JsonException {
         int itterations = Integer.parseInt(donnees[donnees.length - 1][0]);
         int[] nbrs = new int[30], distance_deplacement = new int[Integer.parseInt(donnees[donnees.length - 1][0])],overtime = new int[Integer.parseInt(donnees[donnees.length - 1][0])],nombre_heures = new int[Integer.parseInt(donnees[donnees.length - 1][0])];
         String[] code = new String[Integer.parseInt(donnees[donnees.length - 1][0])];
-        double taux_horaire_min = 0, taux_horaire_max = 0, montantRegulier = 0;
-        double[] EtatParClient = new double[code.length];
+        double tauxHoraireMin = 0, taux_horaire_max = 0, montantRegulier = 0;
+        double[] etatParClient = new double[code.length];
         Arrays.fill(nbrs, -1);
-        recuperationInterventions(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient); // Traitement des données
+        recuperationInterventions(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, tauxHoraireMin, taux_horaire_max, montantRegulier, etatParClient); // Traitement des données
     }
 
     private static void recuperationInterventions(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient) throws JsonException {
@@ -64,23 +72,23 @@ public class GestionProgramme {
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe);
     }
 
-    private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient, int type_employe, int matricule_employe) throws JsonException {
+    private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] etatParClient, int type_employe, int matricule_employe) throws JsonException {
         for(int i = 0; i< itterations; i++) {
-            if(verification(nbrs,i))
-                EtatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
+            if(verificationCodeClient(nbrs,i))
+                etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
         }
         for (int i = 0; i < itterations; i++) {
-            EtatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
+            etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
                     taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
         }
-        calculCouts(argument2, itterations, nbrs, code, EtatParClient, matricule_employe);
+        calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe);
     }
 
-    private static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code, double[] EtatParClient, int matricule_employe) {
-        double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(EtatParClient);
+    private static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code, double[] etatParClient, int matricule_employe) {
+        double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(etatParClient);
         double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
-                CalculEmploye.arrondirMontant(coutVariable), code, EtatParClient, itterations, argument2, nbrs);
+                CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs);
     }
 }
