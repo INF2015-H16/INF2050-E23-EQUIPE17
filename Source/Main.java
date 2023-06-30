@@ -14,7 +14,7 @@ public class Main {
         try {
             json = lecteurFichier(argument, json,buffer);
             donnees = GestionJson.lireFichierEntreeJson(json);        // Conversion du contenu JSON en tableau de données
-            GestionProgramme.executer(donnees, argument2, json);
+            GestionProgramme.executerRecuperationInterventions(donnees, argument2, json);
             JsonException.validationDate(donnees,json);
         } catch (JsonException e) {
             JsonException.erreurJson(e.getMessage(),argument2);
