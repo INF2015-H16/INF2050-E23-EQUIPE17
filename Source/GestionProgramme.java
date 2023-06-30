@@ -40,7 +40,7 @@ public class GestionProgramme {
     private static void recuperationInterventions(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient) throws JsonException {
         int  status;
         for(int i = 0, j = 4; j< donnees.length-1; j++, i++)  {
-            status = JsonException.checker(donnees,j, nbrs);
+            status = JsonException.validation(donnees,j, nbrs);
             if(status != -1 && status != -2)
                 sousMethodeInterventions2(donnees, distance_deplacement, overtime, nombre_heures, code, status, i, j);
             else if(status == -1)
@@ -51,24 +51,24 @@ public class GestionProgramme {
 
     private static void sousMethodeInterventions1(int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, int i, String[] donnees) throws JsonException {
         code[i] = donnees[0];
-        distance_deplacement[i] = JsonException.checkDistance(Integer.parseInt(donnees[1]));
-        overtime[i] = JsonException.checkOvertime(Integer.parseInt(donnees[2]));
-        nombre_heures[i] = JsonException.checkNombreHeures(Integer.parseInt(donnees[3]));
+        distance_deplacement[i] = JsonException.validerDistance(Integer.parseInt(donnees[1]));
+        overtime[i] = JsonException.validerOvertime(Integer.parseInt(donnees[2]));
+        nombre_heures[i] = JsonException.validerNombreHeures(Integer.parseInt(donnees[3]));
     }
 
     private static void sousMethodeInterventions2(String[][] donnees, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, int status, int i, int j) throws JsonException {
         code[i] = donnees[j][0];
-        distance_deplacement[i] = JsonException.checkDistance(Integer.parseInt(donnees[j][1])) + JsonException.checkDistance(Integer.parseInt( donnees[status][1]));
-        overtime[i] = JsonException.checkOvertime(Integer.parseInt(donnees[j][2])) + JsonException.checkOvertime(Integer.parseInt(donnees[status][2]));
-        nombre_heures[i] = JsonException.checkNombreHeures(Integer.parseInt(donnees[j][3])) + JsonException.checkNombreHeures(Integer.parseInt(donnees[status][3]));
+        distance_deplacement[i] = JsonException.validerDistance(Integer.parseInt(donnees[j][1])) + JsonException.validerDistance(Integer.parseInt( donnees[status][1]));
+        overtime[i] = JsonException.validerOvertime(Integer.parseInt(donnees[j][2])) + JsonException.validerOvertime(Integer.parseInt(donnees[status][2]));
+        nombre_heures[i] = JsonException.validerNombreHeures(Integer.parseInt(donnees[j][3])) + JsonException.validerNombreHeures(Integer.parseInt(donnees[status][3]));
     }
 
     private static void recuperationInfoEmploye(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient) throws JsonException {
         int type_employe, matricule_employe;
         matricule_employe = Integer.parseInt(donnees[0][0]);        // Récupération des données d'entrée
-        type_employe = JsonException.checkTypeEmploye(donnees);
-        JsonException.checkTaux(donnees, 2);
-        JsonException.checkTaux(donnees, 3);
+        type_employe = JsonException.validerTypeEmploye(donnees);
+        JsonException.validerTaux(donnees, 2);
+        JsonException.validerTaux(donnees, 3);
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe);
     }
 

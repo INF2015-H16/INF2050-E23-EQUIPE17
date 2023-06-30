@@ -13,7 +13,7 @@ public class JsonException extends Exception{
         super(message);
     }
 
-    public static int checkDistance(int nbr) throws JsonException
+    public static int validerDistance(int nbr) throws JsonException
     {
         if (nbr < 0.0 || nbr > 100.0) {
             throw new JsonException("Distance deplacement invalide");
@@ -21,7 +21,7 @@ public class JsonException extends Exception{
         return nbr;
     }
 
-    public static int checkOvertime(int nbr) throws JsonException
+    public static int validerOvertime(int nbr) throws JsonException
     {
         if (nbr < 0.0 || nbr > 4.0) {
             throw new JsonException("Overtime invalide");
@@ -30,7 +30,7 @@ public class JsonException extends Exception{
         return nbr;
     }
 
-    public static int checkNombreHeures(int nbr) throws JsonException
+    public static int validerNombreHeures(int nbr) throws JsonException
     {
         if (nbr < 0.0  || nbr > 8.0) {
             throw new JsonException("Nombre d'heures invalide");
@@ -39,7 +39,7 @@ public class JsonException extends Exception{
         return nbr;
     }
 
-    public static double checkTaux(String[][] data, int i) throws JsonException
+    public static double validerTaux(String[][] data, int i) throws JsonException
     {
         double taux_horaire;
         try {
@@ -55,7 +55,7 @@ public class JsonException extends Exception{
         return taux_horaire;
     }
 
-    public static int checkTypeEmploye(String[][] data) throws JsonException {
+    public static int validerTypeEmploye(String[][] data) throws JsonException {
         int type = Integer.parseInt(data[1][0]);
         if (type < 0 || type > 2)
             throw new JsonException("Type d'employé invalide");
@@ -74,7 +74,7 @@ public class JsonException extends Exception{
      * @return L'index de l'occurrence précédente si elle existe, -1 si aucune occurrence précédente n'est trouvée,
      * -2 si une occurrence est trouvée mais son index est inférieur à l'index actuel.
      */
-    public static int checker(String[][] array, int z, int[] nbr) {
+    public static int validation(String[][] array, int z, int[] nbr) {
         for (int i = 0; i < array.length - 1; i++) {
             if (i == z)
                 i++;
