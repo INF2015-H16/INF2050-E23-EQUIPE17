@@ -115,7 +115,7 @@ public class JsonException extends Exception{
         for(int i=4; i< GestionJson.calculInterventions(json) + 4; i++) { //+4 pour que je puisse itterer vers tous les itterations
             if(!(validerFormatDate(donnees[i][4]))) {
                 i = i-3; // pour que j'ai le nombre correct de l'intervention
-                throw new JsonException("Format de date invalide dans l'intervention " + i+ ".");
+                throw new JsonException("Format de date invalide dans l'intervention " + i + ".");
             }
         }
     }

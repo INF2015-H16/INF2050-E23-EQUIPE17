@@ -96,4 +96,42 @@ public class GestionJson {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Modifie les propriétés d'un objet JSON en convertissant les majuscules en minuscules et en remplaçant les "." par ",".
+     * Les montants sont également convertis en décimaux.
+     *
+     * @param objetJSON L'objet JSON à modifier.
+     * @throws IOException Si une erreur de lecture du fichier JSON se produit.
+     */
+    public static void modifierProprietesJSON(JSONObject objetJSON) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(objetJSON)));
+
+        StringBuilder jsonBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            line = convertirMajusculesEnMinuscules(line);
+            line = convertirMontantEnDecimal(line);
+            jsonBuilder.append(line).append(System.lineSeparator());
+        }
+
+        reader.close();
+    }
+
+    public static double convertirMontantEnDecimal(String montant){
+        if (montant.contains(",")){
+            montant.replace(",",".");
+        }
+        return Double.parseDouble(montant);
+    }
+
+    public static String convertirMajusculesEnMinuscules(String valeur) {
+        if (valeur != null) {
+            valeur = valeur.toLowerCase();
+            if (valeur.contains(" ")) {
+                valeur = valeur.replace(" ", "");
+            }
+        }
+        return valeur;
+    }
 }

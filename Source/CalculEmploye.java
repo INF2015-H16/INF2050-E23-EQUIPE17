@@ -74,8 +74,7 @@ public class CalculEmploye {
         montantTotal += calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
         montantTotal += calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
 
-        // Ajouter le montant fixe de 733.77 $
-        montantTotal += 733.77;
+        montantTotal += 733.77;        // Ajouter le montant fixe de 733.77 $
 
         if (montantTotal < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
