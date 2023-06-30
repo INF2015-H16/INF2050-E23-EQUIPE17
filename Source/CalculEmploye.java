@@ -17,8 +17,9 @@ public class CalculEmploye {
         for (double etatParClient : etatsParClient) {
             etatCompteTotal += etatParClient;
         }
+        double etatCompteTotalarrondi = arrondirMontant(etatCompteTotal);
 
-        return etatCompteTotal;
+        return etatCompteTotalarrondi;
     }
 
     /**
