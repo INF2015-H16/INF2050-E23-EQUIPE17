@@ -13,16 +13,14 @@ public class CalculEmploye {
         for (double etatParClient : etatsParClient) {
             etatCompteTotal += etatParClient;
         }
-        double etatCompteTotalarrondi = arrondirMontant(etatCompteTotal);
 
-        return etatCompteTotalarrondi;
+        return etatCompteTotal;
     }
 
 
     public static double calculerCoutVariable(double etatCompteTotal) {
-        double coutVar = (2.5/100 * etatCompteTotal);
 
-        return arrondirMontant(coutVar);
+        return (2.5/100 * etatCompteTotal);
     }
 
     /**
@@ -41,7 +39,7 @@ public class CalculEmploye {
         } else
             coutFixe = etatCompteTotal * 0.004;
 
-        return arrondirMontant(coutFixe);
+        return coutFixe;
     }
 
     /**
@@ -66,7 +64,7 @@ public class CalculEmploye {
             throw new JsonException("Le montant total ne peut pas être négatif");
         }
 
-        return arrondirMontant(montantTotal);
+        return montantTotal;
     }
 
     private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime) throws JsonException {
