@@ -66,38 +66,6 @@ public class JsonException extends Exception{
             return type;
     }
 
-    /**
-     * Vérifie s'il existe une occurrence précédente du code client dans le tableau à deux dimensions.
-     * Si une occurrence est trouvée, elle met à jour le tableau `nbr` avec l'index de l'occurrence précédente.
-     *
-     * @param array Le tableau à deux dimensions contenant les données.
-     * @param z     L'index actuel dans le tableau.
-     * @param nbr   Le tableau de numéros de référence pour les occurrences précédentes.
-     * @return L'index de l'occurrence précédente si elle existe, -1 si aucune occurrence précédente n'est trouvée,
-     * -2 si une occurrence est trouvée mais son index est inférieur à l'index actuel.
-     */
-    public static int validation(String[][] array, int z, int[] nbr) {
-        for (int i = 0; i < array.length - 1; i++) {
-            if (i == z)
-                i++;
-            Integer x = getInteger(array, z, nbr, i);     // Vérifie si le code client à l'index z est égal au code client à l'index i
-            if (x != null) return x;
-        }
-        return -1; // Aucune occurrence précédente n'a été trouvée
-    }
-
-    private static Integer getInteger(String[][] array, int z, int[] nbr, int i) {
-        if (array[z][0].equals(array[i][0])) {
-            if (i < z)
-                return -2;
-            else {
-                nbr[z] = i - 4; // Met à jour le tableau de numéros de référence avec l'index de l'occurrence précédente
-                return i;
-            }
-        }
-        return null;
-    }
-
     public static boolean validerFormatDate(String dateStr) {
         try {
             LocalDate.parse(dateStr);
@@ -107,6 +75,19 @@ public class JsonException extends Exception{
         }
     }
 
+    public static int validation(String[][] donnees, int i,int []nbrs)
+    {
+        for(int j=i+1; j<donnees.length-1 ; j++) {
+            if(!donnees[j][0].equals("")) {
+                if (donnees[j][0].equals(donnees[i][0])) {
+                    donnees[j][0] = "";
+                    return j;
+                }
+            }
+        }
+
+        return -1;
+    }
 
 
     public static void validationDate(String [][] donnees,int tailleInterventions) throws JsonException{

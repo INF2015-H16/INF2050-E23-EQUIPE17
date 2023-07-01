@@ -3,9 +3,7 @@ package Source;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -23,6 +21,7 @@ public class GestionProgramme {
             if (nbr == codeClient)
                 return false;
         }
+
         return true;
     }
 
@@ -41,6 +40,7 @@ public class GestionProgramme {
         double tauxHoraireMin = 0, taux_horaire_max = 0, montantRegulier = 0;
         double[] etatParClient = new double[code.length];
         Arrays.fill(nbrs, -1);
+
         recuperationInterventions(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, tauxHoraireMin, taux_horaire_max, montantRegulier, etatParClient); // Traitement des données
     }
 
@@ -48,10 +48,12 @@ public class GestionProgramme {
         int  status;
         for(int i = 0, j = 4; j< donnees.length-1; j++, i++)  {
             status = JsonException.validation(donnees,j, nbrs);
-            if(status != -1 && status != -2)
+            if(status != -1 && !donnees[j][0].equals("#"))
                 sousMethodeInterventions2(donnees, distance_deplacement, overtime, nombre_heures, code, status, i, j);
-            else if(status == -1)
+            else if(!(donnees[j][0].equals("#")) && !donnees[j][0].equals(""))
+            {
                 sousMethodeInterventions1(distance_deplacement, overtime, nombre_heures, code, i, donnees[j]);
+            }
         }
         recuperationInfoEmploye(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient);
     }
@@ -68,25 +70,25 @@ public class GestionProgramme {
         distance_deplacement[i] = JsonException.validerDistance(Integer.parseInt(donnees[j][1])) + JsonException.validerDistance(Integer.parseInt( donnees[status][1]));
         overtime[i] = JsonException.validerOvertime(Integer.parseInt(donnees[j][2])) + JsonException.validerOvertime(Integer.parseInt(donnees[status][2]));
         nombre_heures[i] = JsonException.validerNombreHeures(Integer.parseInt(donnees[j][3])) + JsonException.validerNombreHeures(Integer.parseInt(donnees[status][3]));
+        donnees[status][0] = "#";
+        donnees[status][1] = "-200";
     }
 
     private static void recuperationInfoEmploye(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient) throws JsonException {
         int type_employe, matricule_employe;
         matricule_employe = Integer.parseInt(donnees[0][0]);        // Récupération des données d'entrée
         type_employe = JsonException.validerTypeEmploye(donnees);
-        JsonException.validerTaux(donnees, 2);
-        JsonException.validerTaux(donnees, 3);
+        taux_horaire_min = JsonException.validerTaux(donnees, 2);
+        taux_horaire_max = JsonException.validerTaux(donnees, 3);
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe);
     }
 
     private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] etatParClient, int type_employe, int matricule_employe) throws JsonException {
-        for(int i = 0; i< itterations; i++) {
-            if(verificationCodeClient(nbrs,i))
-                etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
-        }
         for (int i = 0; i < itterations; i++) {
-            etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
+            if(CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier) > 200){
+                etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
                     taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
+        }
         }
         calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe);
     }

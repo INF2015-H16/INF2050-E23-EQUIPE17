@@ -8,7 +8,7 @@ public class CalculEmploye {
      * @return etatCompteTotal
      */
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
-        double etatCompteTotal = 0.0;
+        double etatCompteTotal = 733.77;
 
         for (double etatParClient : etatsParClient) {
             etatCompteTotal += etatParClient;
@@ -60,10 +60,7 @@ public class CalculEmploye {
                                                double tauxHoraireMin, double tauxHoraireMax,
                                                double distanceDeplacement, double overtime, double montantregulier) throws JsonException {
 
-        double montantTotal = 0.0;
-        montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime, montantregulier, montantTotal);
-
-        montantTotal += 733.77;        // Ajouter le montant fixe de 733.77 $
+        double montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime );
 
         if (montantTotal < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
@@ -72,11 +69,12 @@ public class CalculEmploye {
         return arrondirMontant(montantTotal);
     }
 
-    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime, double montantregulier, double montantTotal) throws JsonException {
-        montantTotal += calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
-        montantTotal += calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
-        montantTotal += calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
-        return montantTotal;
+    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime) throws JsonException {
+        double montantregulier = calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
+        double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
+        double montantHeuresSupp = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
+
+        return montantregulier + montantDeplacement + montantHeuresSupp;
     }
 
 
@@ -89,8 +87,7 @@ public class CalculEmploye {
      * @params tauxHoraireMin
      * @params tauxHoraireMax
      */
-    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures,
-                                                 double tauxHoraireMin, double tauxHoraireMax) {
+    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax) {
         double tauxHoraire = 0;
 
         if (typeEmploye == 0){
@@ -112,8 +109,7 @@ public class CalculEmploye {
      * @param montantRegulier
      * @return
      */
-    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
-                                                    double montantRegulier) throws JsonException {
+    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement, double montantRegulier) throws JsonException {
         double calculeMontantDeplacement = 0.0;
 
         if (typeEmploye == 0) {

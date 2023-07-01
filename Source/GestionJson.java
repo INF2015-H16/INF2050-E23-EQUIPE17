@@ -8,16 +8,6 @@ import java.io.*;
 import java.util.Locale;
 
 public class GestionJson {
-    public static int calculInterventions(String json) throws JsonException,IOException {
-        int nombreinterventions;
-        JSONObject jsonObject = JSONObject.fromObject(json);
-        JsonException.validerProprietesJsonPresentes(jsonObject, json);
-        JSONArray interventions = jsonObject.getJSONArray("interventions");
-        nombreinterventions = interventions.size();
-        if(nombreinterventions > 10)
-            throw new JsonException("Le nombre d’interventions est supérieur à 10.");
-        return nombreinterventions;
-    }
 
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
@@ -87,7 +77,7 @@ public class GestionJson {
 
     private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client) {
         for(int i = 0; i < j; i++) {
-            if(GestionProgramme.verificationCodeClient(nbrs, i)) {
+            if(GestionProgramme.verificationCodeClient(nbrs, i) && code[i] != null) {
                 client.accumulate("code_client", code[i]);
                 client.accumulate("etat_par_client", String.format(Locale.CANADA,"%.2f$", etat_par_client[i]));
                 clients.add(client);
