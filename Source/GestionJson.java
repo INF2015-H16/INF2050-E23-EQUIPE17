@@ -5,6 +5,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.util.Locale;
 
 public class GestionJson {
     public static int calculInterventions(String json) throws JsonException,IOException {
@@ -71,9 +72,9 @@ public class GestionJson {
 
     private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee) {
         employee.accumulate("matricule_employe", matricule_employe);
-        employee.accumulate("etat_compte", String.format("%.2f$", etat_compte));
-        employee.accumulate("cout_fixe", String.format("%.2f$", cout_fixe));
-        employee.accumulate("cout_variable", String.format("%.2f$", cout_variable));
+        employee.accumulate("etat_compte", String.format(Locale.CANADA,"%.2f$", etat_compte));
+        employee.accumulate("cout_fixe", String.format(Locale.CANADA,"%.2f$", cout_fixe));
+        employee.accumulate("cout_variable", String.format(Locale.CANADA,"%.2f$", cout_variable));
         return employee;
     }
 
@@ -82,7 +83,7 @@ public class GestionJson {
         for(int i = 0; i < j; i++) {
             if(GestionProgramme.verificationCodeClient(nbrs, i)) {
                 client.accumulate("code_client", code[i]);
-                client.accumulate("etat_par_client", String.format("%.2f$", etat_par_client[i]));
+                client.accumulate("etat_par_client", String.format(Locale.CANADA,"%.2f$", etat_par_client[i]));
                 clients.add(client);
                 client.clear();
             }
@@ -97,33 +98,5 @@ public class GestionJson {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Modifie les propriétés d'un objet JSON en convertissant les majuscules en minuscules et en remplaçant les "." par ",".
-     * Les montants sont également convertis en décimaux.
-     *
-     * @param objetJSON L'objet JSON à modifier.
-     * @throws IOException Si une erreur de lecture du fichier JSON se produit.
-     */
-    public static void modifierProprietesJSON(JSONObject objetJSON) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(objetJSON)));
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            line = convertirMajusculesEnMinuscules(line);
-            jsonBuilder.append(line).append(System.lineSeparator());
-        }
-        reader.close();
-    }
-
-    public static String convertirMajusculesEnMinuscules(String valeur) {
-        if (valeur != null) {
-            valeur = valeur.toLowerCase();
-            if (valeur.contains(" ")) {
-                valeur = valeur.replace(" ", "");
-            }
-        }
-        return valeur;
     }
 }
