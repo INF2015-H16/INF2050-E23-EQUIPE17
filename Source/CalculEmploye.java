@@ -61,9 +61,7 @@ public class CalculEmploye {
                                                double distanceDeplacement, double overtime, double montantregulier) throws JsonException {
 
         double montantTotal = 0.0;
-        montantTotal += calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
-        montantTotal += calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
-        montantTotal += calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
+        montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime, montantregulier, montantTotal);
 
         montantTotal += 733.77;        // Ajouter le montant fixe de 733.77 $
 
@@ -72,6 +70,13 @@ public class CalculEmploye {
         }
 
         return arrondirMontant(montantTotal);
+    }
+
+    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime, double montantregulier, double montantTotal) throws JsonException {
+        montantTotal += calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
+        montantTotal += calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
+        montantTotal += calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
+        return montantTotal;
     }
 
 
@@ -172,10 +177,8 @@ public class CalculEmploye {
         double arrondi = Math.ceil(montant * 20) / 20; // Arrondi à 2 décimales
         double difference = arrondi - Math.floor(arrondi); // Partie décimale
         if (difference < 0.025) {
-            System.out.println(Math.floor(arrondi * 20) / 20);
             return Math.floor(arrondi * 20) / 20; // Arrondi au multiple inférieur de 0.05
         } else {
-            System.out.println(Math.ceil(arrondi * 20) / 20);
             return Math.ceil(arrondi * 20) / 20; // Arrondi au multiple supérieur de 0.05
         }
     }

@@ -50,7 +50,7 @@ public class JsonException extends Exception{
         }
         catch (Exception e)
         {
-            taux_horaire = Double.parseDouble(data[i][0].replace(",", ".").replace("$", ""));// Sa c'est pour gerer le virgule
+            taux_horaire = Double.parseDouble(data[i][0].replace(",", ".").replace("$", ""));// Sa c'est pour gerer la virgule
         }
         if(taux_horaire < 0)
             throw new JsonException("Taux horaire invalide");
@@ -80,20 +80,22 @@ public class JsonException extends Exception{
         for (int i = 0; i < array.length - 1; i++) {
             if (i == z)
                 i++;
-
-            // Vérifie si le code client à l'index z est égal au code client à l'index i
-            if (array[z][0].equals(array[i][0])) {
-                if (i < z)
-                    return -2; // Une occurrence précédente a été trouvée, mais son index est inférieur à l'index actuel
-                else {
-                    nbr[z] = i - 4; // Met à jour le tableau de numéros de référence avec l'index de l'occurrence précédente
-                    return i; // Retourne l'index de l'occurrence précédente
-                }
-            }
+            Integer x = getInteger(array, z, nbr, i);     // Vérifie si le code client à l'index z est égal au code client à l'index i
+            if (x != null) return x;
         }
         return -1; // Aucune occurrence précédente n'a été trouvée
+    }
 
-        //TODO: enlever le return -1 et la remplacer par un try catch statement
+    private static Integer getInteger(String[][] array, int z, int[] nbr, int i) {
+        if (array[z][0].equals(array[i][0])) {
+            if (i < z)
+                return -2;
+            else {
+                nbr[z] = i - 4; // Met à jour le tableau de numéros de référence avec l'index de l'occurrence précédente
+                return i;
+            }
+        }
+        return null;
     }
 
     public static boolean validerFormatDate(String dateStr) {
@@ -119,31 +121,27 @@ public class JsonException extends Exception{
     public static void validerFichierSortieDispo(String cheminFichierSortie) {
         File fichierSortie = new File(cheminFichierSortie);
         try {
-            if (!fichierSortie.exists()) {
-                boolean fichierCree = fichierSortie.createNewFile();
-                if (!fichierCree) {
-                    System.out.println("Impossible de créer le fichier de sortie. Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
-                }
-            }
+            existFichier(fichierSortie);
         } catch (IOException e) {
             System.out.println("Une erreur s'est produite lors de la création du fichier de sortie. Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
         }
     }
 
-    public static void validerProprietesJsonPresentes(JSONObject jsonObject, String arg2) throws IOException {
+    private static void existFichier(File fichierSortie) throws IOException {
+        if (!fichierSortie.exists()) {
+            boolean fichierCree = fichierSortie.createNewFile();
+            if (!fichierCree)
+                System.out.println("Impossible de créer le fichier de sortie. Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+        }
+    }
 
+    public static void validerProprietesJsonPresentes(JSONObject jsonObject, String arg2) throws IOException {
         if (!jsonObject.has("matricule_employe"))
             GestionProgramme.ajouterMessage("Attribut 'matricule_employe' manquant", arg2);
-
         if (!jsonObject.has("type_employe"))
             GestionProgramme.ajouterMessage("Attribut 'type_employe' manquant", arg2);
-
-        if (!jsonObject.has("taux_horaire_min"))
-            GestionProgramme.ajouterMessage("Attribut 'taux_horaire_min' manquant", arg2);
-
-        if (!jsonObject.has("taux_horaire_max"))
-            GestionProgramme.ajouterMessage("Attribut 'taux_horaire_max' manquant", arg2);
-
+        if (!jsonObject.has("taux_horaire_max") || !jsonObject.has("taux_horaire_min") )
+            GestionProgramme.ajouterMessage("Attribut 'taux_horaire' manquant", arg2);
         if (!jsonObject.has("interventions"))
             GestionProgramme.ajouterMessage("Attribut 'interventions' manquant", arg2);
     }

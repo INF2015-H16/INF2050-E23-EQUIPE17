@@ -30,33 +30,39 @@ public class GestionJson {
         JSONObject employee = JSONObject.fromObject(json);
         JSONArray interventions = employee.getJSONArray("interventions");
         String[][] attributsJson = new String[5+interventions.size()][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
-        attributsJson = recuperationInfo(attributsJson, employee);// le 5 c'est pour le type, marticule et les taux
+        recuperationInfos(employee, interventions, attributsJson);
         JsonException.validerInterventionsNonVide(interventions,cheminJson);
-        attributsJson = recuperationInfo(attributsJson, interventions);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
         JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson);
         return attributsJson;
     }
 
-    private static String[][] recuperationInfo(String[][] attributsJson, JSONArray interventions) throws JsonException {
-        for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
-            JSONObject intervention = interventions.getJSONObject(compteurInterventions);
-            attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
-            attributsJson[4 + compteurInterventions][1] = intervention.getString("distance_deplacement");
-            attributsJson[4 + compteurInterventions][2] = intervention.getString("overtime");
-            attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
-            attributsJson[4 + compteurInterventions][4] = intervention.optString("date_intervention");
-        }
-        JsonException.validationDate(attributsJson,interventions.size());
-        return attributsJson;
+    private static void recuperationInfos(JSONObject employee, JSONArray interventions, String[][] attributsJson) throws JsonException {
+        recuperationInfo(attributsJson, employee);// le 5 c'est pour le type, marticule et les taux
+        recuperationInfo(attributsJson, interventions);
     }
 
-    private static String[][] recuperationInfo(String[][] attributsJson, JSONObject employee) {
+    private static void recuperationInfo(String[][] attributsJson, JSONArray interventions) throws JsonException {
+        for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
+            reccuperationAttributs(attributsJson, interventions, compteurInterventions);
+        }
+        JsonException.validationDate(attributsJson,interventions.size());
+    }
+
+    private static void reccuperationAttributs(String[][] attributsJson, JSONArray interventions, int compteurInterventions) {
+        JSONObject intervention = interventions.getJSONObject(compteurInterventions);
+        attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
+        attributsJson[4 + compteurInterventions][1] = intervention.getString("distance_deplacement");
+        attributsJson[4 + compteurInterventions][2] = intervention.getString("overtime");
+        attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
+        attributsJson[4 + compteurInterventions][4] = intervention.optString("date_intervention");
+    }
+
+    private static void recuperationInfo(String[][] attributsJson, JSONObject employee) {
         attributsJson[0][0] = employee.getString("matricule_employe");
         attributsJson[1][0] = employee.getString("type_employe");
         attributsJson[2][0] = employee.getString("taux_horaire_min");
         attributsJson[3][0] = employee.getString("taux_horaire_max");
-        return attributsJson;
     }
 
 
@@ -66,7 +72,7 @@ public class GestionJson {
         employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee);
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
-        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, employee, calculEmploye, clients, client));
+        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client));
         ecritureFichierSortieJson(arg,employee);
     }
 
@@ -79,7 +85,7 @@ public class GestionJson {
     }
 
 
-    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONObject employee, CalculEmploye calculEmploye, JSONArray clients, JSONObject client) {
+    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client) {
         for(int i = 0; i < j; i++) {
             if(GestionProgramme.verificationCodeClient(nbrs, i)) {
                 client.accumulate("code_client", code[i]);
