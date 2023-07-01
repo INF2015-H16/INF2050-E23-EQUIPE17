@@ -3,8 +3,11 @@ package Source;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JsonException extends Exception{
 
@@ -120,3 +123,121 @@ public class JsonException extends Exception{
         }
     }
 }
+
+    public static boolean validerFichierEntreeDisponible(String nomFichierEntree) {
+        File fichier = new File(nomFichierEntree);
+        return fichier.exists() && fichier.isFile();
+    }
+
+    public static void validerFichierSortieDispo(String cheminFichierSortie) {
+        File fichierSortie = new File(cheminFichierSortie);
+
+        try {
+            if (!fichierSortie.exists()) {
+                boolean fichierCree = fichierSortie.createNewFile();
+
+                if (!fichierCree) {
+                    System.out.println("Impossible de créer le fichier de sortie.");
+                    System.out.println("Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+                    System.exit(0);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Une erreur s'est produite lors de la création du fichier de sortie.");
+            System.out.println("Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+            System.exit(0);
+        }
+    }
+
+
+    public static void validerProprietesJsonPresentes(JSONObject jsonObject) {
+        boolean attributsManquants = false;
+
+        if (!jsonObject.has("matricule_employe")) {
+            ajouterMessage(jsonObject, "Attribut 'matricule_employe' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("type_employe")) {
+            ajouterMessage(jsonObject, "Attribut 'type_employe' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("taux_horaire_min")) {
+            ajouterMessage(jsonObject, "Attribut 'taux_horaire_min' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("taux_horaire_max")) {
+            ajouterMessage(jsonObject, "Attribut 'taux_horaire_max' manquant");
+            attributsManquants = true;
+        }
+
+        if (!jsonObject.has("interventions")) {
+            ajouterMessage(jsonObject, "Attribut 'interventions' manquant");
+            attributsManquants = true;
+        }
+
+        if (attributsManquants) {
+            // Méthode pour écrire l'objet JSONObject dans un fichier JSON de sortie
+            ecrireFichierJsonSortie("C:\\Users\\steve\\IdeaProjects\\INF2050-E23-EQUIPE17" +
+                    "\\sortie.json", jsonObject);
+        }
+    }
+
+    private static void ajouterMessage(JSONObject jsonObject, String message) {
+        JSONObject messageObjet = new JSONObject();
+        messageObjet.accumulate("message", message);
+
+        jsonObject.accumulate("message", messageObjet);
+    }
+
+    private static void ecrireFichierJsonSortie(String cheminFichierSortie, JSONObject jsonObjectSortie) {
+        try (FileWriter fileWriter = new FileWriter(cheminFichierSortie)) {
+            fileWriter.write(jsonObjectSortie.toString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean validerInterventionsNonVide(JSONObject jsonObject, JSONObject jsonObjectSortie) {
+        JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
+
+        if (interventionsArray.size() == 0) {
+            JSONObject messageObj = new JSONObject();
+            messageObj.accumulate("message", "Aucune intervention trouvée dans le fichier JSON");
+            jsonObjectSortie.put("message", messageObj);
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validerComboCodeClientDateIntervention(JSONObject jsonObject, String cheminJson)
+            throws IOException {
+
+        JSONArray interventionsArray = jsonObject.getJSONArray("interventions");
+
+        Set<String> codeClients = new HashSet<>();
+        Set<String> dates = new HashSet<>();
+
+        for (int i = 0; i < interventionsArray.size(); i++) {
+            JSONObject intervention = interventionsArray.getJSONObject(i);
+            String codeClient = intervention.getString("code_client");
+            String dateIntervention = intervention.getString("date_intervention");
+
+            if (codeClients.contains(codeClient) && dates.contains(dateIntervention)) {
+                JSONObject messageObj = new JSONObject();
+                messageObj.accumulate("message", "Intervention non valide : même code client et même date");
+                FilesWriter.saveStringIntoFile(cheminJson, messageObj.toString());
+                return false;
+            }
+
+            codeClients.add(codeClient);
+            dates.add(dateIntervention);
+        }
+
+
+        return true;
+    }
