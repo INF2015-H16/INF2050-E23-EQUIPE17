@@ -1,5 +1,12 @@
 package Source;
 
+import net.sf.json.JSONObject;
+import org.apache.commons.io.FileUtils;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class GestionProgramme {
@@ -88,7 +95,15 @@ public class GestionProgramme {
         double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(etatParClient);
         double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
+        JsonException.validerFichierSortieDispo(argument2);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
                 CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs);
+    }
+
+    public static void ajouterMessage(String message, String arg) throws IOException {
+        JSONObject messageObjet = new JSONObject();
+        messageObjet.accumulate("message", message);
+        FileUtils.writeStringToFile(new File(arg), messageObjet.toString(), "UTF-8");
+        System.exit(0);
     }
 }

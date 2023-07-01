@@ -7,36 +7,37 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 
 public class GestionJson {
-    public static int calculInterventions(String json) throws JsonException{
+    public static int calculInterventions(String json) throws JsonException,IOException {
         int nombreinterventions;
-
         JSONObject jsonObject = JSONObject.fromObject(json);
+        JsonException.validerProprietesJsonPresentes(jsonObject, json);
         JSONArray interventions = jsonObject.getJSONArray("interventions");
         nombreinterventions = interventions.size();
         if(nombreinterventions > 10)
             throw new JsonException("Le nombre d’interventions est supérieur à 10.");
-
         return nombreinterventions;
     }
 
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
      *
-     * @param json La chaîne JSON à convertir.
+     * @param json      La chaîne JSON à convertir.
+     * @param cheminJson
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json) throws JsonException{
-        // le 5 c'est pour le type, marticule et les taux
-        String[][] attributsJson = new String[5+calculInterventions(json)][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
+    public static String[][] lireFichierEntreeJson(String json, String cheminJson) throws JsonException, IOException{
         JSONObject employee = JSONObject.fromObject(json);
-        attributsJson = recuperationInfo(attributsJson, employee);
         JSONArray interventions = employee.getJSONArray("interventions");
+        String[][] attributsJson = new String[5+interventions.size()][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
+        attributsJson = recuperationInfo(attributsJson, employee);// le 5 c'est pour le type, marticule et les taux
+        JsonException.validerInterventionsNonVide(interventions,cheminJson);
         attributsJson = recuperationInfo(attributsJson, interventions);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
+        JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson);
         return attributsJson;
     }
 
-    private static String[][] recuperationInfo(String[][] attributsJson, JSONArray interventions) {
+    private static String[][] recuperationInfo(String[][] attributsJson, JSONArray interventions) throws JsonException {
         for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
             JSONObject intervention = interventions.getJSONObject(compteurInterventions);
             attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
@@ -45,6 +46,7 @@ public class GestionJson {
             attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
             attributsJson[4 + compteurInterventions][4] = intervention.optString("date_intervention");
         }
+        JsonException.validationDate(attributsJson,interventions.size());
         return attributsJson;
     }
 
@@ -106,23 +108,13 @@ public class GestionJson {
      */
     public static void modifierProprietesJSON(JSONObject objetJSON) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(objetJSON)));
-
         StringBuilder jsonBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
             line = convertirMajusculesEnMinuscules(line);
-            line = convertirMontantEnDecimal(line);
             jsonBuilder.append(line).append(System.lineSeparator());
         }
-
         reader.close();
-    }
-
-    public static double convertirMontantEnDecimal(String montant){
-        if (montant.contains(",")){
-            montant.replace(",",".");
-        }
-        return Double.parseDouble(montant);
     }
 
     public static String convertirMajusculesEnMinuscules(String valeur) {

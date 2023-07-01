@@ -22,12 +22,7 @@ public class CalculEmploye {
         return etatCompteTotalarrondi;
     }
 
-    /**
-     * Calcule le coût variable en fonction de l'état total du compte.
-     *
-     * @param etatsParClient   L'état par clients pour lequel le coût variable doit être calculé.
-     * @return                  Le coût variable calculé.
-     */
+
     public static double calculerCoutVariable(double etatCompteTotal) {
         double coutVar = (2.5/100 * etatCompteTotal);
 
@@ -181,8 +176,10 @@ public class CalculEmploye {
         double arrondi = Math.ceil(montant * 20) / 20; // Arrondi à 2 décimales
         double difference = arrondi - Math.floor(arrondi); // Partie décimale
         if (difference < 0.025) {
+            System.out.println(Math.floor(arrondi * 20) / 20);
             return Math.floor(arrondi * 20) / 20; // Arrondi au multiple inférieur de 0.05
         } else {
+            System.out.println(Math.ceil(arrondi * 20) / 20);
             return Math.ceil(arrondi * 20) / 20; // Arrondi au multiple supérieur de 0.05
         }
     }
