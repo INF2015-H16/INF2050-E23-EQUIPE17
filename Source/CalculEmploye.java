@@ -54,8 +54,8 @@ public class CalculEmploye {
         if (montantTotal < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
         }
-
-        return montantTotal;
+        double montantTotalArrondi = arrondirMontant(montantTotal);
+        return montantTotalArrondi;
     }
 
     private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime) throws JsonException {
