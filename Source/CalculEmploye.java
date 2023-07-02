@@ -30,16 +30,7 @@ public class CalculEmploye {
      * @return le coût fixe calculé
      */
     public static double calculerCoutFixe(double etatCompteTotal) {
-        double coutFixe = 0.0;
-
-        if (etatCompteTotal >= 1000.0) {
-            coutFixe = etatCompteTotal * 0.012;
-        } else if (etatCompteTotal >= 500.0) {
-            coutFixe = etatCompteTotal * 0.008;
-        } else
-            coutFixe = etatCompteTotal * 0.004;
-
-        return coutFixe;
+        return etatCompteTotal * 1.2/100;
     }
 
     /**
