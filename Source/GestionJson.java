@@ -30,21 +30,26 @@ public class GestionJson {
         JSONObject employee = JSONObject.fromObject(json);
         JSONArray interventions = employee.getJSONArray("interventions");
         String[][] attributsJson = new String[5+interventions.size()][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
-        recuperationInfos(employee, interventions, attributsJson);
+        recuperationInfos(employee, interventions, attributsJson, cheminJson);
         JsonException.validerInterventionsNonVide(interventions,cheminJson);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
         JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson);
         return attributsJson;
     }
 
-    private static void recuperationInfos(JSONObject employee, JSONArray interventions, String[][] attributsJson) throws JsonException {
+    private static void recuperationInfos(JSONObject employee, JSONArray interventions, String[][] attributsJson, String cheminJson) throws JsonException, IOException {
         recuperationInfo(attributsJson, employee);// le 5 c'est pour le type, marticule et les taux
-        recuperationInfo(attributsJson, interventions);
+        recuperationInfo(attributsJson, interventions, cheminJson);
     }
 
-    private static void recuperationInfo(String[][] attributsJson, JSONArray interventions) throws JsonException {
-        for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
-            reccuperationAttributs(attributsJson, interventions, compteurInterventions);
+    private static void recuperationInfo(String[][] attributsJson, JSONArray interventions, String cheminJson) throws JsonException, IOException {
+        try {
+            for (int compteurInterventions = 0; compteurInterventions < interventions.size(); compteurInterventions++) {
+                reccuperationAttributs(attributsJson, interventions, compteurInterventions);
+            }
+        }
+        catch (Exception e) {
+            JsonException.validerProprietesJsonPresentes(e.getMessage(),cheminJson);
         }
         JsonException.validationDate(attributsJson,interventions.size());
     }

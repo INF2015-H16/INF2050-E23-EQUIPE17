@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GestionProgramme {
-
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
@@ -16,12 +15,13 @@ public class GestionProgramme {
      * @param codeClient    L'entier à rechercher.
      * @return `true` si le codeClient n'est pas présent dans le tableau `nbrs`, `false` sinon.
      */
+
+
     public static boolean verificationCodeClient(int[] nbrs, int codeClient) {
         for (int nbr : nbrs) {
             if (nbr == codeClient)
                 return false;
         }
-
         return true;
     }
 
