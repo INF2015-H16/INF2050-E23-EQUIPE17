@@ -124,19 +124,19 @@ public class CalculEmploye {
         if (typeEmploye == 0) {
             montantHeuresSupplementaires = 0.0;
         } else if (typeEmploye == 1) {
-            montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType1(overtime,nombre_heures);
+            montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType1(overtime);
         } else if (typeEmploye == 2) {
             montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType2(overtime);
         }
         return Math.min(montantHeuresSupplementaires, 1500.0);
     }
 
-    private static double calculerMontantHeuresSupplementairesType1(double overtime,double nombre_heures) {
+    private static double calculerMontantHeuresSupplementairesType1(double overtime) {
         double montantHeuresSupplementaires = 0.0;
 
-        if (nombre_heures > 4 && nombre_heures <= 8) {
+        if (overtime > 4 && overtime <= 8) {
             montantHeuresSupplementaires = 50.0 * overtime;
-        } else if (nombre_heures > 8) {
+        } else if (overtime > 8) {
             montantHeuresSupplementaires = 100.0 * overtime;
         }
 
