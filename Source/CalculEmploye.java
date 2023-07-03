@@ -144,13 +144,13 @@ public class CalculEmploye {
     }
 
 
-    private static double calculerMontantHeuresSupplementairesType2(double overtime) {
+    private static double calculerMontantHeuresSupplementairesType2(double nombre_heures) {
         double montantHeuresSupplementaires = 0.0;
 
-        if (overtime <= 4) {
-            montantHeuresSupplementaires = 75.0 * overtime;
-        } else if (overtime > 4) {
-            montantHeuresSupplementaires = 150.0 * overtime;
+        if (nombre_heures <= 4) {
+            montantHeuresSupplementaires = 75.0 * nombre_heures;
+        } else if (nombre_heures > 4) {
+            montantHeuresSupplementaires = 150.0 * nombre_heures;
         }
 
         return montantHeuresSupplementaires;
