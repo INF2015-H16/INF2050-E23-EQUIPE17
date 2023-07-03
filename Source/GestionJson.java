@@ -9,6 +9,16 @@ import java.util.Locale;
 
 public class GestionJson {
 
+    public static String convertirMajusculesEnMinuscules(String valeur) {
+        if (valeur != null) {
+            valeur = valeur.toLowerCase();
+            if (valeur.contains(" ")) {
+                valeur = valeur.replace(" ", "");
+            }
+        }
+        return valeur;
+    }
+
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
      *
@@ -41,7 +51,7 @@ public class GestionJson {
 
     private static void reccuperationAttributs(String[][] attributsJson, JSONArray interventions, int compteurInterventions) {
         JSONObject intervention = interventions.getJSONObject(compteurInterventions);
-        attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client"); // Utilisation de optString au lieu de getString
+        attributsJson[4 + compteurInterventions][0] = intervention.optString("code_client").toUpperCase(); // Utilisation de optString au lieu de getString
         attributsJson[4 + compteurInterventions][1] = intervention.getString("distance_deplacement");
         attributsJson[4 + compteurInterventions][2] = intervention.getString("overtime");
         attributsJson[4 + compteurInterventions][3] = intervention.getString("nombre_heures");
