@@ -86,10 +86,28 @@ public class GestionJson {
         employee.accumulate("etat_compte", String.format(Locale.CANADA,"%.2f$", etat_compte));
         employee.accumulate("cout_fixe", String.format(Locale.CANADA,"%.2f$", cout_fixe));
         employee.accumulate("cout_variable", String.format(Locale.CANADA,"%.2f$", cout_variable));
+        employeeObservation(employee,cout_variable,etat_compte,cout_fixe);
         return employee;
     }
 
+    private static JSONObject employeeObservation(JSONObject employee,double cout_variable,double etat_compte, double cout_fixe){
+       JSONArray observations = new JSONArray() ;
+        if(cout_variable > 3000)
+            ajouterObservation(observations, "Le cout variable payable nécessite des ajustements");
+        if(etat_compte > 30000)
+            ajouterObservation(observations, "L’état de compte total ne doit pas dépasser 30000.00 $.");
+        if(cout_fixe > 1500)
+            ajouterObservation(observations, "Le cout fixe payable ne doit pas dépasser 1500.00 $.");
 
+        employee.accumulate("observations",observations);
+        return employee;
+    }
+
+    private static JSONArray ajouterObservation(JSONArray observations,String observation) {
+        observations.add(observation);
+        return observations;
+    }
+    
     private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client) {
         for(int i = 0; i < j; i++) {
             if(GestionProgramme.verificationCodeClient(nbrs, i) && code[i] != null) {
