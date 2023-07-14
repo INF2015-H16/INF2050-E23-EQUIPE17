@@ -1,15 +1,18 @@
 package Source;
 
+import net.sf.json.JSONArray;
+
 import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         String[][] donnees;
+        JSONArray observations = new JSONArray();
         String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
         try {
             json = lecteurFichier(argument, json,buffer);
             donnees = GestionJson.lireFichierEntreeJson(GestionJson.convertirMajusculesEnMinuscules(json), argument2);        // Conversion du contenu JSON en tableau de données
-            GestionProgramme.executerRecuperationInterventions(donnees, argument2, json);
+            GestionProgramme.executerRecuperationInterventions(donnees, argument2, json,observations);
         } catch (JsonException e) {
             GestionProgramme.ajouterMessage(e.getMessage(),argument2);
         }

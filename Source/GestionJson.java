@@ -71,53 +71,52 @@ public class GestionJson {
     }
 
 
-    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs) {
+    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs,JSONArray observation) {
         JSONObject employee = new JSONObject();
-        CalculEmploye calculEmploye = new CalculEmploye();
-        employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee);
+        employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee,observation);
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
-        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client));
+        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,observation));
+        employee.accumulate("observations",observation);
         ecritureFichierSortieJson(arg,employee);
     }
 
-    private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee) {
+    private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee,JSONArray observations) {
         employee.accumulate("matricule_employe", matricule_employe);
         employee.accumulate("etat_compte", String.format(Locale.CANADA,"%.2f$", etat_compte));
         employee.accumulate("cout_fixe", String.format(Locale.CANADA,"%.2f$", cout_fixe));
         employee.accumulate("cout_variable", String.format(Locale.CANADA,"%.2f$", cout_variable));
-        employeeObservation(employee,cout_variable,etat_compte,cout_fixe);
+        employeeObservation(employee,cout_variable,etat_compte,cout_fixe,observations);
         return employee;
     }
 
-    private static JSONObject employeeObservation(JSONObject employee,double cout_variable,double etat_compte, double cout_fixe){
-       JSONArray observations = new JSONArray() ;
+    private static JSONObject employeeObservation(JSONObject employee,double cout_variable,double etat_compte, double cout_fixe,JSONArray observations){
         if(cout_variable > 3000)
-            ajouterObservation(observations, "Le cout variable payable nécessite des ajustements");
+            observations.add("Le cout variable payable nécessite des ajustements");
         if(etat_compte > 30000)
-            ajouterObservation(observations, "L’état de compte total ne doit pas dépasser 30000.00 $.");
+            observations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
         if(cout_fixe > 1500)
-            ajouterObservation(observations, "Le cout fixe payable ne doit pas dépasser 1500.00 $.");
-
-        employee.accumulate("observations",observations);
+            observations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
         return employee;
     }
 
-    private static JSONArray ajouterObservation(JSONArray observations,String observation) {
-        observations.add(observation);
-        return observations;
-    }
-    
-    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client) {
+    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client, JSONObject employee, JSONArray observation) {
         for(int i = 0; i < j; i++) {
             if(GestionProgramme.verificationCodeClient(nbrs, i) && code[i] != null) {
                 client.accumulate("code_client", code[i]);
                 client.accumulate("etat_par_client", String.format(Locale.CANADA,"%.2f$", etat_par_client[i]));
                 clients.add(client);
                 client.clear();
+                etatClientObservation(observation,employee,etat_par_client[i],code[i]);
             }
         }
         return clients;
+    }
+
+    private static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client,String code) {
+        System.out.println(etat_par_client);
+        if(etat_par_client > 15000)
+            observation.add("L’état par client du client " + code + " est trop dispendieuse.");
     }
 
 
