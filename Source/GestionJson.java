@@ -51,7 +51,7 @@ public class GestionJson {
         catch (Exception e) {
             JsonException.validerProprietesJsonPresentes(e.getMessage(),cheminJson);
         }
-        JsonException.validationDate(attributsJson,interventions.size());
+        JsonException.validationDate(attributsJson);
     }
 
     private static void reccuperationAttributs(String[][] attributsJson, JSONArray interventions, int compteurInterventions) {
