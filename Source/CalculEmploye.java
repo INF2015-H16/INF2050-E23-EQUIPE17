@@ -159,22 +159,16 @@ public class CalculEmploye {
     }
 
     public static double arrondirMontant(double montant) {
-        double arrondi = Math.round(montant * 20) / 20.0; // Arrondi à 2 décimales
-        double difference = arrondi - Math.floor(arrondi); // Partie décimale
+        double arrondi = Math.ceil(montant * 20) / 20;
+        double difference = arrondi - Math.floor(arrondi);
 
-        if (difference < 0.025 || difference > 0.975) {
-            // Arrondi au multiple de 0.05 le plus proche
-            int multiplicateur = (int) Math.round(arrondi * 20) % 5;
-            if (multiplicateur == 0 || multiplicateur == 1) {
-                return Math.floor(arrondi * 20) / 20.0;
-            } else {
-                return Math.ceil(arrondi * 20) / 20.0;
-            }
+        if (difference < 0.025) {
+            return Math.floor(arrondi * 20) / 20;
+        } else if (difference >= 0.025 && difference < 0.075) {
+            return Math.floor(arrondi * 20 + 0.05) / 20;
         } else {
-            // Conversion en double avec 2 décimales
-            return Double.parseDouble(String.format("%.2f", arrondi));
+            return Math.ceil(arrondi * 20) / 20;
         }
     }
-
 
 }
