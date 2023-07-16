@@ -69,7 +69,6 @@ public class GestionProgramme {
     }
 
     public static void employeeObservation(String code, int overtime,int distance_deplacement,JSONArray observations) {
-        System.out.println(code + " " + distance_deplacement);
         if(distance_deplacement > 50)
             observations.add("Le client " + code + " a une distance de deplacement plus que 50 km");
     }
@@ -91,7 +90,14 @@ public class GestionProgramme {
         type_employe = JsonException.validerTypeEmploye(donnees);
         taux_horaire_min = JsonException.validerTaux(donnees, 2);
         taux_horaire_max = JsonException.validerTaux(donnees, 3);
+        observationTaux(taux_horaire_max,taux_horaire_min,observations);
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe,observations);
+    }
+
+    private static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
+        if(tauxHoraireMax > 2 * tauxHoraireMin) {
+            observations.add("Le taux horaire maximum ne peut pas dépasser deux fois le taux horaire minimum.");
+        }
     }
 
     private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] etatParClient, int type_employe, int matricule_employe,JSONArray observations) throws JsonException {
