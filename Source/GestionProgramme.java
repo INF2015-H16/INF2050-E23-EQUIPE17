@@ -49,7 +49,7 @@ public class GestionProgramme {
     private static void recuperationInterventions(String[][] donnees, String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] EtatParClient,JSONArray observations) throws JsonException {
         int  status;
         for(int i = 0, j = 4; j< donnees.length-1; j++, i++)  {
-            status = JsonException.validation(donnees,j, nbrs);
+            status = JsonException.validation(donnees,j);
             if(status != -1 && !donnees[j][0].equals("#"))
                 sousMethodeInterventions2(donnees, distance_deplacement, overtime, nombre_heures, code, status, i, j,observations);
             else if(!(donnees[j][0].equals("#")) && !donnees[j][0].equals(""))
