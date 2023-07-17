@@ -22,23 +22,54 @@ public class GestionJson {
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
      *
-     * @param json      La chaîne JSON à convertir.
+     * @param json       La chaîne JSON à convertir.
      * @param cheminJson
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json, String cheminJson) throws JsonException, IOException{
+    public static String[][] lireFichierEntreeJson(String json, String cheminJson,JSONArray observations) throws JsonException, IOException{
         JSONObject employee = JSONObject.fromObject(json);
         JSONArray interventions = employee.getJSONArray("interventions");
         String[][] attributsJson = new String[5+interventions.size()][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
         recuperationInfos(employee, interventions, attributsJson, cheminJson);
         JsonException.validerInterventionsNonVide(interventions,cheminJson);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
-        JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson);
+        JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson,observations);
+        observationDates(attributsJson,observations);
         return attributsJson;
     }
 
+    private static void observationDates(String[][] attributsJson, JSONArray observations) {
+        String date1,date2,codeClient;
+        int mois1,annee1,annee2,mois2;
+
+        int i=4;
+        while(attributsJson[i][4] != null){
+            codeClient = attributsJson[i][0];
+            date1 = attributsJson[i][4];
+            for(int j=i+1; j<attributsJson.length-1 ; j++)
+            {
+                if(attributsJson[j][0].equals(codeClient))
+                {
+                    date2 = attributsJson[j][4];
+                    mois1 = Integer.parseInt(date1.substring(5, 7));
+                    annee1 = Integer.parseInt(date1.substring(0, 4));
+
+                    mois2 = Integer.parseInt(date2.substring(5, 7));
+                    annee2 = Integer.parseInt(date2.substring(0, 4));
+
+                    int monthsApart = (annee2 - annee1) * 12 + (mois2 - mois1);
+
+                    if(monthsApart >= 6)
+                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client " + codeClient +
+                                " d’un même employé doit être de moins de 6 mois.");                }
+
+            }
+            i++;
+        }
+    }
+
     private static void recuperationInfos(JSONObject employee, JSONArray interventions, String[][] attributsJson, String cheminJson) throws JsonException, IOException {
-        recuperationInfo(attributsJson, employee);// le 5 c'est pour le type, marticule et les taux
+        recuperationInfo(attributsJson, employee);
         recuperationInfo(attributsJson, interventions, cheminJson);
     }
 
@@ -114,7 +145,6 @@ public class GestionJson {
     }
 
     private static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client,String code) {
-        System.out.println(etat_par_client);
         if(etat_par_client > 15000)
             observation.add("L’état par client du client " + code + " est trop dispendieuse.");
     }
