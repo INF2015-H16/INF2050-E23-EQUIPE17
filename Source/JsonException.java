@@ -1,6 +1,5 @@
 package Source;
 
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -10,7 +9,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import static Source.ClassDate.*;
 
 public class JsonException extends Exception{
 
@@ -179,12 +181,12 @@ public class JsonException extends Exception{
         }
     }
 
-    public static void validerComboCodeClientDateIntervention(JSONArray interventionsArray, String cheminJson) throws IOException, JsonException {
+    public static void validerComboCodeClientDateIntervention(JSONArray interventionsArray, String cheminJson,JSONArray observations) throws IOException, JsonException {
         Set<String> codeClients = new HashSet<>();
         Set<String> dates = new HashSet<>();
         for (int i = 0; i < interventionsArray.size(); i++) {
             try {
-                verificationInterventions(interventionsArray, cheminJson, codeClients, dates, i);
+                verificationInterventions(interventionsArray, cheminJson, codeClients, dates, i,observations);
             }catch (Exception e){
                 validerProprietesJsonPresentes(e.getMessage(),cheminJson);
             }
@@ -192,7 +194,7 @@ public class JsonException extends Exception{
         validerChampVide(interventionsArray,cheminJson);
     }
 
-    private static void verificationInterventions(JSONArray interventionsArray, String cheminJson, Set<String> codeClients, Set<String> dates, int i) throws IOException,Exception {
+    private static void verificationInterventions(JSONArray interventionsArray, String cheminJson, Set<String> codeClients, Set<String> dates, int i,JSONArray observations) throws IOException,Exception {
         JSONObject intervention = interventionsArray.getJSONObject(i);
         String codeClient = intervention.getString("code_client");
         String dateIntervention = intervention.getString("date_intervention");
@@ -201,6 +203,7 @@ public class JsonException extends Exception{
         codeClients.add(codeClient);
         dates.add(dateIntervention);
     }
+
 
     private static void validerChampVide(JSONArray interventions, String cheminJson) throws IOException {
         for (int i = 0; i < interventions.size(); i++) {
