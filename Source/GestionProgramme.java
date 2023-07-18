@@ -11,7 +11,10 @@ import java.util.Arrays;
 public class GestionProgramme {
     private static int nombreTotalInterventions = 0;
     private static JSONObject occurrencesEtatClient = new JSONObject();
-
+    public static void reinitialiserStatistiques() {
+        nombreTotalInterventions = 0;
+        occurrencesEtatClient = new JSONObject();
+    }
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
