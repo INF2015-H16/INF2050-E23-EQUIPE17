@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import static Source.ClassDate.*;
 
 public class JsonException extends Exception{
 
