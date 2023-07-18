@@ -18,6 +18,11 @@ public class GestionProgramme {
     public static void mettreAJourNombreTotalInterventions(int count) {
         nombreTotalInterventions += count;
     }
+    public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
+        int nombreOccurrencesMaj = nombreOccurrences + count;
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
+    }
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
