@@ -40,7 +40,7 @@ public class GestionJson {
 
     private static void observationDates(String[][] attributsJson, JSONArray observations) {
         String date1,date2,codeClient;
-        int mois1,annee1,annee2,mois2;
+        int mois1,annee1,annee2,mois2,monthsApart;
 
         int i=4;
         while(attributsJson[i][4] != null){
@@ -57,7 +57,14 @@ public class GestionJson {
                     mois2 = Integer.parseInt(date2.substring(5, 7));
                     annee2 = Integer.parseInt(date2.substring(0, 4));
 
-                    int monthsApart = (annee2 - annee1) * 12 + (mois2 - mois1);
+                    if(annee2 > annee1 && mois2 > mois1)
+                        monthsApart = (annee2 - annee1) * 12 + (mois2 - mois1);
+                    else if(annee2 > annee1 && mois2 < mois1)
+                        monthsApart = (annee2 - annee1) * 12 + (mois1 - mois2);
+                    else if(annee2 < annee1 && mois2 > mois1)
+                        monthsApart = (annee1 - annee2) * 12 + (mois2 - mois1);
+                    else
+                        monthsApart = (annee1 - annee2) * 12 + (mois1 - mois2);
 
                     if(monthsApart >= 6)
                         observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client " + codeClient +
