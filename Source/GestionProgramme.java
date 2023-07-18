@@ -11,6 +11,16 @@ import java.util.Arrays;
 public class GestionProgramme {
     private static int nombreTotalInterventions = 0;
     private static JSONObject occurrencesEtatClient = new JSONObject();
+    public static void afficherStatistiques() {
+        System.out.println("Statistiques :");
+        System.out.println("-------------");
+        System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
+        System.out.println("Occurrences par état par client :");
+        for (Object plage : occurrencesEtatClient.keySet()) {
+            int count = occurrencesEtatClient.getInt(plage.toString());
+            System.out.println("- " + plage + " : " + count);
+        }
+    }
     public static void reinitialiserStatistiques() {
         nombreTotalInterventions = 0;
         occurrencesEtatClient = new JSONObject();
