@@ -15,6 +15,9 @@ public class GestionProgramme {
         nombreTotalInterventions = 0;
         occurrencesEtatClient = new JSONObject();
     }
+    public static void mettreAJourNombreTotalInterventions(int count) {
+        nombreTotalInterventions += count;
+    }
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
