@@ -9,6 +9,30 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GestionProgramme {
+    private static int nombreTotalInterventions = 0;
+    private static JSONObject occurrencesEtatClient = new JSONObject();
+    public static void afficherStatistiques() {
+        System.out.println("Statistiques :");
+        System.out.println("-------------");
+        System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
+        System.out.println("Occurrences par état par client :");
+        for (Object plage : occurrencesEtatClient.keySet()) {
+            int count = occurrencesEtatClient.getInt(plage.toString());
+            System.out.println("- " + plage + " : " + count);
+        }
+    }
+    public static void reinitialiserStatistiques() {
+        nombreTotalInterventions = 0;
+        occurrencesEtatClient = new JSONObject();
+    }
+    public static void mettreAJourNombreTotalInterventions(int count) {
+        nombreTotalInterventions += count;
+    }
+    public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
+        int nombreOccurrencesMaj = nombreOccurrences + count;
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
+    }
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
@@ -91,7 +115,7 @@ public class GestionProgramme {
         taux_horaire_min = JsonException.validerTaux(donnees, 2);
         taux_horaire_max = JsonException.validerTaux(donnees, 3);
         observationTaux(taux_horaire_max,taux_horaire_min,observations);
-        calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient, type_employe, matricule_employe,observations);
+        calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, taux_horaire_min, taux_horaire_max, EtatParClient, type_employe, matricule_employe,observations);
     }
 
     private static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
@@ -100,11 +124,11 @@ public class GestionProgramme {
         }
     }
 
-    private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double montantRegulier, double[] etatParClient, int type_employe, int matricule_employe,JSONArray observations) throws JsonException {
+    private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement, int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min, double taux_horaire_max, double[] etatParClient, int type_employe, int matricule_employe,JSONArray observations) throws JsonException {
         for (int i = 0; i < itterations; i++) {
-            if(CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier) > 200){
+            if(CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i]) > 200){
                 etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
-                    taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i], montantRegulier);
+                    taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i]);
         }
         }
         calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations);

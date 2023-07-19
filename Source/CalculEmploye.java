@@ -43,13 +43,12 @@ public class CalculEmploye {
      * @param tauxHoraireMax
      * @param distanceDeplacement
      * @param overtime
-     * @param montantregulier
      * @return
      * @throws JsonException
      */
     public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
                                                double tauxHoraireMin, double tauxHoraireMax,
-                                               double distanceDeplacement, double overtime, double montantregulier) throws JsonException {
+                                               double distanceDeplacement, double overtime) throws JsonException {
 
         double montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime );
 

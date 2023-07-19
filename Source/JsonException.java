@@ -116,7 +116,7 @@ public class JsonException extends Exception{
         }
     }
 
-    public static void validerProprietesJsonPresentes(String jsonObject, String arg2) throws IOException,JsonException {
+    public static void validerProprietesJsonPresentes(String jsonObject, String arg2) throws IOException {
         codeClientVerification(jsonObject, arg2);
         matriculeVerification(jsonObject, arg2);
         typeVerification(jsonObject, arg2);
