@@ -12,10 +12,10 @@ public class Statistique {
     final static int ETAT_PAR_CLIENT_1000 = 1000;
     final static int ETAT_PAR_CLIENT_10000 = 10000;
 
-    public static int calculeHeureMaxIntervention(String jsonObject, JSONArray tableauInterventions,
-                                                  String arg3) throws IOException {
+    public static void calculerHeureMaxPourIntervention(String entreeJson, JSONArray tableauInterventions,
+                                                        String arg3) throws IOException {
 
-        JSONObject employe = JSONObject.fromObject(jsonObject);
+        JSONObject employe = JSONObject.fromObject(entreeJson);
         tableauInterventions = employe.getJSONArray("interventions");
         int heureMax = 0;
         for (Object interventionObj : tableauInterventions) {
@@ -26,6 +26,24 @@ public class Statistique {
         GestionProgramme.ajouterMessage("Le nombre d'heures maximal pour une intervention est de" +" "+ heureMax
                 ,arg3);
 
-        return heureMax;
+    }
+
+    public static void calculerEtatParClientMax(String sortieJson, JSONArray clients,
+                                                String arg3 ) throws IOException {
+
+        JSONObject employe = JSONObject.fromObject(sortieJson);
+        clients = employe.getJSONArray("clients");
+        double etatParClientMax = 0.0;
+
+        for (Object clientObj : clients) {
+            JSONObject clientJson = (JSONObject) clientObj;
+            double etatParClient = clientJson.getDouble("etat_par_client");
+            etatParClientMax = Math.max(etatParClientMax, etatParClient);
+        }
+
+        GestionProgramme.ajouterMessage("L'etat par client maximal est de" +" "+ etatParClientMax
+                ,arg3);
+
+        
     }
 }
