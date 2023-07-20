@@ -8,11 +8,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String[][] donnees;
         JSONArray observations = new JSONArray();
-        String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "";
+        String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "",argument3 = "-SR";
         try {
             json = lecteurFichier(argument, json,buffer);
             donnees = GestionJson.lireFichierEntreeJson(GestionJson.convertirMajusculesEnMinuscules(json), argument2,observations);  // Conversion du contenu JSON en tableau de données
-            GestionProgramme.executerRecuperationInterventions(donnees, argument2, json,observations);
+            GestionProgramme.executerRecuperationInterventions(donnees, argument2, json,observations, argument3);
         } catch (JsonException e) {
             GestionProgramme.ajouterMessage(e.getMessage(),argument2);
         }
