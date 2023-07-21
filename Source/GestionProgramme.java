@@ -4,68 +4,11 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class GestionProgramme {
-    Scanner scanner = new Scanner(System.in);
-    private static int nombreTotalInterventions = 0;
-    private static JSONObject occurrencesEtatClient = new JSONObject();
-    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier) {
-        System.out.println("Statistiques :");
-        System.out.println("-------------");
-        System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
-        System.out.println("Occurrences par état par client :");
-        for (Object plage : occurrencesEtatClient.keySet()) {
-            int count = occurrencesEtatClient.getInt(plage.toString());
-            System.out.println("- " + plage + " : " + count);
-        }
-    }
-    public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
-        System.out.println("Voulez-vous vraiment reinitialiser les statistiques ? (Oui/Non)");
-        Scanner scanner = new Scanner(System.in);
-        String reponse = scanner.nextLine();
-        reponse = reponse.toLowerCase();
-
-        if(reponse.equals("oui"))
-        {
-            statistiques.put("nombre_total_interventions", 0);
-
-            JSONObject etatParClient = new JSONObject();
-            etatParClient.put("moins_de_1000", 0);
-            etatParClient.put("entre_1000_et_10000", 0);
-            etatParClient.put("plus_de_10000", 0);
-            statistiques.put("etat_par_client", 0);
-
-            JSONObject interventionsParEmploye = new JSONObject();
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 0", 0);
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 1", 0);
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 2", 0);
-            statistiques.put("interventions_par_employe", interventionsParEmploye);
-            statistiques.put("nombre heures maximal", 0);
-            statistiques.put("etat maximal par client", 0);
-            
-            try {
-                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-                System.out.println("Statistique reinitialiser.");
-            } catch (IOException e) {
-                System.out.println("Une erreur est survenue : " + e.getMessage());
-            }
-        }
-
-    }
-    public static void mettreAJourNombreTotalInterventions(int count) {
-        nombreTotalInterventions += count;
-    }
-    public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
-        int nombreOccurrencesMaj = nombreOccurrences + count;
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
-    }
     /**
      * Vérifie si un codeClient est présent dans le tableau `nbrs`.
      *
@@ -173,42 +116,11 @@ public class GestionProgramme {
         double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
         JsonException.validerFichierSortieDispo(argument2);
-        gestionStatistiques(option);
+        Statistique.gestionStatistiques(option);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
                 CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs,observations);
     }
 
-    public static boolean isFileEmpty(String fileName) {
-        File file = new File(fileName);
-
-        if (!file.exists()) {
-            System.out.println("File not found: " + fileName);
-            return false;
-        }
-
-        try (Scanner scanner = new Scanner(file)) {
-            return !scanner.hasNextLine();
-        } catch (FileNotFoundException e) {
-            System.out.println("Error while reading the file: " + e.getMessage());
-            return false;
-        }
-    }
-    private static void gestionStatistiques(String option) {
-        JSONObject statistiques = new JSONObject();
-
-        String nomFichier = "Statistique.json";
-
-        boolean fichierVide = isFileEmpty(nomFichier);
-
-
-        if(option.equals("-SR"))
-            reinitialiserStatistiques(statistiques,nomFichier);
-        else if(option.equals("-S"))
-            afficherStatistiques(statistiques,fichierVide,nomFichier);
-    }
-
-    private static void calculStatistiques(JSONObject statistiques, boolean fichierVide) {
-    }
 
     public static void ajouterMessage(String message, String arg) throws IOException {
         JSONObject messageObjet = new JSONObject();
