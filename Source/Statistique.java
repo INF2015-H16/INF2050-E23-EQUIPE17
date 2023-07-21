@@ -17,8 +17,8 @@ public class Statistique {
     final static int TYPE_EMPLOYE_0 = 0;
     final static int TYPE_EMPLOYE_1 = 1;
     final static int TYPE_EMPLOYE_2 = 2;
-    final static int ETAT_PAR_CLIENT_1000 = 1000;
-    final static int ETAT_PAR_CLIENT_10000 = 10000;
+    final static double ETAT_PAR_CLIENT_1000 = 1000.00;
+    final static double ETAT_PAR_CLIENT_10000 = 10000.00;
 
     Scanner scanner = new Scanner(System.in);
     private static int nombreTotalInterventions = 0;
@@ -151,7 +151,7 @@ public class Statistique {
     }
 
     public static void calculerOccurrencesEtatParClient(String sortieJson, String arg3) throws IOException {
-        
+
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
