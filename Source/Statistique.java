@@ -66,8 +66,20 @@ public class Statistique {
         }
 
     }
-    public static void mettreAJourNombreTotalInterventions(int count) {
-        nombreTotalInterventions += count;
+
+    private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
+        boolean fichierVide = estFichierVide(nomFichier);
+        if (!fichierVide) {
+            try (Scanner scanner = new Scanner(new File(nomFichier))) {
+                StringBuilder stringBuilder = new StringBuilder();
+                while (scanner.hasNextLine()) {
+                    stringBuilder.append(scanner.nextLine());
+                }
+                statistiques = JSONObject.fromObject(stringBuilder.toString());
+            } catch (IOException e) {
+                System.out.println("Erreur lors de la lecture des statistiques : " + e.getMessage());
+            }
+        }
     }
     public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
         int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
