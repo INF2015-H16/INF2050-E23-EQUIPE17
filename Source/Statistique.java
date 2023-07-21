@@ -156,11 +156,11 @@ public class Statistique {
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
 
-        JSONArray jsonArray = (JSONArray) JSONSerializer.toJSON(sortieJson);
+        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(sortieJson);
 
-        for (Object obj : jsonArray) {
-            JSONObject jsonObject = (JSONObject) obj;
-                double etatParClient = jsonObject.getDouble("etat_par_client");
+        for (Object obj : listeJson) {
+            JSONObject objetJson = (JSONObject) obj;
+                double etatParClient = objetJson.getDouble("etat_par_client");
                 if (etatParClient < ETAT_PAR_CLIENT_1000) {
                     nbrEtatInf1000++;
 
