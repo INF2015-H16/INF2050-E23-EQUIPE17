@@ -81,6 +81,14 @@ public class Statistique {
             }
         }
     }
+    private static void sauvegarderStatistiques(String nomFichier, JSONObject statistiques) {
+        try {
+            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(), "UTF-8");
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la sauvegarde des statistiques : " + e.getMessage());
+        }
+    }
+
     public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
         int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
         int nombreOccurrencesMaj = nombreOccurrences + count;
