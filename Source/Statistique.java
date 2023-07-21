@@ -179,6 +179,24 @@ public class Statistique {
 
     }
 
+    public static void calculerTotalInterventions(String entreeJson, String arg3) throws IOException {
+
+        int totalInterventions = 0;
+        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(entreeJson);
+
+        for (Object obj : listeJson) {
+            JSONObject objetJson = (JSONObject) obj;
+            if (objetJson.containsKey("interventions")) {
+                JSONArray interventionsArray = objetJson.getJSONArray("interventions");
+                totalInterventions += interventionsArray.size();
+            }
+        }
+
+        GestionProgramme.ajouterMessage("Le total d'interventions dans le fichier JSON est : " +
+                totalInterventions, arg3);
+
+    }
+
 
     public static void gestionStatistiques(String option) {
         JSONObject statistiques = new JSONObject();
