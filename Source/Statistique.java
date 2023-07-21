@@ -2,6 +2,7 @@ package Source;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -148,6 +149,37 @@ public class Statistique {
                 ,arg3);
 
     }
+
+    public static void calculerOccurrencesEtatParClient(String sortieJson, String arg3) throws IOException {
+        
+        int nbrEtatInf1000 = 0;
+        int nbrEtatEntreMinMax = 0;
+        int nbrEtatSup10000 = 0;
+
+        JSONArray jsonArray = (JSONArray) JSONSerializer.toJSON(sortieJson);
+
+        for (Object obj : jsonArray) {
+            JSONObject jsonObject = (JSONObject) obj;
+                double etatParClient = jsonObject.getDouble("etat_par_client");
+                if (etatParClient < ETAT_PAR_CLIENT_1000) {
+                    nbrEtatInf1000++;
+
+                } else if(etatParClient > ETAT_PAR_CLIENT_1000 && etatParClient < ETAT_PAR_CLIENT_10000){
+                    nbrEtatEntreMinMax++;
+
+            } else if(etatParClient > ETAT_PAR_CLIENT_10000){
+                    nbrEtatSup10000++;
+                }
+
+            }
+
+        GestionProgramme.ajouterMessage("Le nombre d'etats par client < 1000 est de :" + nbrEtatInf1000 +
+                        "\nLe nombre d'etats par client entre 1000 et 10000 est de :" + nbrEtatEntreMinMax +
+                        "\nLe nombre d'etats par client superieur a 10000 est de :" + nbrEtatSup10000, arg3);
+
+    }
+
+
     public static void gestionStatistiques(String option) {
         JSONObject statistiques = new JSONObject();
 
