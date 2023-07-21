@@ -67,6 +67,14 @@ public class Statistique {
 
     }
 
+    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques,int count) {
+        String nomFichier = "";
+        chargerStatistiques(statistiques,nomFichier);
+        int nombreTotalInterventions = statistiques.optInt("interventions", 0);
+        nombreTotalInterventions += count;
+        statistiques.put("interventions", nombreTotalInterventions);
+        sauvegarderStatistiques(nomFichier,statistiques);
+    }
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
         boolean fichierVide = estFichierVide(nomFichier);
         if (!fichierVide) {
