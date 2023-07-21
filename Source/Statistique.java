@@ -75,6 +75,19 @@ public class Statistique {
         statistiques.put("interventions", nombreTotalInterventions);
         sauvegarderStatistiques(nomFichier,statistiques);
     }
+    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques,String plage, int count) {
+        String nomFichier = "";
+        chargerStatistiques(statistiques,nomFichier);
+        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
+        if (occurrencesEtatClient == null) {
+            occurrencesEtatClient = new JSONObject();
+            statistiques.put("etat_par_client", occurrencesEtatClient);
+        }
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
+        int nombreOccurrencesMaj = nombreOccurrences + count;
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
+        sauvegarderStatistiques(nomFichier,statistiques);
+    }
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
         boolean fichierVide = estFichierVide(nomFichier);
         if (!fichierVide) {
