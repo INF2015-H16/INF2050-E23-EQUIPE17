@@ -9,6 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+
+//TODO Faire une methode pour calculer le nombre total d’interventions
+
 public class Statistique {
     final static int TYPE_EMPLOYE_0 = 0;
     final static int TYPE_EMPLOYE_1 = 1;
@@ -29,6 +32,7 @@ public class Statistique {
             System.out.println("- " + plage + " : " + count);
         }
     }
+    
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
         System.out.println("Voulez-vous vraiment reinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
