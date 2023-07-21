@@ -135,7 +135,19 @@ public class Statistique {
         else if(option.equals("-S"))
             afficherStatistiques(statistiques,fichierVide,nomFichier);
     }
-
+    private static boolean estFichierVide(String nomFichier) {
+        File fichier = new File(nomFichier);
+        if (!fichier.exists()) {
+            System.out.println("Fichier introuvable : " + nomFichier);
+            return false;
+        }
+        try (Scanner scanner = new Scanner(fichier)) {
+            return !scanner.hasNextLine();
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la lecture du fichier : " + e.getMessage());
+            return false;
+        }
+    }
     private static void calculStatistiques(JSONObject statistiques, boolean fichierVide) {
     }
 }
