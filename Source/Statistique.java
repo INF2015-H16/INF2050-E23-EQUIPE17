@@ -33,7 +33,7 @@ public class Statistique {
             System.out.println("- " + plage + " : " + count);
         }
     }
-    
+
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
         System.out.println("Voulez-vous vraiment reinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
@@ -160,22 +160,22 @@ public class Statistique {
 
         for (Object obj : listeJson) {
             JSONObject objetJson = (JSONObject) obj;
-                double etatParClient = objetJson.getDouble("etat_par_client");
-                if (etatParClient < ETAT_PAR_CLIENT_1000) {
-                    nbrEtatInf1000++;
+            double etatParClient = objetJson.getDouble("etat_par_client");
+            if (etatParClient < ETAT_PAR_CLIENT_1000) {
+                nbrEtatInf1000++;
 
-                } else if(etatParClient > ETAT_PAR_CLIENT_1000 && etatParClient < ETAT_PAR_CLIENT_10000){
-                    nbrEtatEntreMinMax++;
+            } else if(etatParClient > ETAT_PAR_CLIENT_1000 && etatParClient < ETAT_PAR_CLIENT_10000){
+                nbrEtatEntreMinMax++;
 
             } else if(etatParClient > ETAT_PAR_CLIENT_10000){
-                    nbrEtatSup10000++;
-                }
-
+                nbrEtatSup10000++;
             }
 
+        }
+
         GestionProgramme.ajouterMessage("Le nombre d'etats par client < 1000 est de :" + nbrEtatInf1000 +
-                        "\nLe nombre d'etats par client entre 1000 et 10000 est de :" + nbrEtatEntreMinMax +
-                        "\nLe nombre d'etats par client superieur a 10000 est de :" + nbrEtatSup10000, arg3);
+                "\nLe nombre d'etats par client entre 1000 et 10000 est de :" + nbrEtatEntreMinMax +
+                "\nLe nombre d'etats par client superieur a 10000 est de :" + nbrEtatSup10000, arg3);
 
     }
 
@@ -194,6 +194,41 @@ public class Statistique {
 
         GestionProgramme.ajouterMessage("Le total d'interventions dans le fichier JSON est : " +
                 totalInterventions, arg3);
+
+    }
+
+
+    public static void calculerInterventionsParEmploye(String entreeJson, String arg3) throws IOException {
+
+        int typeEmploye0 = 0;
+        int typeEmploye1 = 0;
+        int typeEmploye2 = 0;
+
+        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(entreeJson);
+
+        for (Object obj : listeJson) {
+            JSONObject objetJson = (JSONObject) obj;
+            int typeEmploye = objetJson.getInt("type_employe");
+
+            if (typeEmploye == TYPE_EMPLOYE_0) {
+                JSONArray interventions = objetJson.getJSONArray("interventions");
+                typeEmploye0 = interventions.size();
+
+            } else if(typeEmploye == TYPE_EMPLOYE_1){
+                JSONArray interventions = objetJson.getJSONArray("interventions");
+                typeEmploye1 = interventions.size();
+
+            } else if(typeEmploye == TYPE_EMPLOYE_2){
+                JSONArray interventions = objetJson.getJSONArray("interventions");
+                typeEmploye2 = interventions.size();
+            }
+
+        }
+
+        GestionProgramme.ajouterMessage("Le nombre d'interventions pour les employes de type 0 est de :"
+                + typeEmploye0 +
+                "\nLe nombre d'interventions pour les employes de type 1 est de :" + typeEmploye1 +
+                "\nLe nombre d'interventions pour les employes de type 2 est de :" + typeEmploye2, arg3);
 
     }
 
