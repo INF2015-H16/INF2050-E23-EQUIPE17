@@ -107,27 +107,12 @@ public class Statistique {
                 ,arg3);
 
     }
-    public static boolean isFileEmpty(String fileName) {
-        File file = new File(fileName);
-
-        if (!file.exists()) {
-            System.out.println("File not found: " + fileName);
-            return false;
-        }
-
-        try (Scanner scanner = new Scanner(file)) {
-            return !scanner.hasNextLine();
-        } catch (FileNotFoundException e) {
-            System.out.println("Error while reading the file: " + e.getMessage());
-            return false;
-        }
-    }
     public static void gestionStatistiques(String option) {
         JSONObject statistiques = new JSONObject();
 
         String nomFichier = "Statistique.json";
 
-        boolean fichierVide = isFileEmpty(nomFichier);
+        boolean fichierVide = estFichierVide(nomFichier);
 
 
         if(option.equals("-SR"))
