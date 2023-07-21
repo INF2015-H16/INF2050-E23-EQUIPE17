@@ -198,7 +198,7 @@ public class Statistique {
     }
 
 
-    public static void calculerInterventionsParEmploye(String entreeJson, String arg3) throws IOException {
+    public static void calculerInterventionsParTypeEmploye(String entreeJson, String arg3) throws IOException {
 
         int typeEmploye0 = 0;
         int typeEmploye1 = 0;
