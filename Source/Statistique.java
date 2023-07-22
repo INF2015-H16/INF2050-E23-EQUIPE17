@@ -31,15 +31,16 @@ public class Statistique {
         System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
         System.out.println("Occurrences par état par client :");
         calculerHeureMaxPourIntervention(json,statistiques);
+
+
+    }
+
+    public static void ecrireStatisques(JSONObject statistiques, String nomFichier) {
         try {
             FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
         }
-        /*for (Object plage : occurrencesEtatClient.keySet()) {
-            int count = occurrencesEtatClient.getInt(plage.toString());
-            System.out.println("- " + plage + " : " + count);
-        }*/
     }
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
@@ -148,10 +149,8 @@ public class Statistique {
     }
 
 
-    //done to be tested
     public static void calculerEtatParClientMax(JSONObject employe, JSONObject statistique) {
         JSONArray clients = employe.getJSONArray("clients");
-        System.out.println(clients);
 
         double etatParClientMax = 0.0;
 
@@ -162,8 +161,8 @@ public class Statistique {
             etatParClientMax = Math.max(etatParClientMax, parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
         }
 
-
-        statistique.put("L'etat par client maximal est de: ", etatParClientMax);
+        System.out.println(etatParClientMax);
+        statistique.put("l’état par client maximal retourné pour un client: ", etatParClientMax);
     }
 
     public static void calculerOccurrencesEtatParClient(String sortieJson, JSONObject statistique) {

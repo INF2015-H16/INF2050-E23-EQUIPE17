@@ -118,6 +118,7 @@ public class GestionJson {
         employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,observation));
         employee.accumulate("observations",observation);
         Statistique.calculerEtatParClientMax(employee,statistique);
+        Statistique.ecrireStatisques(statistique,"Statistique.json");
         ecritureFichierSortieJson(arg,employee);
     }
 
