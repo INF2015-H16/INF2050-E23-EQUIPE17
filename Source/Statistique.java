@@ -6,9 +6,11 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 
 
 //TODO Faire une methode pour calculer le nombre total d’interventions
@@ -23,15 +25,21 @@ public class Statistique {
     Scanner scanner = new Scanner(System.in);
     private static int nombreTotalInterventions = 0;
     private static JSONObject occurrencesEtatClient = new JSONObject();
-    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier) {
+    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier, JSONArray interventions,String json) {
         System.out.println("Statistiques :");
         System.out.println("-------------");
         System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
         System.out.println("Occurrences par état par client :");
-        for (Object plage : occurrencesEtatClient.keySet()) {
+        calculerHeureMaxPourIntervention(json,statistiques);
+        try {
+            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
+        } catch (IOException e) {
+            System.out.println("Une erreur est survenue : " + e.getMessage());
+        }
+        /*for (Object plage : occurrencesEtatClient.keySet()) {
             int count = occurrencesEtatClient.getInt(plage.toString());
             System.out.println("- " + plage + " : " + count);
-        }
+        }*/
     }
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
@@ -89,6 +97,7 @@ public class Statistique {
         occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
         sauvegarderStatistiques(nomFichier,statistiques);
     }
+
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
         boolean fichierVide = estFichierVide(nomFichier);
         if (!fichierVide) {
@@ -105,7 +114,7 @@ public class Statistique {
     }
     private static void sauvegarderStatistiques(String nomFichier, JSONObject statistiques) {
         try {
-            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(), "UTF-8");
+            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
         } catch (IOException e) {
             System.out.println("Erreur lors de la sauvegarde des statistiques : " + e.getMessage());
         }
@@ -116,9 +125,9 @@ public class Statistique {
         int nombreOccurrencesMaj = nombreOccurrences + count;
         occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
     }
-    public static void calculerHeureMaxPourIntervention(String entreeJson, JSONArray tableauInterventions,
-                                                        String arg3) throws IOException {
 
+    public static void calculerHeureMaxPourIntervention(String entreeJson, JSONObject statistique) {
+        JSONArray tableauInterventions;
         JSONObject employe = JSONObject.fromObject(entreeJson);
         tableauInterventions = employe.getJSONArray("interventions");
         int heureMax = 0;
@@ -127,30 +136,29 @@ public class Statistique {
             int nombreHeures = interventionJson.getInt("nombre_heures");
             heureMax = Math.max(heureMax, nombreHeures);
         }
-        GestionProgramme.ajouterMessage("Le nombre d'heures maximal pour une intervention est de" +" "+ heureMax
-                ,arg3);
-
+        statistique.put("Heure maximal soumis pour une intervention: ",heureMax);
     }
 
-    public static void calculerEtatParClientMax(String sortieJson, JSONArray clients,
-                                                String arg3 ) throws IOException {
 
-        JSONObject employe = JSONObject.fromObject(sortieJson);
-        clients = employe.getJSONArray("clients");
+    //done to be tested
+    public static void calculerEtatParClientMax(JSONObject employe, JSONObject statistique) {
+        JSONArray clients = employe.getJSONArray("clients");
+        System.out.println(clients);
+
         double etatParClientMax = 0.0;
 
-        for (Object clientObj : clients) {
-            JSONObject clientJson = (JSONObject) clientObj;
-            double etatParClient = clientJson.getDouble("etat_par_client");
-            etatParClientMax = Math.max(etatParClientMax, etatParClient);
+
+        for (int i = 0; i < clients.size(); i++) {
+            JSONObject jsonObject = clients.getJSONObject(i);
+            String etatParClient = jsonObject.getString("etat_par_client");
+            etatParClientMax = Math.max(etatParClientMax, parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
         }
 
-        GestionProgramme.ajouterMessage("L'etat par client maximal est de" +" "+ etatParClientMax
-                ,arg3);
 
+        statistique.put("L'etat par client maximal est de: ", etatParClientMax);
     }
 
-    public static void calculerOccurrencesEtatParClient(String sortieJson, String arg3) throws IOException {
+    public static void calculerOccurrencesEtatParClient(String sortieJson, JSONObject statistique) {
 
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
@@ -170,16 +178,15 @@ public class Statistique {
             } else if(etatParClient > ETAT_PAR_CLIENT_10000){
                 nbrEtatSup10000++;
             }
-
         }
 
-        GestionProgramme.ajouterMessage("Le nombre d'etats par client < 1000 est de :" + nbrEtatInf1000 +
-                "\nLe nombre d'etats par client entre 1000 et 10000 est de :" + nbrEtatEntreMinMax +
-                "\nLe nombre d'etats par client superieur a 10000 est de :" + nbrEtatSup10000, arg3);
+        statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000 );
+        statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ",nbrEtatEntreMinMax );
+        statistique.put("Le nombre d'etats par client superieur a 10000 est de : ",nbrEtatSup10000);
 
     }
 
-    public static void calculerTotalInterventions(String entreeJson, String arg3) throws IOException {
+    public static void calculerTotalInterventions(String entreeJson, JSONObject statistique) throws IOException {
 
         int totalInterventions = 0;
         JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(entreeJson);
@@ -192,13 +199,12 @@ public class Statistique {
             }
         }
 
-        GestionProgramme.ajouterMessage("Le total d'interventions dans le fichier JSON est : " +
-                totalInterventions, arg3);
+        statistique.put("Le total d'interventions dans le fichier JSON est : " ,totalInterventions);
 
     }
 
 
-    public static void calculerInterventionsParTypeEmploye(String entreeJson, String arg3) throws IOException {
+    public static void calculerInterventionsParTypeEmploye(String entreeJson, JSONObject statistique) throws IOException {
 
         int typeEmploye0 = 0;
         int typeEmploye1 = 0;
@@ -225,16 +231,14 @@ public class Statistique {
 
         }
 
-        GestionProgramme.ajouterMessage("Le nombre d'interventions pour les employes de type 0 est de :"
-                + typeEmploye0 +
-                "\nLe nombre d'interventions pour les employes de type 1 est de :" + typeEmploye1 +
-                "\nLe nombre d'interventions pour les employes de type 2 est de :" + typeEmploye2, arg3);
+        statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" ,typeEmploye0);
+        statistique.put("Le nombre d'interventions pour les employes de type 1 est de :" ,typeEmploye1);
+        statistique.put("Le nombre d'interventions pour les employes de type 2 est de :" , typeEmploye2);
 
     }
 
 
-    public static void gestionStatistiques(String option) {
-        JSONObject statistiques = new JSONObject();
+    public static void gestionStatistiques(String option, JSONArray interventions, String json,JSONObject statistiques) {
 
         String nomFichier = "Statistique.json";
 
@@ -244,7 +248,7 @@ public class Statistique {
         if(option.equals("-SR"))
             reinitialiserStatistiques(statistiques,nomFichier);
         else if(option.equals("-S"))
-            afficherStatistiques(statistiques,fichierVide,nomFichier);
+            afficherStatistiques(statistiques,fichierVide,nomFichier,interventions,json);
     }
     private static boolean estFichierVide(String nomFichier) {
         File fichier = new File(nomFichier);
@@ -260,5 +264,35 @@ public class Statistique {
         }
     }
     private static void calculStatistiques(JSONObject statistiques, boolean fichierVide) {
+    }
+
+    static JSONArray interventionsArray(String json) {
+        JSONArray interventions = new JSONArray();
+        String extracted = "";
+        boolean flag = false;
+        char ch = 0;
+
+        int i=0;
+        while(i < json.length() )
+        {
+            ch = json.charAt(i);
+            if(ch == '[')
+                flag = true;
+
+            else if (ch == ']'){
+                flag = false;
+                extracted += "]";
+            }
+
+            if(flag)
+                extracted += ch;
+
+            i++;
+        }
+
+
+        interventions = JSONArray.fromObject(extracted.toString());
+
+        return interventions;
     }
 }

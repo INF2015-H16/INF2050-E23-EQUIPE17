@@ -22,13 +22,14 @@ public class GestionJson {
     /**
      * Convertit une chaîne JSON en un tableau à deux dimensions contenant les données extraites.
      *
-     * @param json       La chaîne JSON à convertir.
+     * @param json          La chaîne JSON à convertir.
      * @param cheminJson
+     * @param interventions
      * @return Un tableau à deux dimensions contenant les données extraites du JSON.
      */
-    public static String[][] lireFichierEntreeJson(String json, String cheminJson,JSONArray observations) throws JsonException, IOException{
+    public static String[][] lireFichierEntreeJson(String json, String cheminJson, JSONArray observations, JSONArray interventions) throws JsonException, IOException{
         JSONObject employee = JSONObject.fromObject(json);
-        JSONArray interventions = employee.getJSONArray("interventions");
+        interventions = employee.getJSONArray("interventions");
         String[][] attributsJson = new String[5+interventions.size()][5]; //La methode calculInterventions permet de savoir combien on va resever d'espace pour les interventions
         recuperationInfos(employee, interventions, attributsJson, cheminJson);
         JsonException.validerInterventionsNonVide(interventions,cheminJson);
@@ -109,13 +110,14 @@ public class GestionJson {
     }
 
 
-    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs,JSONArray observation) {
+    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs, JSONArray observation, JSONObject statistique) {
         JSONObject employee = new JSONObject();
         employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee,observation);
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
         employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,observation));
         employee.accumulate("observations",observation);
+        Statistique.calculerEtatParClientMax(employee,statistique);
         ecritureFichierSortieJson(arg,employee);
     }
 
