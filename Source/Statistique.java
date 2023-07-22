@@ -3,10 +3,16 @@ package Source;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import net.sf.json.util.JSONTokener;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import static java.lang.Double.parseDouble;
@@ -31,11 +37,13 @@ public class Statistique {
         System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
         System.out.println("Occurrences par état par client :");
         calculerHeureMaxPourIntervention(json,statistiques);
-
-
+        calculerInterventionsParTypeEmploye(json,statistiques);
     }
 
     public static void ecrireStatisques(JSONObject statistiques, String nomFichier) {
+        if(!estFichierVide(nomFichier))
+            statistiques = sauvegarderStatistiques(statistiques,nomFichier);
+
         try {
             FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
@@ -89,7 +97,6 @@ public class Statistique {
         int nombreTotalInterventions = statistiques.optInt("interventions", 0); // Obtient le nombre total d'interventions actuel
         nombreTotalInterventions += count; // Met à jour le nombre total d'interventions en ajoutant le count
         statistiques.put("interventions", nombreTotalInterventions); // Met à jour le nombre total d'interventions dans l'objet JSON
-        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
 
     /**
@@ -110,7 +117,6 @@ public class Statistique {
         int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0); // Obtient le nombre d'occurrences actuel pour la plage spécifiée
         int nombreOccurrencesMaj = nombreOccurrences + count; // Met à jour le nombre d'occurrences en ajoutant le count
         occurrencesEtatClient.put(plage, nombreOccurrencesMaj); // Met à jour le nombre d'occurrences pour la plage spécifiée dans l'objet JSON
-        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
 
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
@@ -127,13 +133,29 @@ public class Statistique {
             }
         }
     }
-    private static void sauvegarderStatistiques(String nomFichier, JSONObject statistiques) {
+
+
+    private static JSONObject sauvegarderStatistiques(JSONObject statistiques, String nomFichier) {
+        JSONObject jsonObject = null;
         try {
-            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
+            String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
+            jsonObject = (JSONObject) JSONSerializer.toJSON(jsonContent);
+
+            Iterator<String> keysIterator = statistiques.keys();
+            while (keysIterator.hasNext()) {
+                String key = keysIterator.next();
+                int value1 = statistiques.getInt(key);
+                int value2 = jsonObject.getInt(key);
+                jsonObject.put(key, value1 + value2);
+            }
+
         } catch (IOException e) {
-            System.out.println("Erreur lors de la sauvegarde des statistiques : " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return jsonObject;
     }
+
 
     public static void calculerHeureMaxPourIntervention(String entreeJson, JSONObject statistique) {
         JSONArray tableauInterventions;
@@ -214,16 +236,14 @@ public class Statistique {
     }
 
 
-    public static void calculerInterventionsParTypeEmploye(String entreeJson, JSONObject statistique) throws IOException {
+    public static void calculerInterventionsParTypeEmploye(String entreeJson, JSONObject statistique) {
 
         int typeEmploye0 = 0;
         int typeEmploye1 = 0;
         int typeEmploye2 = 0;
 
-        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(entreeJson);
+        JSONObject objetJson =  JSONObject.fromObject(entreeJson);
 
-        for (Object obj : listeJson) {
-            JSONObject objetJson = (JSONObject) obj;
             int typeEmploye = objetJson.getInt("type_employe");
 
             if (typeEmploye == TYPE_EMPLOYE_0) {
@@ -239,7 +259,6 @@ public class Statistique {
                 typeEmploye2 = interventions.size();
             }
 
-        }
 
         statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" ,typeEmploye0);
         statistique.put("Le nombre d'interventions pour les employes de type 1 est de :" ,typeEmploye1);
