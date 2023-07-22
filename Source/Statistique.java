@@ -125,12 +125,6 @@ public class Statistique {
             System.out.println("Erreur lors de la sauvegarde des statistiques : " + e.getMessage());
         }
     }
-
-    public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
-        int nombreOccurrencesMaj = nombreOccurrences + count;
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
-    }
     public static void calculerHeureMaxPourIntervention(String entreeJson, JSONArray tableauInterventions,
                                                         String arg3) throws IOException {
 
