@@ -76,26 +76,40 @@ public class Statistique {
 
     }
 
-    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques,int count) {
-        String nomFichier = "";
-        chargerStatistiques(statistiques,nomFichier);
-        int nombreTotalInterventions = statistiques.optInt("interventions", 0);
-        nombreTotalInterventions += count;
-        statistiques.put("interventions", nombreTotalInterventions);
-        sauvegarderStatistiques(nomFichier,statistiques);
+    /**
+     * Met à jour le nombre total d'interventions dans les statistiques et sauvegarde les statistiques dans un fichier.
+     *
+     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
+     * @param count          Le nombre d'interventions à ajouter au nombre total.
+     */
+    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int count) {
+        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
+        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
+        int nombreTotalInterventions = statistiques.optInt("interventions", 0); // Obtient le nombre total d'interventions actuel
+        nombreTotalInterventions += count; // Met à jour le nombre total d'interventions en ajoutant le count
+        statistiques.put("interventions", nombreTotalInterventions); // Met à jour le nombre total d'interventions dans l'objet JSON
+        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
-    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques,String plage, int count) {
-        String nomFichier = "";
-        chargerStatistiques(statistiques,nomFichier);
-        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
+
+    /**
+     * Met à jour le nombre d'occurrences avec un état par client dans la plage spécifiée et sauvegarde les statistiques dans un fichier.
+     *
+     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
+     * @param plage          La plage d'état par client (ex: "moins_de_1000", "entre_1000_et_10000", "plus_de_10000").
+     * @param count          Le nombre d'occurrences à ajouter à la plage spécifiée.
+     */
+    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int count) {
+        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
+        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
+        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client"); // Obtient l'objet JSON "etat_par_client" s'il existe
         if (occurrencesEtatClient == null) {
-            occurrencesEtatClient = new JSONObject();
-            statistiques.put("etat_par_client", occurrencesEtatClient);
+            occurrencesEtatClient = new JSONObject(); // Crée un nouvel objet JSON s'il n'existe pas encore
+            statistiques.put("etat_par_client", occurrencesEtatClient); // Ajoute l'objet "etat_par_client" aux statistiques
         }
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
-        int nombreOccurrencesMaj = nombreOccurrences + count;
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
-        sauvegarderStatistiques(nomFichier,statistiques);
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0); // Obtient le nombre d'occurrences actuel pour la plage spécifiée
+        int nombreOccurrencesMaj = nombreOccurrences + count; // Met à jour le nombre d'occurrences en ajoutant le count
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj); // Met à jour le nombre d'occurrences pour la plage spécifiée dans l'objet JSON
+        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
 
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
@@ -118,12 +132,6 @@ public class Statistique {
         } catch (IOException e) {
             System.out.println("Erreur lors de la sauvegarde des statistiques : " + e.getMessage());
         }
-    }
-
-    public static void mettreAJourOccurrencesEtatClient(String plage, int count) {
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
-        int nombreOccurrencesMaj = nombreOccurrences + count;
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
     }
 
     public static void calculerHeureMaxPourIntervention(String entreeJson, JSONObject statistique) {
