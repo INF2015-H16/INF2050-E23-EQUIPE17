@@ -68,14 +68,21 @@ public class Statistique {
 
     }
 
-    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques,int count) {
-        String nomFichier = "";
-        chargerStatistiques(statistiques,nomFichier);
-        int nombreTotalInterventions = statistiques.optInt("interventions", 0);
-        nombreTotalInterventions += count;
-        statistiques.put("interventions", nombreTotalInterventions);
-        sauvegarderStatistiques(nomFichier,statistiques);
+    /**
+     * Met à jour le nombre total d'interventions dans les statistiques et sauvegarde les statistiques dans un fichier.
+     *
+     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
+     * @param count          Le nombre d'interventions à ajouter au nombre total.
+     */
+    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int count) {
+        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
+        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
+        int nombreTotalInterventions = statistiques.optInt("interventions", 0); // Obtient le nombre total d'interventions actuel
+        nombreTotalInterventions += count; // Met à jour le nombre total d'interventions en ajoutant le count
+        statistiques.put("interventions", nombreTotalInterventions); // Met à jour le nombre total d'interventions dans l'objet JSON
+        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
+
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques,String plage, int count) {
         String nomFichier = "";
         chargerStatistiques(statistiques,nomFichier);
