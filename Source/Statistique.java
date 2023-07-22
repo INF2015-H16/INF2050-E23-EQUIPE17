@@ -165,24 +165,25 @@ public class Statistique {
         statistique.put("l’état par client maximal retourné pour un client: ", etatParClientMax);
     }
 
-    public static void calculerOccurrencesEtatParClient(String sortieJson, JSONObject statistique) {
+    public static void calculerOccurrencesEtatParClient(JSONObject employe, JSONObject statistique) {
 
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
 
-        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(sortieJson);
+        JSONArray clients = employe.getJSONArray("clients");
 
-        for (Object obj : listeJson) {
-            JSONObject objetJson = (JSONObject) obj;
-            double etatParClient = objetJson.getDouble("etat_par_client");
-            if (etatParClient < ETAT_PAR_CLIENT_1000) {
+        for (int i = 0; i < clients.size(); i++) {
+            JSONObject jsonObject = clients.getJSONObject(i);
+            String etatParClient = jsonObject.getString("etat_par_client");
+            double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
+            if (etatClient < ETAT_PAR_CLIENT_1000) {
                 nbrEtatInf1000++;
 
-            } else if(etatParClient > ETAT_PAR_CLIENT_1000 && etatParClient < ETAT_PAR_CLIENT_10000){
+            } else if(etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000){
                 nbrEtatEntreMinMax++;
 
-            } else if(etatParClient > ETAT_PAR_CLIENT_10000){
+            } else if(etatClient > ETAT_PAR_CLIENT_10000){
                 nbrEtatSup10000++;
             }
         }
