@@ -194,16 +194,18 @@ public class Statistique {
 
     }
 
-    public static void calculerTotalInterventions(String entreeJson, JSONObject statistique) throws IOException {
+    public static void calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
+
 
         int totalInterventions = 0;
-        JSONArray listeJson = (JSONArray) JSONSerializer.toJSON(entreeJson);
+        JSONArray listeJson = employe.getJSONArray("clients");
+
+        System.out.println(listeJson);
 
         for (Object obj : listeJson) {
             JSONObject objetJson = (JSONObject) obj;
-            if (objetJson.containsKey("interventions")) {
-                JSONArray interventionsArray = objetJson.getJSONArray("interventions");
-                totalInterventions += interventionsArray.size();
+            if (objetJson.containsKey("code_client")) {
+                totalInterventions++;
             }
         }
 
