@@ -83,19 +83,27 @@ public class Statistique {
         sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
 
-    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques,String plage, int count) {
-        String nomFichier = "";
-        chargerStatistiques(statistiques,nomFichier);
-        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
+    /**
+     * Met à jour le nombre d'occurrences avec un état par client dans la plage spécifiée et sauvegarde les statistiques dans un fichier.
+     *
+     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
+     * @param plage          La plage d'état par client (ex: "moins_de_1000", "entre_1000_et_10000", "plus_de_10000").
+     * @param count          Le nombre d'occurrences à ajouter à la plage spécifiée.
+     */
+    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int count) {
+        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
+        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
+        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client"); // Obtient l'objet JSON "etat_par_client" s'il existe
         if (occurrencesEtatClient == null) {
-            occurrencesEtatClient = new JSONObject();
-            statistiques.put("etat_par_client", occurrencesEtatClient);
+            occurrencesEtatClient = new JSONObject(); // Crée un nouvel objet JSON s'il n'existe pas encore
+            statistiques.put("etat_par_client", occurrencesEtatClient); // Ajoute l'objet "etat_par_client" aux statistiques
         }
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
-        int nombreOccurrencesMaj = nombreOccurrences + count;
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
-        sauvegarderStatistiques(nomFichier,statistiques);
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0); // Obtient le nombre d'occurrences actuel pour la plage spécifiée
+        int nombreOccurrencesMaj = nombreOccurrences + count; // Met à jour le nombre d'occurrences en ajoutant le count
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj); // Met à jour le nombre d'occurrences pour la plage spécifiée dans l'objet JSON
+        sauvegarderStatistiques(nomFichier, statistiques); // Sauvegarde les statistiques mises à jour dans le fichier
     }
+
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
         boolean fichierVide = estFichierVide(nomFichier);
         if (!fichierVide) {
