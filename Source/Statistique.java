@@ -6,12 +6,14 @@ import net.sf.json.JSONSerializer;
 import net.sf.json.util.JSONTokener;
 import org.apache.commons.io.FileUtils;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -40,10 +42,11 @@ public class Statistique {
         calculerInterventionsParTypeEmploye(json,statistiques);
     }
 
-    public static void ecrireStatisques(JSONObject statistiques, String nomFichier) {
-        if(!estFichierVide(nomFichier))
+    public static void ecrireStatisques(JSONObject statistiques, String nomFichier, String option) {
+        if(!estFichierVide(nomFichier) && option.equals("-S"))
             statistiques = sauvegarderStatistiques(statistiques,nomFichier);
 
+        if(option.equals("-S"))
         try {
             FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
@@ -51,39 +54,40 @@ public class Statistique {
         }
     }
 
-    public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) {
-        System.out.println("Voulez-vous vraiment reinitialiser les statistiques ? (Oui/Non)");
+
+    public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
+        System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
         String reponse = scanner.nextLine();
         reponse = reponse.toLowerCase();
 
-        if(reponse.equals("oui"))
-        {
-            statistiques.put("nombre_total_interventions", 0);
+        if (reponse.equals("oui")) {
+            String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
 
-            JSONObject etatParClient = new JSONObject();
-            etatParClient.put("moins_de_1000", 0);
-            etatParClient.put("entre_1000_et_10000", 0);
-            etatParClient.put("plus_de_10000", 0);
-            statistiques.put("etat_par_client", 0);
+            // Parse the string into a JSONObject
+            statistiques = JSONObject.fromObject(jsonContent);
 
-            JSONObject interventionsParEmploye = new JSONObject();
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 0", 0);
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 1", 0);
-            interventionsParEmploye.put("Nombre d'interventions pour type employe 2", 0);
-            statistiques.put("interventions_par_employe", interventionsParEmploye);
-            statistiques.put("nombre heures maximal", 0);
-            statistiques.put("etat maximal par client", 0);
 
+            Iterator<String> keysIterator = statistiques.keys();
+            System.out.println(statistiques);
+            System.out.println(keysIterator.hasNext());
+            while (keysIterator.hasNext()) {
+                String key = keysIterator.next();
+                System.out.println(key);
+                statistiques.put(key,0);
+            }
             try {
-                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-                System.out.println("Statistique reinitialiser.");
+                System.out.println(statistiques);
+                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
+                System.out.println("Statistiques réinitialisées.");
             } catch (IOException e) {
                 System.out.println("Une erreur est survenue : " + e.getMessage());
             }
+        } else {
+            System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
         }
-
     }
+
 
     /**
      * Met à jour le nombre total d'interventions dans les statistiques et sauvegarde les statistiques dans un fichier.
@@ -268,16 +272,21 @@ public class Statistique {
 
 
     public static void gestionStatistiques(String option, JSONArray interventions, String json,JSONObject statistiques) {
-
+        System.out.println("Here");
         String nomFichier = "Statistique.json";
 
         boolean fichierVide = estFichierVide(nomFichier);
 
 
-        if(option.equals("-SR"))
-            reinitialiserStatistiques(statistiques,nomFichier);
-        else if(option.equals("-S"))
-            afficherStatistiques(statistiques,fichierVide,nomFichier,interventions,json);
+        try {
+            if (option.equals("-SR"))
+                reinitialiserStatistiques(statistiques, nomFichier);
+            else if (option.equals("-S"))
+                afficherStatistiques(statistiques, fichierVide, nomFichier, interventions, json);
+        }catch (IOException e)
+        {
+            e.getMessage();
+        }
     }
     private static boolean estFichierVide(String nomFichier) {
         File fichier = new File(nomFichier);

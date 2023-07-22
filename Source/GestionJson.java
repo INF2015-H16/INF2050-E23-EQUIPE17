@@ -110,7 +110,7 @@ public class GestionJson {
     }
 
 
-    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs, JSONArray observation, JSONObject statistique) {
+    public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, String[] code, double[] etat_par_client, int j, String arg, int[] nbrs, JSONArray observation, JSONObject statistique, String option) {
         JSONObject employee = new JSONObject();
         employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee,observation);
         JSONArray clients = new JSONArray();
@@ -120,7 +120,7 @@ public class GestionJson {
         Statistique.calculerEtatParClientMax(employee,statistique);
         Statistique.calculerOccurrencesEtatParClient(employee,statistique);
         Statistique.calculerTotalInterventions(employee,statistique);
-        Statistique.ecrireStatisques(statistique,"Statistique.json");
+        Statistique.ecrireStatisques(statistique,"Statistique.json",option);
         ecritureFichierSortieJson(arg,employee);
     }
 
