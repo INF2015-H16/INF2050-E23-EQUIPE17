@@ -120,7 +120,7 @@ public class GestionProgramme {
         JsonException.validerFichierSortieDispo(argument2);
         Statistique.gestionStatistiques(option, interventions,json,statistiques);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
-                CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs,observations, statistiques);
+                CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs,observations, statistiques, option);
     }
 
 
