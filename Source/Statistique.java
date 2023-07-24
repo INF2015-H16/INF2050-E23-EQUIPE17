@@ -56,35 +56,43 @@ public class Statistique {
 
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
-        System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
-        Scanner scanner = new Scanner(System.in);
-        String reponse = scanner.nextLine();
-        reponse = reponse.toLowerCase();
-
-        if (reponse.equals("oui")) {
-            String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
-
-            // Parse the string into a JSONObject
+        if (confirmerReinitialisation()) {
+            String jsonContent = lireContenuFichier(nomFichier);
             statistiques = JSONObject.fromObject(jsonContent);
 
+            reinitialiserValeurs(statistiques);
 
-            Iterator<String> keysIterator = statistiques.keys();
-            System.out.println(statistiques);
-            System.out.println(keysIterator.hasNext());
-            while (keysIterator.hasNext()) {
-                String key = keysIterator.next();
-                System.out.println(key);
-                statistiques.put(key,0);
-            }
-            try {
-                System.out.println(statistiques);
-                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
-                System.out.println("Statistiques réinitialisées.");
-            } catch (IOException e) {
-                System.out.println("Une erreur est survenue : " + e.getMessage());
-            }
+            sauvegarderStatistiquesSous(statistiques, nomFichier);
         } else {
             System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
+        }
+    }
+
+    private static boolean confirmerReinitialisation() {
+        System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
+        Scanner scanner = new Scanner(System.in);
+        String reponse = scanner.nextLine().toLowerCase();
+        return reponse.equals("oui");
+    }
+
+    private static String lireContenuFichier(String nomFichier) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
+    }
+
+    private static void reinitialiserValeurs(JSONObject statistiques) {
+        Iterator<String> keysIterator = statistiques.keys();
+        while (keysIterator.hasNext()) {
+            String key = keysIterator.next();
+            statistiques.put(key, 0);
+        }
+    }
+
+    private static void sauvegarderStatistiquesSous(JSONObject statistiques, String nomFichier) {
+        try {
+            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
+            System.out.println("Statistiques réinitialisées.");
+        } catch (IOException e) {
+            System.out.println("Une erreur est survenue : " + e.getMessage());
         }
     }
 
