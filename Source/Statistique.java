@@ -50,8 +50,8 @@ public class Statistique {
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
         if (confirmerReinitialisation()) {
-            String jsonContent = lireContenuFichier(nomFichier);
-            statistiques = JSONObject.fromObject(jsonContent);
+            String contenuJson = lireContenuFichier(nomFichier);
+            statistiques = JSONObject.fromObject(contenuJson);
 
             reinitialiserValeurs(statistiques);
 
@@ -123,7 +123,7 @@ public class Statistique {
         }
         int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
         int nombreOccurrencesMaj = nombreOccurrences + compte;
-        
+
         occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
     }
 
