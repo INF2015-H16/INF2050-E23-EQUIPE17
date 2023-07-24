@@ -209,7 +209,7 @@ public class Statistique {
         }
 
         // Update the statistics JSONObject with the calculated occurrences
-        updateStatistics(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
+        mettreStatistiquesAJour(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
     }
 
     private static void updateOccurrenceCounters(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
@@ -222,7 +222,7 @@ public class Statistique {
         }
     }
 
-    private static void updateStatistics(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+    private static void mettreStatistiquesAJour(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
         statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000);
         statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", nbrEtatEntreMinMax);
         statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", nbrEtatSup10000);
