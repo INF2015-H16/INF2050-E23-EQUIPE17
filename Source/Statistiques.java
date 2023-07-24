@@ -90,13 +90,7 @@ public class Statistiques {
         }
     }
 
-
-    /**
-     * Met à jour le nombre total d'interventions dans les statistiques et sauvegarde les statistiques dans un fichier.
-     *
-     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
-     * @param compte          Le nombre d'interventions à ajouter au nombre total.
-     */
+    
     public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int compte) {
 
         String nomFichier = "statistiques.json";
