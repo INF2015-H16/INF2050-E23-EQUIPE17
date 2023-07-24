@@ -282,7 +282,7 @@ public class Statistiques {
     }
 
 
-    public static void gestionStatistiques(String option, JSONArray interventions, String json,JSONObject statistiques) {
+    public static void gestionStatistiques(String option, JSONArray interventions, String json, JSONObject statistiques) {
         System.out.println("Here");
         String nomFichier = "Statistique.json";
 
@@ -290,10 +290,12 @@ public class Statistiques {
 
 
         try {
-            if (option.equals("-SR"))
+            if (option.equals("-SR")) {
                 reinitialiserStatistiques(statistiques, nomFichier);
-            else if (option.equals("-S"))
+            }
+            else if (option.equals("-S")) {
                 afficherStatistiques(statistiques, fichierVide, nomFichier, interventions, json);
+            }
         }catch (IOException e)
         {
             e.getMessage();
@@ -301,6 +303,7 @@ public class Statistiques {
     }
     private static boolean estFichierVide(String nomFichier) {
         File fichier = new File(nomFichier);
+
         if (!fichier.exists()) {
             System.out.println("Fichier introuvable : " + nomFichier);
             return false;
