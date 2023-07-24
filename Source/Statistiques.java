@@ -90,7 +90,7 @@ public class Statistiques {
         }
     }
 
-    
+
     public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int compte) {
 
         String nomFichier = "statistiques.json";
@@ -102,13 +102,7 @@ public class Statistiques {
         statistiques.put("interventions", nombreTotalInterventions);
     }
 
-    /**
-     * Met à jour le nombre d'occurrences avec un état par client dans la plage spécifiée et sauvegarde les statistiques dans un fichier.
-     *
-     * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
-     * @param plage          La plage d'état par client (ex: "moins_de_1000", "entre_1000_et_10000", "plus_de_10000").
-     * @param compte          Le nombre d'occurrences à ajouter à la plage spécifiée.
-     */
+   
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
 
         String nomFichier = "statistiques.json";
