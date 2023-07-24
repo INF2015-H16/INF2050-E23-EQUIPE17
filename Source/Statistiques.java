@@ -315,7 +315,7 @@ public class Statistiques {
     private static void calculStatistiques(JSONObject statistiques, boolean fichierVide) {
     }
 
-    static JSONArray interventionsArray(String json) {
+    static JSONArray listeInterventions(String json) {
         JSONArray interventions = new JSONArray();
         String extracted = "";
         boolean flag = false;
