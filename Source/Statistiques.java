@@ -317,30 +317,30 @@ public class Statistiques {
 
     static JSONArray listeInterventions(String json) {
         JSONArray interventions = new JSONArray();
-        String extracted = "";
-        boolean flag = false;
+        String extrait = "";
+        boolean drapeau = false;
         char ch = 0;
 
-        int i=0;
-        while(i < json.length() )
-        {
+        int i = 0;
+        while(i < json.length()) {
+
             ch = json.charAt(i);
+
             if(ch == '[')
-                flag = true;
+                drapeau = true;
 
             else if (ch == ']'){
-                flag = false;
-                extracted += "]";
+                drapeau = false;
+                extrait += "]";
             }
 
-            if(flag)
-                extracted += ch;
+            if(drapeau)
+                extrait += ch;
 
             i++;
         }
 
-
-        interventions = JSONArray.fromObject(extracted.toString());
+        interventions = JSONArray.fromObject(extrait.toString());
 
         return interventions;
     }
