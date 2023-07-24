@@ -118,7 +118,7 @@ public class GestionProgramme {
         double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
         JsonException.validerFichierSortieDispo(argument2);
-        Statistique.gestionStatistiques(option, interventions,json,statistiques);
+        Statistiques.gestionStatistiques(option, interventions,json,statistiques);
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal), CalculEmploye.arrondirMontant(coutFixe),
                 CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2, nbrs,observations, statistiques, option);
     }

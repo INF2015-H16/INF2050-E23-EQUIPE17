@@ -16,7 +16,7 @@ import java.util.Scanner;
 import static java.lang.Double.parseDouble;
 
 
-public class Statistique {
+public class Statistiques {
     final static int TYPE_EMPLOYE_0 = 0;
     final static int TYPE_EMPLOYE_1 = 1;
     final static int TYPE_EMPLOYE_2 = 2;
@@ -26,7 +26,8 @@ public class Statistique {
     Scanner scanner = new Scanner(System.in);
     private static int nombreTotalInterventions = 0;
     private static JSONObject occurrencesEtatClient = new JSONObject();
-    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier, JSONArray interventions,String json) {
+    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier,
+                                            JSONArray interventions,String json) {
         System.out.println("Statistiques :");
         System.out.println("-------------");
         System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);

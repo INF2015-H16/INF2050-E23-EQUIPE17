@@ -117,10 +117,10 @@ public class GestionJson {
         JSONObject client = new JSONObject();
         employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,observation));
         employee.accumulate("observations",observation);
-        Statistique.calculerEtatParClientMax(employee,statistique);
-        Statistique.calculerOccurrencesEtatParClient(employee,statistique);
-        Statistique.calculerTotalInterventions(employee,statistique);
-        Statistique.ecrireStatisques(statistique,"Statistique.json",option);
+        Statistiques.calculerEtatParClientMax(employee,statistique);
+        Statistiques.calculerOccurrencesEtatParClient(employee,statistique);
+        Statistiques.calculerTotalInterventions(employee,statistique);
+        Statistiques.ecrireStatisques(statistique,"Statistique.json",option);
         ecritureFichierSortieJson(arg,employee);
     }
 
