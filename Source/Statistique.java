@@ -205,14 +205,14 @@ public class Statistique {
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
 
             // Update occurrence counters based on the value of etatClient
-            updateOccurrenceCounters(etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
+            mettreCompteOccurrencesAJour(etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
         }
 
         // Update the statistics JSONObject with the calculated occurrences
         mettreStatistiquesAJour(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
     }
 
-    private static void updateOccurrenceCounters(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+    private static void mettreCompteOccurrencesAJour(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
         if (etatClient < ETAT_PAR_CLIENT_1000) {
             nbrEtatInf1000++;
         } else if (etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000) {
