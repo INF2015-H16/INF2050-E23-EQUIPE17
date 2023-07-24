@@ -3,25 +3,18 @@ package Source;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-import net.sf.json.util.JSONTokener;
 import org.apache.commons.io.FileUtils;
 
-import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 
-
-//TODO Faire une methode pour calculer le nombre total d’interventions
 
 public class Statistique {
     final static int TYPE_EMPLOYE_0 = 0;
@@ -200,7 +193,6 @@ public class Statistique {
     }
 
     public static void calculerOccurrencesEtatParClient(JSONObject employe, JSONObject statistique) {
-
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
@@ -211,22 +203,31 @@ public class Statistique {
             JSONObject jsonObject = clients.getJSONObject(i);
             String etatParClient = jsonObject.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
-            if (etatClient < ETAT_PAR_CLIENT_1000) {
-                nbrEtatInf1000++;
 
-            } else if(etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000){
-                nbrEtatEntreMinMax++;
-
-            } else if(etatClient > ETAT_PAR_CLIENT_10000){
-                nbrEtatSup10000++;
-            }
+            // Update occurrence counters based on the value of etatClient
+            updateOccurrenceCounters(etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
         }
 
-        statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000 );
-        statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ",nbrEtatEntreMinMax );
-        statistique.put("Le nombre d'etats par client superieur a 10000 est de : ",nbrEtatSup10000);
-
+        // Update the statistics JSONObject with the calculated occurrences
+        updateStatistics(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
     }
+
+    private static void updateOccurrenceCounters(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+        if (etatClient < ETAT_PAR_CLIENT_1000) {
+            nbrEtatInf1000++;
+        } else if (etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000) {
+            nbrEtatEntreMinMax++;
+        } else if (etatClient > ETAT_PAR_CLIENT_10000) {
+            nbrEtatSup10000++;
+        }
+    }
+
+    private static void updateStatistics(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+        statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000);
+        statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", nbrEtatEntreMinMax);
+        statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", nbrEtatSup10000);
+    }
+
 
     public static void calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
 
