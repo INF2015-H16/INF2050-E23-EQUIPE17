@@ -204,11 +204,9 @@ public class Statistique {
             String etatParClient = jsonObject.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
 
-            // Update occurrence counters based on the value of etatClient
             mettreCompteOccurrencesAJour(etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
         }
 
-        // Update the statistics JSONObject with the calculated occurrences
         mettreStatistiquesAJour(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
     }
 
