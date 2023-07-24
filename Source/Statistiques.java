@@ -187,9 +187,10 @@ public class Statistiques {
 
 
         for (int i = 0; i < clients.size(); i++) {
-            JSONObject jsonObject = clients.getJSONObject(i);
-            String etatParClient = jsonObject.getString("etat_par_client");
-            etatParClientMax = Math.max(etatParClientMax, parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
+            JSONObject objetJson = clients.getJSONObject(i);
+            String etatParClient = objetJson.getString("etat_par_client");
+            etatParClientMax = Math.max(etatParClientMax,
+                    parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
         }
 
         System.out.println(etatParClientMax);
@@ -214,7 +215,8 @@ public class Statistiques {
         mettreStatistiquesAJour(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
     }
 
-    private static void mettreCompteOccurrencesAJour(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+    private static void mettreCompteOccurrencesAJour(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax,
+                                                     int nbrEtatSup10000) {
         if (etatClient < ETAT_PAR_CLIENT_1000) {
             nbrEtatInf1000++;
         } else if (etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000) {
@@ -224,7 +226,8 @@ public class Statistiques {
         }
     }
 
-    private static void mettreStatistiquesAJour(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax, int nbrEtatSup10000) {
+    private static void mettreStatistiquesAJour(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax,
+                                                int nbrEtatSup10000) {
         statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000);
         statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", nbrEtatEntreMinMax);
         statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", nbrEtatSup10000);
@@ -232,7 +235,6 @@ public class Statistiques {
 
 
     public static void calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
-
 
         int totalInterventions = 0;
         JSONArray listeJson = employe.getJSONArray("clients");
@@ -246,7 +248,7 @@ public class Statistiques {
             }
         }
 
-        statistique.put("Le total d'interventions dans le fichier JSON est : " ,totalInterventions);
+        statistique.put("Le total d'interventions dans le fichier JSON est : ", totalInterventions);
 
     }
 
@@ -275,8 +277,8 @@ public class Statistiques {
             }
 
 
-        statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" ,typeEmploye0);
-        statistique.put("Le nombre d'interventions pour les employes de type 1 est de :" ,typeEmploye1);
+        statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" , typeEmploye0);
+        statistique.put("Le nombre d'interventions pour les employes de type 1 est de :" , typeEmploye1);
         statistique.put("Le nombre d'interventions pour les employes de type 2 est de :" , typeEmploye2);
 
     }
@@ -287,7 +289,6 @@ public class Statistiques {
         String nomFichier = "Statistique.json";
 
         boolean fichierVide = estFichierVide(nomFichier);
-
 
         try {
             if (option.equals("-SR")) {
