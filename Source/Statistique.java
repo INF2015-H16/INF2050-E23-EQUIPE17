@@ -109,19 +109,22 @@ public class Statistique {
      *
      * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
      * @param plage          La plage d'état par client (ex: "moins_de_1000", "entre_1000_et_10000", "plus_de_10000").
-     * @param count          Le nombre d'occurrences à ajouter à la plage spécifiée.
+     * @param compte          Le nombre d'occurrences à ajouter à la plage spécifiée.
      */
-    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int count) {
-        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
-        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
-        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client"); // Obtient l'objet JSON "etat_par_client" s'il existe
+    public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
+
+        String nomFichier = "statistiques.json";
+        chargerStatistiques(statistiques, nomFichier);
+        JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
+
         if (occurrencesEtatClient == null) {
-            occurrencesEtatClient = new JSONObject(); // Crée un nouvel objet JSON s'il n'existe pas encore
-            statistiques.put("etat_par_client", occurrencesEtatClient); // Ajoute l'objet "etat_par_client" aux statistiques
+            occurrencesEtatClient = new JSONObject();
+            statistiques.put("etat_par_client", occurrencesEtatClient);
         }
-        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0); // Obtient le nombre d'occurrences actuel pour la plage spécifiée
-        int nombreOccurrencesMaj = nombreOccurrences + count; // Met à jour le nombre d'occurrences en ajoutant le count
-        occurrencesEtatClient.put(plage, nombreOccurrencesMaj); // Met à jour le nombre d'occurrences pour la plage spécifiée dans l'objet JSON
+        int nombreOccurrences = occurrencesEtatClient.optInt(plage, 0);
+        int nombreOccurrencesMaj = nombreOccurrences + compte;
+        
+        occurrencesEtatClient.put(plage, nombreOccurrencesMaj);
     }
 
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
