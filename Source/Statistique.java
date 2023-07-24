@@ -128,11 +128,11 @@ public class Statistique {
         boolean fichierVide = estFichierVide(nomFichier);
         if (!fichierVide) {
             try (Scanner scanner = new Scanner(new File(nomFichier))) {
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder constructeurString = new StringBuilder();
                 while (scanner.hasNextLine()) {
-                    stringBuilder.append(scanner.nextLine());
+                    constructeurString.append(scanner.nextLine());
                 }
-                statistiques = JSONObject.fromObject(stringBuilder.toString());
+                statistiques = JSONObject.fromObject(constructeurString.toString());
             } catch (IOException e) {
                 System.out.println("Erreur lors de la lecture des statistiques : " + e.getMessage());
             }
