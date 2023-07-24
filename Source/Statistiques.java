@@ -95,14 +95,17 @@ public class Statistiques {
      * Met à jour le nombre total d'interventions dans les statistiques et sauvegarde les statistiques dans un fichier.
      *
      * @param statistiques   L'objet JSON contenant les statistiques à mettre à jour.
-     * @param count          Le nombre d'interventions à ajouter au nombre total.
+     * @param compte          Le nombre d'interventions à ajouter au nombre total.
      */
-    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int count) {
-        String nomFichier = "statistiques.json"; // Le nom du fichier où les statistiques sont sauvegardées
-        chargerStatistiques(statistiques, nomFichier); // Charge les statistiques à partir du fichier
-        int nombreTotalInterventions = statistiques.optInt("interventions", 0); // Obtient le nombre total d'interventions actuel
-        nombreTotalInterventions += count; // Met à jour le nombre total d'interventions en ajoutant le count
-        statistiques.put("interventions", nombreTotalInterventions); // Met à jour le nombre total d'interventions dans l'objet JSON
+    public static void mettreAJourNombreTotalInterventions(JSONObject statistiques, int compte) {
+
+        String nomFichier = "statistiques.json";
+        chargerStatistiques(statistiques, nomFichier);
+        int nombreTotalInterventions = statistiques.optInt("interventions", 0);
+
+        nombreTotalInterventions += compte;
+
+        statistiques.put("interventions", nombreTotalInterventions);
     }
 
     /**
@@ -170,13 +173,15 @@ public class Statistiques {
         JSONArray tableauInterventions;
         JSONObject employe = JSONObject.fromObject(entreeJson);
         tableauInterventions = employe.getJSONArray("interventions");
+
         int heureMax = 0;
+
         for (Object interventionObj : tableauInterventions) {
             JSONObject interventionJson = (JSONObject) interventionObj;
             int nombreHeures = interventionJson.getInt("nombre_heures");
             heureMax = Math.max(heureMax, nombreHeures);
         }
-        statistique.put("Heure maximal soumis pour une intervention: ",heureMax);
+        statistique.put("Heure maximal soumis pour une intervention: ", heureMax);
     }
 
 
