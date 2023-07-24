@@ -148,10 +148,10 @@ public class Statistique {
 
             Iterator<String> keysIterator = statistiques.keys();
             while (keysIterator.hasNext()) {
-                String key = keysIterator.next();
-                int value1 = statistiques.getInt(key);
-                int value2 = jsonObject.getInt(key);
-                jsonObject.put(key, value1 + value2);
+                String cle = keysIterator.next();
+                int valeur1 = statistiques.getInt(cle);
+                int valeur2 = jsonObject.getInt(cle);
+                jsonObject.put(cle, valeur1 + valeur2);
             }
 
         } catch (IOException e) {
