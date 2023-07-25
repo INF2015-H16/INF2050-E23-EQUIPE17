@@ -47,16 +47,22 @@ public class Statistiques {
 
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
-        if (confirmerReinitialisation()) {
-            String contenuJson = lireContenuFichier(nomFichier);
-            statistiques = JSONObject.fromObject(contenuJson);
-
-            reinitialiserValeurs(statistiques);
-
-            sauvegarderStatistiquesSous(statistiques, nomFichier);
-        } else {
-            System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
-        }
+       try {
+           if (estFichierVide(nomFichier))
+               System.out.println("Le fichier ne contient aucune donnees statisque");
+           else if (confirmerReinitialisation()) {
+               String contenuJson = lireContenuFichier(nomFichier);
+               statistiques = JSONObject.fromObject(contenuJson);
+               reinitialiserValeurs(statistiques);
+               sauvegarderStatistiquesSous(statistiques, nomFichier);
+           } else {
+               System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
+           }
+       }
+       catch (Exception e)
+       {
+           System.out.println("Il y'a un probelme avec le fichier de statisque");
+       }
     }
 
     private static boolean confirmerReinitialisation() {
