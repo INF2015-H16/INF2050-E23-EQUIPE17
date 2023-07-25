@@ -41,11 +41,11 @@ public class Statistiques {
             statistiques = sauvegarderStatistiques(statistiques,nomFichier);
 
         if(option.equals("-S"))
-        try {
-            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue : " + e.getMessage());
-        }
+            try {
+                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
+            } catch (IOException e) {
+                System.out.println("Une erreur est survenue : " + e.getMessage());
+            }
     }
 
 
@@ -102,7 +102,7 @@ public class Statistiques {
         statistiques.put("interventions", nombreTotalInterventions);
     }
 
-   
+
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
 
         String nomFichier = "statistiques.json";
@@ -254,20 +254,20 @@ public class Statistiques {
 
         JSONObject objetJson =  JSONObject.fromObject(entreeJson);
 
-            int typeEmploye = objetJson.getInt("type_employe");
+        int typeEmploye = objetJson.getInt("type_employe");
 
-            if (typeEmploye == TYPE_EMPLOYE_0) {
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye0 = interventions.size();
+        if (typeEmploye == TYPE_EMPLOYE_0) {
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye0 = interventions.size();
 
-            } else if(typeEmploye == TYPE_EMPLOYE_1){
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye1 = interventions.size();
+        } else if(typeEmploye == TYPE_EMPLOYE_1){
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye1 = interventions.size();
 
-            } else if(typeEmploye == TYPE_EMPLOYE_2){
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye2 = interventions.size();
-            }
+        } else if(typeEmploye == TYPE_EMPLOYE_2){
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye2 = interventions.size();
+        }
 
 
         statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" , typeEmploye0);
@@ -277,7 +277,8 @@ public class Statistiques {
     }
 
 
-    public static void gestionStatistiques(String option, JSONArray interventions, String json, JSONObject statistiques) {
+    public static void gestionStatistiques(String option, JSONArray interventions, String json,
+                                           JSONObject statistiques) {
         System.out.println("Here");
         String nomFichier = "Statistique.json";
 
