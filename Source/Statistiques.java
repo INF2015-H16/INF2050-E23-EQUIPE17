@@ -28,6 +28,7 @@ public class Statistiques {
                                             JSONArray interventions,String json) {
         System.out.println("Statistiques :");
         System.out.println("-------------");
+
         calculerHeureMaxPourIntervention(json,statistiques);
         calculerInterventionsParTypeEmploye(json,statistiques);
     }
@@ -37,8 +38,8 @@ public class Statistiques {
             statistiques = sauvegarderStatistiques(statistiques,nomFichier);
 
         if(option.equals("-S"))
-        try {
-            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
+            try {
+                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
         }
