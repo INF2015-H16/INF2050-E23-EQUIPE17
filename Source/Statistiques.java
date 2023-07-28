@@ -294,7 +294,7 @@ public class Statistiques {
             e.getMessage();
         }
     }
-    private static boolean estFichierVide(String nomFichier) {
+    public static boolean estFichierVide(String nomFichier) {
         File fichier = new File(nomFichier);
 
         if (!fichier.exists()) {
@@ -307,8 +307,6 @@ public class Statistiques {
             System.out.println("Erreur lors de la lecture du fichier : " + e.getMessage());
             return false;
         }
-    }
-    private static void calculStatistiques(JSONObject statistiques, boolean fichierVide) {
     }
 
     static JSONArray listeInterventions(String json) {
