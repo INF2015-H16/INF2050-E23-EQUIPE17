@@ -24,14 +24,10 @@ public class Statistiques {
     final static double ETAT_PAR_CLIENT_10000 = 10000.00;
 
     Scanner scanner = new Scanner(System.in);
-    private static int nombreTotalInterventions = 0;
-    private static JSONObject occurrencesEtatClient = new JSONObject();
     public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier,
                                             JSONArray interventions,String json) {
         System.out.println("Statistiques :");
         System.out.println("-------------");
-        System.out.println("Nombre total d'interventions : " + nombreTotalInterventions);
-        System.out.println("Occurrences par état par client :");
         calculerHeureMaxPourIntervention(json,statistiques);
         calculerInterventionsParTypeEmploye(json,statistiques);
     }
@@ -186,7 +182,6 @@ public class Statistiques {
                     parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
         }
 
-        System.out.println(etatParClientMax);
         statistique.put("l’état par client maximal retourné pour un client: ", etatParClientMax);
     }
 
@@ -232,8 +227,6 @@ public class Statistiques {
         int totalInterventions = 0;
         JSONArray listeJson = employe.getJSONArray("clients");
 
-        System.out.println(listeJson);
-
         for (Object obj : listeJson) {
             JSONObject objetJson = (JSONObject) obj;
             if (objetJson.containsKey("code_client")) {
@@ -278,7 +271,6 @@ public class Statistiques {
 
 
     public static void gestionStatistiques(String option, JSONArray interventions, String json, JSONObject statistiques) {
-        System.out.println("Here");
         String nomFichier = "Statistique.json";
 
         boolean fichierVide = estFichierVide(nomFichier);

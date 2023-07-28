@@ -132,7 +132,7 @@ public class CalculEmploye {
         return Math.min(montantHeuresSupplementaires, 1500.0);
     }
 
-    private static double calculerMontantHeuresSupplementairesType1(double overtime) {
+    public static double calculerMontantHeuresSupplementairesType1(double overtime) {
         double montantHeuresSupplementaires = 0.0;
 
         if (overtime > 4 && overtime <= 8) {
@@ -145,7 +145,7 @@ public class CalculEmploye {
     }
 
 
-    private static double calculerMontantHeuresSupplementairesType2(double overtime) {
+    public static double calculerMontantHeuresSupplementairesType2(double overtime) {
         double montantHeuresSupplementaires = 0.0;
 
         if (overtime <= 4) {
@@ -173,6 +173,4 @@ public class CalculEmploye {
             return arrondi; // Pas besoin d'arrondir, retourne le montant tel quel
         }
     }
-
-
 }
