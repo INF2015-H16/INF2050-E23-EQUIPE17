@@ -153,8 +153,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'interventions' manquant", arg2);
     }
 
-    private static void taux_horaireVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("taux_horaire_max") || jsonObject.contains("taux_horaire_min") )
+    private static void taux_horaireVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("taux_horaire_max") || objetJson.contains("taux_horaire_min") )
             GestionProgramme.ajouterMessage("Attribut 'taux_horaire' manquant", arg2);
     }
 
