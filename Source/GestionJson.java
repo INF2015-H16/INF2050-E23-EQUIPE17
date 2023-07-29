@@ -75,8 +75,8 @@ public class GestionJson {
                         monthsApart = (annee1 - annee2) * 12 + (mois1 - mois2);
 
                     if(monthsApart >= 6)
-                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client " + codeClient +
-                                " d’un même employé doit être de moins de 6 mois.");                }
+                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client "
+                                + codeClient + " d’un même employé doit être de moins de 6 mois.");                }
 
             }
             i++;
@@ -133,7 +133,8 @@ public class GestionJson {
         employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee,observation);
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
-        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,observation));
+        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,
+                observation));
         employee.accumulate("observations",observation);
         Statistiques.calculerEtatParClientMax(employee,statistique);
         Statistiques.calculerOccurrencesEtatParClient(employee,statistique);
