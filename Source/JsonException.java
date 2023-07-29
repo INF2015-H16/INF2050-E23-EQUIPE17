@@ -179,17 +179,18 @@ public class JsonException extends Exception{
         }
     }
 
-    public static void validerComboCodeClientDateIntervention(JSONArray interventionsArray, String cheminJson,JSONArray observations) throws IOException, JsonException {
+    public static void validerComboCodeClientDateIntervention(JSONArray listeInterventions, String cheminJson,
+                                                              JSONArray observations) throws IOException, JsonException{
         Set<String> codeClients = new HashSet<>();
         Set<String> dates = new HashSet<>();
-        for (int i = 0; i < interventionsArray.size(); i++) {
+        for (int i = 0; i < listeInterventions.size(); i++) {
             try {
-                verificationInterventions(interventionsArray, cheminJson, codeClients, dates, i,observations);
+                verificationInterventions(listeInterventions, cheminJson, codeClients, dates, i,observations);
             }catch (Exception e){
                 validerProprietesJsonPresentes(e.getMessage(),cheminJson);
             }
         }
-        validerChampVide(interventionsArray,cheminJson);
+        validerChampVide(listeInterventions,cheminJson);
     }
 
     private static void verificationInterventions(JSONArray interventionsArray, String cheminJson, Set<String> codeClients, Set<String> dates, int i,JSONArray observations) throws IOException,Exception {
