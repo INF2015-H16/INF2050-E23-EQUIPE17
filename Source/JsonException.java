@@ -112,7 +112,8 @@ public class JsonException extends Exception{
         try {
             existFichier(fichierSortie);
         } catch (IOException e) {
-            System.out.println("Une erreur s'est produite lors de la création du fichier de sortie. Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+            System.out.println("Une erreur s'est produite lors de la création du fichier de sortie. " +
+                    "Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
         }
     }
 
@@ -122,11 +123,13 @@ public class JsonException extends Exception{
             boolean fichierCree = fichierSortie.createNewFile();
 
             if (!fichierCree)
-                System.out.println("Impossible de créer le fichier de sortie. Veuillez vérifier les autorisations d'écriture et le chemin spécifié.");
+                System.out.println("Impossible de créer le fichier de sortie. Veuillez vérifier les autorisations" +
+                        " d'écriture et le chemin spécifié.");
         }
     }
 
     public static void validerProprietesJsonPresentes(String jsonObject, String arg2) throws IOException {
+
         codeClientVerification(jsonObject, arg2);
         matriculeVerification(jsonObject, arg2);
         typeVerification(jsonObject, arg2);
@@ -234,10 +237,12 @@ public class JsonException extends Exception{
         for (int i = 0; i < interventions.size(); i++) {
             JSONObject intervention = interventions.getJSONObject(i);
 
-            if (intervention.getString("code_client").equals("") || intervention.getString("code_client") == null) {
+            if (intervention.getString("code_client").equals("") ||
+                    intervention.getString("code_client") == null) {
                 GestionProgramme.ajouterMessage("Un champ de code client est vide", cheminJson);
             }
-            if (intervention.getString("date_intervention").equals("") || intervention.getString("date_intervention") == null) {
+            if (intervention.getString("date_intervention").equals("") ||
+                    intervention.getString("date_intervention") == null) {
                 GestionProgramme.ajouterMessage("Un champ de date est vide", cheminJson);
             }
         }
