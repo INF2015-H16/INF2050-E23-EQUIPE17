@@ -10,6 +10,7 @@ public class CalculEmploye {
      * @return etatCompteTotal
      */
     public static double calculerEtatCompteTotal(double[] etatsParClient) {
+
         double etatCompteTotal = 733.77;
 
         for (double etatParClient : etatsParClient) {
@@ -51,7 +52,8 @@ public class CalculEmploye {
                                                double tauxHoraireMin, double tauxHoraireMax,
                                                double distanceDeplacement, double overtime) throws JsonException {
 
-        double montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime );
+        double montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax,
+                distanceDeplacement, overtime );
 
         if (montantTotal < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
@@ -60,7 +62,10 @@ public class CalculEmploye {
         return montantTotalArrondi;
     }
 
-    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime) throws JsonException {
+    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin,
+                                          double tauxHoraireMax, double distanceDeplacement, double overtime)
+            throws JsonException {
+
         double montantregulier = calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
         double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
         double montantHeuresSupp = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
@@ -78,7 +83,9 @@ public class CalculEmploye {
      * @params tauxHoraireMin
      * @params tauxHoraireMax
      */
-    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax) {
+    public static double calculerMontantRegulier(int typeEmploye, double nombreHeures, double tauxHoraireMin,
+                                                 double tauxHoraireMax) {
+
         double tauxHoraire = 0;
 
         if (typeEmploye == 0){
@@ -100,7 +107,9 @@ public class CalculEmploye {
      * @param montantRegulier
      * @return
      */
-    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement, double montantRegulier) throws JsonException {
+    public static double calculerMontantDeplacement(int typeEmploye, double distanceDeplacement,
+                                                    double montantRegulier) throws JsonException {
+
         double calculeMontantDeplacement = 0.0;
 
         if (typeEmploye == 0) {
@@ -122,7 +131,9 @@ public class CalculEmploye {
      * @return
      */
     public static double calculerMontantHeuresSupplementaires(int typeEmploye, double overtime, double nombre_heures) {
+
         double montantHeuresSupplementaires = 0.0;
+
         if (typeEmploye == 0) {
             montantHeuresSupplementaires = 0.0;
         } else if (typeEmploye == 1) {
@@ -130,10 +141,12 @@ public class CalculEmploye {
         } else if (typeEmploye == 2) {
             montantHeuresSupplementaires = calculerMontantHeuresSupplementairesType2(overtime);
         }
+
         return Math.min(montantHeuresSupplementaires, 1500.0);
     }
 
-    private static double calculerMontantHeuresSupplementairesType1(double overtime) {
+    public static double calculerMontantHeuresSupplementairesType1(double overtime) {
+
         double montantHeuresSupplementaires = 0.0;
 
         if (overtime > 4 && overtime <= 8) {
@@ -146,7 +159,8 @@ public class CalculEmploye {
     }
 
 
-    private static double calculerMontantHeuresSupplementairesType2(double overtime) {
+    public static double calculerMontantHeuresSupplementairesType2(double overtime) {
+
         double montantHeuresSupplementaires = 0.0;
 
         if (overtime <= 4) {
@@ -159,6 +173,7 @@ public class CalculEmploye {
     }
 
     public static double arrondirMontant(double montant) {
+
         double arrondi = Math.round(montant * 20) / 20.0; // Arrondi à 2 décimales
         double difference = arrondi - Math.floor(arrondi); // Partie décimale
 
@@ -174,6 +189,4 @@ public class CalculEmploye {
             return arrondi; // Pas besoin d'arrondir, retourne le montant tel quel
         }
     }
-
-
 }
