@@ -158,8 +158,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'taux_horaire' manquant", arg2);
     }
 
-    private static void typeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("type_employe"))
+    private static void typeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("type_employe"))
             GestionProgramme.ajouterMessage("Attribut 'type_employe' manquant", arg2);
     }
 
