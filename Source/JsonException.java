@@ -128,8 +128,8 @@ public class JsonException extends Exception{
         dateVerification(jsonObject, arg2);
     }
 
-    private static void dateVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("date_intervention"))
+    private static void dateVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("date_intervention"))
             GestionProgramme.ajouterMessage("Attribut 'date_intervention' manquant", arg2);
     }
 
