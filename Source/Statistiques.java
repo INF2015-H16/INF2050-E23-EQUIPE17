@@ -188,6 +188,7 @@ public class Statistiques {
 
 
         for (int i = 0; i < clients.size(); i++) {
+
             JSONObject objetJson = clients.getJSONObject(i);
             String etatParClient = objetJson.getString("etat_par_client");
             etatParClientMax = Math.max(etatParClientMax,
@@ -229,6 +230,7 @@ public class Statistiques {
 
     private static void mettreStatistiquesAJour(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax,
                                                 int nbrEtatSup10000) {
+
         statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000);
         statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", nbrEtatEntreMinMax);
         statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", nbrEtatSup10000);
