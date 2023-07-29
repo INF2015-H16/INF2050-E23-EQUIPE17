@@ -258,7 +258,7 @@ public class Statistiques {
             }
         }
 
-        statistique.put("Le total d'interventions dans le fichier JSON est : ", totalInterventions);
+        statistique.put("Le total d'interventions soumises tous employés confondus est : ", totalInterventions);
 
     }
 
