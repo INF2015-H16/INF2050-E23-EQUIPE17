@@ -133,8 +133,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'date_intervention' manquant", arg2);
     }
 
-    private static void nombreHeuresVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("nombre_heures"))
+    private static void nombreHeuresVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("nombre_heures"))
             GestionProgramme.ajouterMessage("Attribut 'nombre_heures' manquant", arg2);
     }
 
