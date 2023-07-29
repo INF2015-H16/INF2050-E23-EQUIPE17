@@ -138,8 +138,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'nombre_heures' manquant", arg2);
     }
 
-    private static void overtimeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("overtime"))
+    private static void overtimeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("overtime"))
             GestionProgramme.ajouterMessage("Attribut 'overtime' manquant", arg2);
     }
 
