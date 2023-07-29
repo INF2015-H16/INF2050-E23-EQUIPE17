@@ -26,6 +26,7 @@ public class Statistiques {
     Scanner scanner = new Scanner(System.in);
     public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier,
                                             JSONArray interventions,String json) {
+
         System.out.println("Statistiques :");
         System.out.println("-------------");
         calculerHeureMaxPourIntervention(json,statistiques);
@@ -33,19 +34,21 @@ public class Statistiques {
     }
 
     public static void ecrireStatisques(JSONObject statistiques, String nomFichier, String option) {
+
         if(!estFichierVide(nomFichier) && option.equals("-S"))
             statistiques = sauvegarderStatistiques(statistiques,nomFichier);
 
         if(option.equals("-S"))
-        try {
-            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue : " + e.getMessage());
-        }
+            try {
+                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
+            } catch (IOException e) {
+                System.out.println("Une erreur est survenue : " + e.getMessage());
+            }
     }
 
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
+
         if (confirmerReinitialisation()) {
             String contenuJson = lireContenuFichier(nomFichier);
             statistiques = JSONObject.fromObject(contenuJson);
@@ -59,6 +62,7 @@ public class Statistiques {
     }
 
     private static boolean confirmerReinitialisation() {
+
         System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
         String reponse = scanner.nextLine().toLowerCase();
@@ -66,10 +70,12 @@ public class Statistiques {
     }
 
     private static String lireContenuFichier(String nomFichier) throws IOException {
+
         return new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
     }
 
     private static void reinitialiserValeurs(JSONObject statistiques) {
+
         Iterator<String> keysIterator = statistiques.keys();
         while (keysIterator.hasNext()) {
             String key = keysIterator.next();
@@ -78,6 +84,7 @@ public class Statistiques {
     }
 
     private static void sauvegarderStatistiquesSous(JSONObject statistiques, String nomFichier) {
+
         try {
             FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");
             System.out.println("Statistiques réinitialisées.");
@@ -98,7 +105,7 @@ public class Statistiques {
         statistiques.put("interventions", nombreTotalInterventions);
     }
 
-   
+
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
 
         String nomFichier = "statistiques.json";
@@ -116,7 +123,9 @@ public class Statistiques {
     }
 
     private static void chargerStatistiques(JSONObject statistiques,String nomFichier) {
+
         boolean fichierVide = estFichierVide(nomFichier);
+
         if (!fichierVide) {
             try (Scanner scanner = new Scanner(new File(nomFichier))) {
                 StringBuilder constructeurString = new StringBuilder();
@@ -132,6 +141,7 @@ public class Statistiques {
 
 
     private static JSONObject sauvegarderStatistiques(JSONObject statistiques, String nomFichier) {
+
         JSONObject jsonObject = null;
         try {
             String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
@@ -154,6 +164,7 @@ public class Statistiques {
 
 
     public static void calculerHeureMaxPourIntervention(String entreeJson, JSONObject statistique) {
+
         JSONArray tableauInterventions;
         JSONObject employe = JSONObject.fromObject(entreeJson);
         tableauInterventions = employe.getJSONArray("interventions");
@@ -170,6 +181,7 @@ public class Statistiques {
 
 
     public static void calculerEtatParClientMax(JSONObject employe, JSONObject statistique) {
+
         JSONArray clients = employe.getJSONArray("clients");
 
         double etatParClientMax = 0.0;
@@ -186,6 +198,7 @@ public class Statistiques {
     }
 
     public static void calculerOccurrencesEtatParClient(JSONObject employe, JSONObject statistique) {
+
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
@@ -247,20 +260,20 @@ public class Statistiques {
 
         JSONObject objetJson =  JSONObject.fromObject(entreeJson);
 
-            int typeEmploye = objetJson.getInt("type_employe");
+        int typeEmploye = objetJson.getInt("type_employe");
 
-            if (typeEmploye == TYPE_EMPLOYE_0) {
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye0 = interventions.size();
+        if (typeEmploye == TYPE_EMPLOYE_0) {
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye0 = interventions.size();
 
-            } else if(typeEmploye == TYPE_EMPLOYE_1){
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye1 = interventions.size();
+        } else if(typeEmploye == TYPE_EMPLOYE_1){
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye1 = interventions.size();
 
-            } else if(typeEmploye == TYPE_EMPLOYE_2){
-                JSONArray interventions = objetJson.getJSONArray("interventions");
-                typeEmploye2 = interventions.size();
-            }
+        } else if(typeEmploye == TYPE_EMPLOYE_2){
+            JSONArray interventions = objetJson.getJSONArray("interventions");
+            typeEmploye2 = interventions.size();
+        }
 
 
         statistique.put("Le nombre d'interventions pour les employes de type 0 est de :" , typeEmploye0);
@@ -270,7 +283,9 @@ public class Statistiques {
     }
 
 
-    public static void gestionStatistiques(String option, JSONArray interventions, String json, JSONObject statistiques) {
+    public static void gestionStatistiques(String option, JSONArray interventions, String json,
+                                           JSONObject statistiques) {
+
         String nomFichier = "Statistique.json";
 
         boolean fichierVide = estFichierVide(nomFichier);
@@ -288,6 +303,7 @@ public class Statistiques {
         }
     }
     public static boolean estFichierVide(String nomFichier) {
+
         File fichier = new File(nomFichier);
 
         if (!fichier.exists()) {
@@ -303,12 +319,14 @@ public class Statistiques {
     }
 
     static JSONArray listeInterventions(String json) {
+
         JSONArray interventions = new JSONArray();
         String extrait = "";
         boolean drapeau = false;
         char ch = 0;
 
         int i = 0;
+
         while(i < json.length()) {
 
             ch = json.charAt(i);
