@@ -55,8 +55,10 @@ public class Observations {
     }
 
     static JSONObject employeeObservation(JSONObject employee, double cout_variable, double etat_compte, double cout_fixe, JSONArray observations){
-        if(cout_variable > 3000)
+        if(cout_variable > 3000){
             observations.add("Le cout variable payable nécessite des ajustements");
+            System.out.println(cout_variable);
+       }
         if(etat_compte > 30000)
             observations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
         if(cout_fixe > 1500)

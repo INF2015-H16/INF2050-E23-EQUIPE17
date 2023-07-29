@@ -22,6 +22,7 @@ public class CalculEmploye {
 
     public static double calculerCoutVariable(double etatCompteTotal) {
 
+        System.out.println(2.5/100 * etatCompteTotal);
         return (2.5/100 * etatCompteTotal);
     }
 

@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import static java.lang.Double.parseDouble;
@@ -27,7 +29,6 @@ public class Statistiques {
     public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier,
                                             JSONArray interventions,String json) {
         System.out.println("Statistiques :");
-        System.out.println("-------------");
 
         calculerHeureMaxPourIntervention(json,statistiques);
         calculerInterventionsParTypeEmploye(json,statistiques);
@@ -42,6 +43,22 @@ public class Statistiques {
                 FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
+        }
+
+        affichageStatistique(statistiques);
+    }
+
+    private static void affichageStatistique(JSONObject statistiques) {
+        JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(statistiques);
+
+        Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
+        for (Iterator<?> keys = jsonObject.keys(); keys.hasNext();) {
+            String key = (String) keys.next();
+            jsonMap.put(key, jsonObject.get(key));
+        }
+
+        for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
         }
     }
 
