@@ -227,7 +227,9 @@ public class JsonException extends Exception{
         String dateIntervention = intervention.getString("date_intervention");
 
         if (codeClients.contains(codeClient) && dates.contains(dateIntervention))
-            GestionProgramme.ajouterMessage("Intervention non valide : même code client et même date", cheminJson);
+            GestionProgramme.ajouterMessage("Intervention non valide : même code client et même date",
+                    cheminJson);
+
         codeClients.add(codeClient);
         dates.add(dateIntervention);
     }

@@ -50,8 +50,8 @@ public class Observations {
                         monthsApart = (annee1 - annee2) * 12 + (mois1 - mois2);
 
                     if(monthsApart >= 6)
-                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client " + codeClient +
-                                " d’un même employé doit être de moins de 6 mois.");
+                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client "
+                                + codeClient + " d’un même employé doit être de moins de 6 mois.");
                 }
 
             }
