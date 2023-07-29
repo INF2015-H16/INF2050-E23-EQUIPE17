@@ -91,13 +91,7 @@ public class GestionProgramme {
         distance_deplacement[i] = JsonException.validerDistance(Integer.parseInt(donnees[1]));
         overtime[i] = JsonException.validerOvertime(Integer.parseInt(donnees[2]));
         nombre_heures[i] = JsonException.validerNombreHeures(Integer.parseInt(donnees[3]));
-        employeeObservation(code[i] ,overtime[i],distance_deplacement[i],observations);
-    }
-
-    public static void employeeObservation(String code, int overtime,int distance_deplacement,JSONArray observations) {
-
-        if(distance_deplacement > 50)
-            observations.add("Le client " + code + " a une distance de deplacement plus que 50 km");
+        Observations.employeeObservation(code[i] ,overtime[i],distance_deplacement[i],observations);
     }
 
 
@@ -117,7 +111,7 @@ public class GestionProgramme {
         donnees[status][0] = "#";
         donnees[status][1] = "-200";
 
-        employeeObservation(code[i] ,overtime[i],distance_deplacement[i],observations);
+        Observations.employeeObservation(code[i] ,overtime[i],distance_deplacement[i],observations);
     }
 
     private static void recuperationInfoEmploye(String[][] donnees, String argument2, int itterations, int[] nbrs,
@@ -132,59 +126,15 @@ public class GestionProgramme {
         type_employe = JsonException.validerTypeEmploye(donnees);
         taux_horaire_min = JsonException.validerTaux(donnees, 2);
         taux_horaire_max = JsonException.validerTaux(donnees, 3);
-        observationTaux(taux_horaire_max,taux_horaire_min,observations);
+        Observations.observationTaux(taux_horaire_max,taux_horaire_min,observations);
 
-        calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code,
+        CalculEmploye.calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code,
                 taux_horaire_min, taux_horaire_max, EtatParClient, type_employe, matricule_employe,observations,
                 option,interventions,json);
     }
 
-    private static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
-
-        if(tauxHoraireMax > 2 * tauxHoraireMin) {
-            observations.add("Le taux horaire maximum ne peut pas dépasser deux fois le taux horaire minimum.");
-        }
-    }
-
-    private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement,
-                                         int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min,
-                                         double taux_horaire_max, double[] etatParClient, int type_employe,
-                                         int matricule_employe, JSONArray observations, String option,
-                                         JSONArray interventions, String json) throws JsonException {
-
-        for (int i = 0; i < itterations; i++) {
-
-            if(CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min,
-                    taux_horaire_max, distance_deplacement[i], overtime[i]) > 200){
-
-                etatParClient[i] = CalculEmploye.calculerEtatParClient(type_employe, nombre_heures[i],
-                        taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i]);
-            }
-        }
-        calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations,option,
-                interventions,json);
-    }
-
-    private static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code,
-                                    double[] etatParClient, int matricule_employe, JSONArray observations,
-                                    String option, JSONArray interventions, String json) {
-
-        JSONObject statistiques = new JSONObject();
-        double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(etatParClient);
-        double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
-        double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
-        JsonException.validerFichierSortieDispo(argument2);
-        Statistiques.gestionStatistiques(option, interventions,json,statistiques);
-
-        GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal),
-                CalculEmploye.arrondirMontant(coutFixe),
-                CalculEmploye.arrondirMontant(coutVariable), code, etatParClient, itterations, argument2,
-                nbrs,observations, statistiques, option);
-    }
-
 
     public static void ajouterMessage(String message, String arg) throws IOException {
-
         JSONObject messageObjet = new JSONObject();
         messageObjet.accumulate("message", message);
         FileUtils.writeStringToFile(new File(arg), messageObjet.toString(), "UTF-8");

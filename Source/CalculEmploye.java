@@ -1,6 +1,8 @@
 package Source;
 
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class CalculEmploye {
 
@@ -22,8 +24,6 @@ public class CalculEmploye {
 
 
     public static double calculerCoutVariable(double etatCompteTotal) {
-
-        System.out.println(2.5/100 * etatCompteTotal);
         return (2.5/100 * etatCompteTotal);
     }
 
@@ -188,5 +188,41 @@ public class CalculEmploye {
         } else {
             return arrondi; // Pas besoin d'arrondir, retourne le montant tel quel
         }
+    }
+
+    public static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement,
+                                        int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min,
+                                        double taux_horaire_max, double[] etatParClient, int type_employe,
+                                        int matricule_employe, JSONArray observations, String option,
+                                        JSONArray interventions, String json) throws JsonException {
+
+        for (int i = 0; i < itterations; i++) {
+
+            if(calculerEtatParClient(type_employe, nombre_heures[i], taux_horaire_min,
+                    taux_horaire_max, distance_deplacement[i], overtime[i]) > 200){
+
+                etatParClient[i] = calculerEtatParClient(type_employe, nombre_heures[i],
+                        taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i]);
+            }
+        }
+        calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations,option,
+                interventions,json);
+    }
+
+    public static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code,
+                                   double[] etatParClient, int matricule_employe, JSONArray observations,
+                                   String option, JSONArray interventions, String json) {
+
+        JSONObject statistiques = new JSONObject();
+        double etatCompteTotal = calculerEtatCompteTotal(etatParClient);
+        double coutVariable = calculerCoutVariable(etatCompteTotal);
+        double coutFixe = calculerCoutFixe(etatCompteTotal);
+        JsonException.validerFichierSortieDispo(argument2);
+        Statistiques.gestionStatistiques(option, interventions,json,statistiques);
+
+        GestionJson.formattageFichierSortieJson(matricule_employe, arrondirMontant(etatCompteTotal),
+                arrondirMontant(coutFixe),
+                arrondirMontant(coutVariable), code, etatParClient, itterations, argument2,
+                nbrs,observations, statistiques, option);
     }
 }

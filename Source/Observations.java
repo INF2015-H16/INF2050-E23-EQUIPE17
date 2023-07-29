@@ -3,6 +3,10 @@ package Source;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class Observations {
 
     public static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
@@ -19,9 +23,10 @@ public class Observations {
     }
 
     public static void observationDates(String[][] attributsJson, JSONArray observations) {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date1, date2, codeClient;
-        int mois1, annee1, annee2, mois2, monthsApart;
+        Date d1, d2;
+        long difference;
 
         int i = 4;
 
@@ -29,29 +34,24 @@ public class Observations {
             codeClient = attributsJson[i][0];
             date1 = attributsJson[i][4];
 
-            for (int j = i + 1; j < attributsJson.length - 1; j++) {
-                if (attributsJson[j][0].equals(codeClient)) {
-                    date2 = attributsJson[j][4];
-                    mois1 = Integer.parseInt(date1.substring(5, 7));
-                    annee1 = Integer.parseInt(date1.substring(0, 4));
+            try {
+                d1 = sdf.parse(date1);
 
-                    mois2 = Integer.parseInt(date2.substring(5, 7));
-                    annee2 = Integer.parseInt(date2.substring(0, 4));
+                for (int j = i + 1; j < attributsJson.length - 1; j++) {
+                    if (attributsJson[j][0].equals(codeClient)) {
+                        date2 = attributsJson[j][4];
+                        d2 = sdf.parse(date2);
 
-                    if (annee2 > annee1 && mois2 > mois1)
-                        monthsApart = (annee2 - annee1) * 12 + (mois2 - mois1);
-                    else if (annee2 > annee1 && mois2 < mois1)
-                        monthsApart = (annee2 - annee1) * 12 + (mois1 - mois2);
-                    else if (annee2 < annee1 && mois2 > mois1)
-                        monthsApart = (annee1 - annee2) * 12 + (mois2 - mois1);
-                    else
-                        monthsApart = (annee1 - annee2) * 12 + (mois1 - mois2);
+                        difference = Math.abs(d2.getTime() - d1.getTime());
+                        long ecartMois = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS) / 30;
 
-                    if (monthsApart >= 6)
-                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client "
-                                + codeClient + " d’un même employé doit être de moins de 6 mois.");
+                        if (ecartMois >= 6)
+                            observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client "
+                                    + codeClient + " d’un même employé doit être de moins de 6 mois.");
+                    }
                 }
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             i++;
         }

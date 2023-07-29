@@ -39,48 +39,8 @@ public class GestionJson {
         JsonException.validerInterventionsNonVide(interventions,cheminJson);
         attributsJson[attributsJson.length-1][0] = String.valueOf(interventions.size());
         JsonException.validerComboCodeClientDateIntervention(interventions,cheminJson,observations);
-        observationDates(attributsJson,observations);
+        Observations.observationDates(attributsJson,observations);
         return attributsJson;
-    }
-
-    private static void observationDates(String[][] attributsJson, JSONArray observations) {
-
-        String date1,date2,codeClient;
-        int mois1,annee1,annee2,mois2,monthsApart;
-
-        int i=4;
-
-        while(attributsJson[i][4] != null){
-            codeClient = attributsJson[i][0];
-            date1 = attributsJson[i][4];
-
-            for(int j=i+1; j<attributsJson.length-1 ; j++)
-            {
-                if(attributsJson[j][0].equals(codeClient))
-                {
-                    date2 = attributsJson[j][4];
-                    mois1 = Integer.parseInt(date1.substring(5, 7));
-                    annee1 = Integer.parseInt(date1.substring(0, 4));
-
-                    mois2 = Integer.parseInt(date2.substring(5, 7));
-                    annee2 = Integer.parseInt(date2.substring(0, 4));
-
-                    if(annee2 > annee1 && mois2 > mois1)
-                        monthsApart = (annee2 - annee1) * 12 + (mois2 - mois1);
-                    else if(annee2 > annee1 && mois2 < mois1)
-                        monthsApart = (annee2 - annee1) * 12 + (mois1 - mois2);
-                    else if(annee2 < annee1 && mois2 > mois1)
-                        monthsApart = (annee1 - annee2) * 12 + (mois2 - mois1);
-                    else
-                        monthsApart = (annee1 - annee2) * 12 + (mois1 - mois2);
-
-                    if(monthsApart >= 6)
-                        observations.add("L’écart maximal entre les dates d’intervention (date_intervention) du client "
-                                + codeClient + " d’un même employé doit être de moins de 6 mois.");                }
-
-            }
-            i++;
-        }
     }
 
     private static void recuperationInfos(JSONObject employee, JSONArray interventions, String[][] attributsJson,
@@ -151,23 +111,7 @@ public class GestionJson {
         employee.accumulate("etat_compte", String.format(Locale.CANADA,"%.2f$", etat_compte));
         employee.accumulate("cout_fixe", String.format(Locale.CANADA,"%.2f$", cout_fixe));
         employee.accumulate("cout_variable", String.format(Locale.CANADA,"%.2f$", cout_variable));
-
-        employeeObservation(employee,cout_variable,etat_compte,cout_fixe,observations);
-        return employee;
-    }
-
-    private static JSONObject employeeObservation(JSONObject employee, double cout_variable, double etat_compte,
-                                                  double cout_fixe, JSONArray observations) {
-
-        if (cout_variable > 3000)
-            observations.add("Le cout variable payable nécessite des ajustements");
-
-        if (etat_compte > 30000)
-            observations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
-
-        if (cout_fixe > 1500)
-            observations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
-
+        Observations.employeeObservation(employee,cout_variable,etat_compte,cout_fixe,observations);
         return employee;
     }
 
@@ -177,23 +121,15 @@ public class GestionJson {
                                             JSONArray observation) {
 
         for(int i = 0; i < j; i++) {
-
             if(GestionProgramme.verificationCodeClient(nbrs, i) && code[i] != null) {
                 client.accumulate("code_client", code[i]);
                 client.accumulate("etat_par_client", String.format(Locale.CANADA,"%.2f$", etat_par_client[i]));
                 clients.add(client);
                 client.clear();
-                etatClientObservation(observation,employee,etat_par_client[i],code[i]);
+                Observations.etatClientObservation(observation,employee,etat_par_client[i],code[i]);
             }
         }
         return clients;
-    }
-
-    private static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client,
-                                              String code) {
-
-        if(etat_par_client > 15000)
-            observation.add("L’état par client du client " + code + " est trop dispendieuse.");
     }
 
 
