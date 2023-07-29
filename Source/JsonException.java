@@ -128,48 +128,48 @@ public class JsonException extends Exception{
         dateVerification(jsonObject, arg2);
     }
 
-    private static void dateVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("date_intervention"))
+    private static void dateVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("date_intervention"))
             GestionProgramme.ajouterMessage("Attribut 'date_intervention' manquant", arg2);
     }
 
-    private static void nombreHeuresVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("nombre_heures"))
+    private static void nombreHeuresVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("nombre_heures"))
             GestionProgramme.ajouterMessage("Attribut 'nombre_heures' manquant", arg2);
     }
 
-    private static void overtimeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("overtime"))
+    private static void overtimeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("overtime"))
             GestionProgramme.ajouterMessage("Attribut 'overtime' manquant", arg2);
     }
 
-    private static void distanceDeplacement(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("distance_deplacement"))
+    private static void distanceDeplacement(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("distance_deplacement"))
             GestionProgramme.ajouterMessage("Attribut 'distance_deplacement' manquant", arg2);
     }
 
-    private static void interventionsVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("interventions"))
+    private static void interventionsVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("interventions"))
             GestionProgramme.ajouterMessage("Attribut 'interventions' manquant", arg2);
     }
 
-    private static void taux_horaireVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("taux_horaire_max") || jsonObject.contains("taux_horaire_min") )
+    private static void taux_horaireVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("taux_horaire_max") || objetJson.contains("taux_horaire_min") )
             GestionProgramme.ajouterMessage("Attribut 'taux_horaire' manquant", arg2);
     }
 
-    private static void typeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("type_employe"))
+    private static void typeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("type_employe"))
             GestionProgramme.ajouterMessage("Attribut 'type_employe' manquant", arg2);
     }
 
-    private static void matriculeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("matricule_employe"))
+    private static void matriculeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("matricule_employe"))
             GestionProgramme.ajouterMessage("Attribut 'matricule_employe' manquant", arg2);
     }
 
-    private static void codeClientVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("code_client"))
+    private static void codeClientVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("code_client"))
             GestionProgramme.ajouterMessage("Attribut 'code_client' manquant", arg2);
     }
 
@@ -179,23 +179,29 @@ public class JsonException extends Exception{
         }
     }
 
-    public static void validerComboCodeClientDateIntervention(JSONArray interventionsArray, String cheminJson,JSONArray observations) throws IOException, JsonException {
+    public static void validerComboCodeClientDateIntervention(JSONArray listeInterventions, String cheminJson,
+                                                              JSONArray observations) throws IOException, JsonException{
         Set<String> codeClients = new HashSet<>();
         Set<String> dates = new HashSet<>();
-        for (int i = 0; i < interventionsArray.size(); i++) {
+        
+        for (int i = 0; i < listeInterventions.size(); i++) {
             try {
-                verificationInterventions(interventionsArray, cheminJson, codeClients, dates, i,observations);
+                verificationInterventions(listeInterventions, cheminJson, codeClients, dates, i,observations);
             }catch (Exception e){
                 validerProprietesJsonPresentes(e.getMessage(),cheminJson);
             }
         }
-        validerChampVide(interventionsArray,cheminJson);
+        validerChampVide(listeInterventions,cheminJson);
     }
 
-    private static void verificationInterventions(JSONArray interventionsArray, String cheminJson, Set<String> codeClients, Set<String> dates, int i,JSONArray observations) throws IOException,Exception {
-        JSONObject intervention = interventionsArray.getJSONObject(i);
+    private static void verificationInterventions(JSONArray listeInterventions, String cheminJson,
+                                                  Set<String> codeClients, Set<String> dates, int i,
+                                                  JSONArray observations) throws IOException,Exception {
+
+        JSONObject intervention = listeInterventions.getJSONObject(i);
         String codeClient = intervention.getString("code_client");
         String dateIntervention = intervention.getString("date_intervention");
+
         if (codeClients.contains(codeClient) && dates.contains(dateIntervention))
             GestionProgramme.ajouterMessage("Intervention non valide : même code client et même date", cheminJson);
         codeClients.add(codeClient);

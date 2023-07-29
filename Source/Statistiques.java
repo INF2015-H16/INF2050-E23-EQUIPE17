@@ -28,7 +28,6 @@ public class Statistiques {
                                             JSONArray interventions,String json) {
         System.out.println("Statistiques :");
         System.out.println("-------------");
-
         calculerHeureMaxPourIntervention(json,statistiques);
         calculerInterventionsParTypeEmploye(json,statistiques);
     }
@@ -38,8 +37,8 @@ public class Statistiques {
             statistiques = sauvegarderStatistiques(statistiques,nomFichier);
 
         if(option.equals("-S"))
-            try {
-                FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
+        try {
+            FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
         } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
         }
@@ -47,22 +46,16 @@ public class Statistiques {
 
 
     public static void reinitialiserStatistiques(JSONObject statistiques, String nomFichier) throws IOException {
-       try {
-           if (estFichierVide(nomFichier))
-               System.out.println("Le fichier ne contient aucune donnees statisque");
-           else if (confirmerReinitialisation()) {
-               String contenuJson = lireContenuFichier(nomFichier);
-               statistiques = JSONObject.fromObject(contenuJson);
-               reinitialiserValeurs(statistiques);
-               sauvegarderStatistiquesSous(statistiques, nomFichier);
-           } else {
-               System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
-           }
-       }
-       catch (Exception e)
-       {
-           System.out.println("Il y'a un probelme avec le fichier de statisque");
-       }
+        if (confirmerReinitialisation()) {
+            String contenuJson = lireContenuFichier(nomFichier);
+            statistiques = JSONObject.fromObject(contenuJson);
+
+            reinitialiserValeurs(statistiques);
+
+            sauvegarderStatistiquesSous(statistiques, nomFichier);
+        } else {
+            System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
+        }
     }
 
     private static boolean confirmerReinitialisation() {
