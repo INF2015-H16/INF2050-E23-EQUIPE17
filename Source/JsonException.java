@@ -143,8 +143,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'overtime' manquant", arg2);
     }
 
-    private static void distanceDeplacement(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("distance_deplacement"))
+    private static void distanceDeplacement(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("distance_deplacement"))
             GestionProgramme.ajouterMessage("Attribut 'distance_deplacement' manquant", arg2);
     }
 
