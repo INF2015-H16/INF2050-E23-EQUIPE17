@@ -168,8 +168,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'matricule_employe' manquant", arg2);
     }
 
-    private static void codeClientVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("code_client"))
+    private static void codeClientVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("code_client"))
             GestionProgramme.ajouterMessage("Attribut 'code_client' manquant", arg2);
     }
 
