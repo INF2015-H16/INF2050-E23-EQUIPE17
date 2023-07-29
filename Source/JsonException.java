@@ -148,8 +148,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'distance_deplacement' manquant", arg2);
     }
 
-    private static void interventionsVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("interventions"))
+    private static void interventionsVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("interventions"))
             GestionProgramme.ajouterMessage("Attribut 'interventions' manquant", arg2);
     }
 
