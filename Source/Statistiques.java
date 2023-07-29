@@ -24,8 +24,7 @@ public class Statistiques {
     final static double ETAT_PAR_CLIENT_10000 = 10000.00;
 
     Scanner scanner = new Scanner(System.in);
-    public static void afficherStatistiques(JSONObject statistiques, boolean fichierVide, String nomFichier,
-                                            JSONArray interventions,String json) {
+    public static void afficherStatistiques(JSONObject statistiques,String json) {
 
         System.out.println("Statistiques :");
         System.out.println("-------------");
@@ -297,7 +296,7 @@ public class Statistiques {
                 reinitialiserStatistiques(statistiques, nomFichier);
             }
             else if (option.equals("-S")) {
-                afficherStatistiques(statistiques, fichierVide, nomFichier, interventions, json);
+                afficherStatistiques(statistiques, json);
             }
         }catch (IOException e)
         {
