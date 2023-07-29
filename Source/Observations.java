@@ -5,25 +5,30 @@ import net.sf.json.JSONObject;
 
 public class Observations {
 
-   public static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
+    public static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
+
         if(tauxHoraireMax > 2 * tauxHoraireMin) {
             observations.add("Le taux horaire maximum ne peut pas dépasser deux fois le taux horaire minimum.");
         }
     }
 
     public static void employeeObservation(String code, int overtime,int distance_deplacement,JSONArray observations) {
+
         if(distance_deplacement > 50)
             observations.add("Le client " + code + " a une distance de deplacement plus que 50 km");
     }
 
     static void observationDates(String[][] attributsJson, JSONArray observations) {
+
         String date1,date2,codeClient;
         int mois1,annee1,annee2,mois2,monthsApart;
 
         int i=4;
+
         while(attributsJson[i][4] != null){
             codeClient = attributsJson[i][0];
             date1 = attributsJson[i][4];
+
             for(int j=i+1; j<attributsJson.length-1 ; j++)
             {
                 if(attributsJson[j][0].equals(codeClient))
@@ -66,6 +71,7 @@ public class Observations {
     }
 
     static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client, String code) {
+
         if(etat_par_client > 15000)
             observation.add("L’état par client du client " + code + " est trop dispendieuse.");
     }
