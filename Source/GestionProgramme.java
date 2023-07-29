@@ -51,7 +51,9 @@ public class GestionProgramme {
         double[] etatParClient = new double[code.length];
         Arrays.fill(nbrs, -1);
 
-        recuperationInterventions(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code, tauxHoraireMin, taux_horaire_max, montantRegulier, etatParClient,observations, option, interventions,json); // Traitement des données
+        recuperationInterventions(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures,
+                code, tauxHoraireMin, taux_horaire_max, montantRegulier, etatParClient,observations, option,
+                interventions,json); // Traitement des données
     }
 
     private static void recuperationInterventions(String[][] donnees, String argument2, int itterations, int[] nbrs,
@@ -72,7 +74,8 @@ public class GestionProgramme {
 
             else if(!(donnees[j][0].equals("#")) && !donnees[j][0].equals(""))
             {
-                sousMethodeInterventions1(distance_deplacement, overtime, nombre_heures, code, i, donnees[j],observations);
+                sousMethodeInterventions1(distance_deplacement, overtime, nombre_heures, code, i, donnees[j],
+                        observations);
             }
         }
         recuperationInfoEmploye(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures,
