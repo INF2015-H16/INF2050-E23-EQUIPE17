@@ -51,7 +51,8 @@ public class JsonException extends Exception{
         }
         catch (Exception e)
         {
-            taux_horaire = Double.parseDouble(data[i][0].replace(",", ".").replace("$", ""));// Sa c'est pour gerer la virgule
+            taux_horaire = Double.parseDouble(data[i][0].replace(",", ".").replace("$",
+                    ""));// Sa c'est pour gerer la virgule
         }
         if(taux_horaire < 0)
             throw new JsonException("Taux horaire invalide");
@@ -128,17 +129,17 @@ public class JsonException extends Exception{
         }
     }
 
-    public static void validerProprietesJsonPresentes(String jsonObject, String arg2) throws IOException {
+    public static void validerProprietesJsonPresentes(String objetJson, String arg2) throws IOException {
 
-        codeClientVerification(jsonObject, arg2);
-        matriculeVerification(jsonObject, arg2);
-        typeVerification(jsonObject, arg2);
-        taux_horaireVerification(jsonObject, arg2);
-        interventionsVerification(jsonObject, arg2);
-        distanceDeplacement(jsonObject, arg2);
-        overtimeVerification(jsonObject, arg2);
-        nombreHeuresVerification(jsonObject, arg2);
-        dateVerification(jsonObject, arg2);
+        codeClientVerification(objetJson, arg2);
+        matriculeVerification(objetJson, arg2);
+        typeVerification(objetJson, arg2);
+        taux_horaireVerification(objetJson, arg2);
+        interventionsVerification(objetJson, arg2);
+        distanceDeplacement(objetJson, arg2);
+        overtimeVerification(objetJson, arg2);
+        nombreHeuresVerification(objetJson, arg2);
+        dateVerification(objetJson, arg2);
     }
 
     private static void dateVerification(String objetJson, String arg2) throws IOException {
