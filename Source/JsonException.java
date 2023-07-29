@@ -183,6 +183,7 @@ public class JsonException extends Exception{
                                                               JSONArray observations) throws IOException, JsonException{
         Set<String> codeClients = new HashSet<>();
         Set<String> dates = new HashSet<>();
+        
         for (int i = 0; i < listeInterventions.size(); i++) {
             try {
                 verificationInterventions(listeInterventions, cheminJson, codeClients, dates, i,observations);
@@ -193,10 +194,14 @@ public class JsonException extends Exception{
         validerChampVide(listeInterventions,cheminJson);
     }
 
-    private static void verificationInterventions(JSONArray interventionsArray, String cheminJson, Set<String> codeClients, Set<String> dates, int i,JSONArray observations) throws IOException,Exception {
-        JSONObject intervention = interventionsArray.getJSONObject(i);
+    private static void verificationInterventions(JSONArray listeInterventions, String cheminJson,
+                                                  Set<String> codeClients, Set<String> dates, int i,
+                                                  JSONArray observations) throws IOException,Exception {
+
+        JSONObject intervention = listeInterventions.getJSONObject(i);
         String codeClient = intervention.getString("code_client");
         String dateIntervention = intervention.getString("date_intervention");
+
         if (codeClients.contains(codeClient) && dates.contains(dateIntervention))
             GestionProgramme.ajouterMessage("Intervention non valide : même code client et même date", cheminJson);
         codeClients.add(codeClient);
