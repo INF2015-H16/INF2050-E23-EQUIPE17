@@ -1,10 +1,11 @@
-package Source;
+package Tests;
 
+import Source.GestionProgramme;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import java.io.IOException;
 
@@ -121,7 +122,7 @@ public class TestGestionProgramme {
             int codeClient1 = 999;
             int codeClient2 = 123;
 
-            assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
+            Assertions.assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
             assertFalse(GestionProgramme.verificationCodeClient(nbrs, codeClient2));
         }
 

@@ -197,7 +197,7 @@ public class GestionJson {
     }
 
 
-    private static void ecritureFichierSortieJson(String arg,JSONObject employee) {
+    public static void ecritureFichierSortieJson(String arg,JSONObject employee) {
 
         try {
             FileUtils.writeStringToFile(new File(arg), employee.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente

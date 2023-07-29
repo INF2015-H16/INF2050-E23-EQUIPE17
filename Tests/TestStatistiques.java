@@ -1,5 +1,6 @@
-package Source;
+package Tests;
 
+import Source.Statistiques;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;

@@ -23,7 +23,7 @@ public class Main {
         }
     }
 
-    private static String lecteurFichier(String argument, String json, String buffer) throws JsonException {
+    public static String lecteurFichier(String argument, String json, String buffer) throws JsonException {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(argument))) {
 

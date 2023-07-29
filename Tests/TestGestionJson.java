@@ -1,12 +1,13 @@
-package Source;
+package Tests;
 
+import Source.GestionJson;
+import Source.JsonException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Locale;
 public class TestGestionJson {
     @Test
     public void testConvertirMajusculesEnMinuscules() {
@@ -136,4 +137,5 @@ public class TestGestionJson {
         expectedObservations.add("L’état par client du client C1002 est trop dispendieuse.");
         Assertions.assertEquals(expectedObservations, observations);
     }
+
 }

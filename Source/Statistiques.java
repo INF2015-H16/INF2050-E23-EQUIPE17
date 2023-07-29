@@ -340,7 +340,7 @@ public class Statistiques {
         }
     }
 
-    static JSONArray listeInterventions(String json) {
+    public static JSONArray listeInterventions(String json) {
 
         JSONArray interventions = new JSONArray();
         String extrait = "";

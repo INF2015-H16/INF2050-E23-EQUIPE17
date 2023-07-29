@@ -1,5 +1,6 @@
-package Source;
+package Tests;
 
+import Source.Observations;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Test;
