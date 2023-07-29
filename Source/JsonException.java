@@ -163,8 +163,8 @@ public class JsonException extends Exception{
             GestionProgramme.ajouterMessage("Attribut 'type_employe' manquant", arg2);
     }
 
-    private static void matriculeVerification(String jsonObject, String arg2) throws IOException {
-        if (jsonObject.contains("matricule_employe"))
+    private static void matriculeVerification(String objetJson, String arg2) throws IOException {
+        if (objetJson.contains("matricule_employe"))
             GestionProgramme.ajouterMessage("Attribut 'matricule_employe' manquant", arg2);
     }
 
