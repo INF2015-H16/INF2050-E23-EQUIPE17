@@ -142,24 +142,24 @@ public class Statistiques {
 
     private static JSONObject sauvegarderStatistiques(JSONObject statistiques, String nomFichier) {
 
-        JSONObject jsonObject = null;
+        JSONObject objetJson = null;
         try {
             String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
-            jsonObject = (JSONObject) JSONSerializer.toJSON(jsonContent);
+            objetJson = (JSONObject) JSONSerializer.toJSON(jsonContent);
 
             Iterator<String> keysIterator = statistiques.keys();
             while (keysIterator.hasNext()) {
                 String cle = keysIterator.next();
                 int valeur1 = statistiques.getInt(cle);
-                int valeur2 = jsonObject.getInt(cle);
-                jsonObject.put(cle, valeur1 + valeur2);
+                int valeur2 = objetJson.getInt(cle);
+                objetJson.put(cle, valeur1 + valeur2);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return jsonObject;
+        return objetJson;
     }
 
 
