@@ -124,7 +124,7 @@ public class GestionJson {
         ecritureFichierSortieJson(arg,employee);
     }
 
-    private static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee,JSONArray observations) {
+    public static JSONObject employeeInfo(int matricule_employe, double etat_compte, double cout_fixe, double cout_variable, JSONObject employee,JSONArray observations) {
         employee.accumulate("matricule_employe", matricule_employe);
         employee.accumulate("etat_compte", String.format(Locale.CANADA,"%.2f$", etat_compte));
         employee.accumulate("cout_fixe", String.format(Locale.CANADA,"%.2f$", cout_fixe));
@@ -133,17 +133,18 @@ public class GestionJson {
         return employee;
     }
 
-    private static JSONObject employeeObservation(JSONObject employee,double cout_variable,double etat_compte, double cout_fixe,JSONArray observations){
-        if(cout_variable > 3000)
+    private static JSONObject employeeObservation(JSONObject employee, double cout_variable, double etat_compte, double cout_fixe, JSONArray observations) {
+        if (cout_variable > 3000)
             observations.add("Le cout variable payable nécessite des ajustements");
-        if(etat_compte > 30000)
+        if (etat_compte > 30000)
             observations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
-        if(cout_fixe > 1500)
+        if (cout_fixe > 1500)
             observations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
         return employee;
     }
 
-    private static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client, JSONObject employee, JSONArray observation) {
+
+    public static JSONArray preparationJson(String[] code, double[] etat_par_client, int j, int[] nbrs, JSONArray clients, JSONObject client, JSONObject employee, JSONArray observation) {
         for(int i = 0; i < j; i++) {
             if(GestionProgramme.verificationCodeClient(nbrs, i) && code[i] != null) {
                 client.accumulate("code_client", code[i]);
