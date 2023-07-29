@@ -284,12 +284,10 @@ public class Statistiques {
     }
 
 
-    public static void gestionStatistiques(String option, JSONArray interventions, String json,
+    public static void gestionStatistiques(String option, String json,
                                            JSONObject statistiques) {
 
         String nomFichier = "Statistique.json";
-
-        boolean fichierVide = estFichierVide(nomFichier);
 
         try {
             if (option.equals("-SR")) {
