@@ -79,7 +79,8 @@ public class GestionProgramme {
             }
         }
         recuperationInfoEmploye(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures,
-                code, taux_horaire_min, taux_horaire_max, EtatParClient,observations, option,json);
+                code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient,observations, option,
+                interventions,json);
     }
 
     private static void sousMethodeInterventions1(int[] distance_deplacement, int[] overtime, int[] nombre_heures,
@@ -122,8 +123,8 @@ public class GestionProgramme {
     private static void recuperationInfoEmploye(String[][] donnees, String argument2, int itterations, int[] nbrs,
                                                 int[] distance_deplacement, int[] overtime, int[] nombre_heures,
                                                 String[] code, double taux_horaire_min, double taux_horaire_max,
-                                                 double[] EtatParClient, JSONArray observations,
-                                                String option, String json)
+                                                double montantRegulier, double[] EtatParClient, JSONArray observations,
+                                                String option, JSONArray interventions, String json)
             throws JsonException {
 
         int type_employe, matricule_employe;
@@ -135,7 +136,7 @@ public class GestionProgramme {
 
         calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code,
                 taux_horaire_min, taux_horaire_max, EtatParClient, type_employe, matricule_employe,observations,
-                option,json);
+                option,interventions,json);
     }
 
     private static void observationTaux(double tauxHoraireMax, double tauxHoraireMin, JSONArray observations) {
@@ -148,7 +149,8 @@ public class GestionProgramme {
     private static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement,
                                          int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min,
                                          double taux_horaire_max, double[] etatParClient, int type_employe,
-                                         int matricule_employe, JSONArray observations, String option, String json) throws JsonException {
+                                         int matricule_employe, JSONArray observations, String option,
+                                         JSONArray interventions, String json) throws JsonException {
 
         for (int i = 0; i < itterations; i++) {
 
@@ -159,19 +161,20 @@ public class GestionProgramme {
                         taux_horaire_min, taux_horaire_max, distance_deplacement[i], overtime[i]);
             }
         }
-        calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations,option,json);
+        calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations,option,
+                interventions,json);
     }
 
     private static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code,
                                     double[] etatParClient, int matricule_employe, JSONArray observations,
-                                    String option, String json) {
+                                    String option, JSONArray interventions, String json) {
 
         JSONObject statistiques = new JSONObject();
         double etatCompteTotal = CalculEmploye.calculerEtatCompteTotal(etatParClient);
         double coutVariable = CalculEmploye.calculerCoutVariable(etatCompteTotal);
         double coutFixe = CalculEmploye.calculerCoutFixe(etatCompteTotal);
         JsonException.validerFichierSortieDispo(argument2);
-        Statistiques.gestionStatistiques(option,json,statistiques);
+        Statistiques.gestionStatistiques(option, interventions,json,statistiques);
 
         GestionJson.formattageFichierSortieJson(matricule_employe, CalculEmploye.arrondirMontant(etatCompteTotal),
                 CalculEmploye.arrondirMontant(coutFixe),
