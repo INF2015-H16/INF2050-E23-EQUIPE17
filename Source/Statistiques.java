@@ -30,11 +30,8 @@ public class Statistiques {
                                             JSONArray interventions,String json) {
 
         System.out.println("Statistiques :");
-<<<<<<< HEAD
 
-=======
-        System.out.println("-------------");
->>>>>>> 6bf2274445cdc4935163cdb230f6aec30dde5e74
+        System.out.println("-------------------------");
         calculerHeureMaxPourIntervention(json,statistiques);
         calculerInterventionsParTypeEmploye(json,statistiques);
     }
@@ -47,7 +44,6 @@ public class Statistiques {
         if(option.equals("-S"))
             try {
                 FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-<<<<<<< HEAD
         } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
         }
@@ -67,11 +63,7 @@ public class Statistiques {
         for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
         }
-=======
-            } catch (IOException e) {
-                System.out.println("Une erreur est survenue : " + e.getMessage());
-            }
->>>>>>> 6bf2274445cdc4935163cdb230f6aec30dde5e74
+
     }
 
 
