@@ -257,7 +257,7 @@ public class Statistiques {
     }
 
 
-    public static void calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
+    public static int calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
 
         int totalInterventions = 0;
         JSONArray listeJson = employe.getJSONArray("clients");
@@ -271,6 +271,7 @@ public class Statistiques {
 
         statistique.put("Le total d'interventions soumises tous employés confondus est : ", totalInterventions);
 
+        return totalInterventions;
     }
 
 
