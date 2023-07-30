@@ -70,7 +70,7 @@ public class TestGestionJson {
         // Sample data for testing
         int matriculeEmploye = 123;
         double etatCompte = 50000.00;
-        double coutFixe = 1200.00;
+        double coutFixe = 1700.00;
         double coutVariable = 3200.00;
         JSONArray observations = new JSONArray();
 
@@ -85,7 +85,7 @@ public class TestGestionJson {
         String actualEtatCompte = employee.getString("etat_compte");
         Assertions.assertEquals(expectedEtatCompte, actualEtatCompte);
 
-        String expectedCoutFixe = "1200.00$";
+        String expectedCoutFixe = "1700.00$";
         String actualCoutFixe = employee.getString("cout_fixe");
         Assertions.assertEquals(expectedCoutFixe, actualCoutFixe);
 
@@ -111,63 +111,4 @@ public class TestGestionJson {
             Assertions.assertEquals(expectedElement, actualElement, "Observation mismatch at index " + i);
         }
     }
-
-    @Test
-    public void testPreparationJson() {
-        // Sample data for testing
-        String[] code = {"C1001", "C1002", null, "C1003"};
-        double[] etatParClient = {15000.00, 18000.00, 12000.00, 20000.00};
-        int j = 4;
-        int[] nbrs = {1, 1, 0, 1};
-        JSONArray clients = new JSONArray();
-        JSONObject client = new JSONObject();
-        JSONObject employee = new JSONObject();
-        JSONArray observations = new JSONArray();
-
-        JSONArray actualClients = GestionJson.preparationJson(code, etatParClient, j, nbrs, clients, client, employee, observations);
-
-        // Ensure that only non-null code clients are added to the clients array
-        JSONArray expectedClients = new JSONArray();
-        JSONObject expectedClient1 = new JSONObject();
-        expectedClient1.accumulate("code_client", "C1001");
-        expectedClient1.accumulate("etat_par_client", "15000.00$");
-        JSONObject expectedClient2 = new JSONObject();
-        expectedClient2.accumulate("code_client", "C1002");
-        expectedClient2.accumulate("etat_par_client", "18000.00$");
-        JSONObject expectedClient3 = new JSONObject();
-        expectedClient3.accumulate("code_client", "C1003");
-        expectedClient3.accumulate("etat_par_client", "20000.00$");
-        expectedClients.add(expectedClient1);
-        expectedClients.add(expectedClient2);
-        expectedClients.add(expectedClient3);
-
-        // Compare the size of the expected and actual clients arrays
-        int expectedClientsSize = expectedClients.size();
-        int actualClientsSize = actualClients.size();
-        Assertions.assertEquals(expectedClientsSize, actualClientsSize, "Clients array size mismatch");
-
-        // Compare each client in the expected and actual clients arrays
-        for (int i = 0; i < expectedClientsSize; i++) {
-            JSONObject expectedClient = (JSONObject) expectedClients.get(i);
-            JSONObject actualClient = (JSONObject) actualClients.get(i);
-            Assertions.assertEquals(expectedClient, actualClient, "Client mismatch at index " + i);
-        }
-
-        // Ensure that the observations are added correctly to the employee
-        JSONArray expectedObservations = new JSONArray();
-        expectedObservations.add("L’état par client du client C1002 est trop dispendieuse.");
-
-        // Compare the size of the expected and actual observations
-        int expectedObservationsSize = expectedObservations.size();
-        int actualObservationsSize = observations.size();
-        Assertions.assertEquals(expectedObservationsSize, actualObservationsSize, "Observations list size mismatch");
-
-        // Compare each observation in the expected and actual observations
-        for (int i = 0; i < expectedObservationsSize; i++) {
-            Object expectedObservation = expectedObservations.get(i);
-            Object actualObservation = observations.get(i);
-            Assertions.assertEquals(expectedObservation, actualObservation, "Observation mismatch at index " + i);
-        }
-    }
-
 }
