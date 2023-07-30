@@ -54,28 +54,24 @@ public class CalculEmploye {
         double montantDeplacement = (200 - (distanceDeplacement * (0.10 * montantRegulier)));
         double montantHeuresSupp = (nombreHeures > 40) ? (nombreHeures - 40) * 100.0 * overtime : 0;
 
+        // Obtention du montant total en appelant la sous-méthode
+        double montantTotal = getMontantTotal(montantRegulier, montantDeplacement, montantHeuresSupp);
+
+        if (montantTotal < 0) {
+            throw new JsonException("Le montant total ne peut pas être négatif");
+        }
+
+        return montantTotal;
+    }
+
+    private static double getMontantTotal(double montantRegulier, double montantDeplacement, double montantHeuresSupp) {
         // Calcul du montant total
         double montantTotal = montantRegulier + montantDeplacement + montantHeuresSupp;
 
         // Arrondi du montant total avec la méthode arrondirMontant
         double montantTotalArrondi = arrondirMontant(montantTotal);
 
-        if (montantTotalArrondi < 0) {
-            throw new JsonException("Le montant total ne peut pas être négatif");
-        }
-
         return montantTotalArrondi;
-    }
-
-    private static double getMontantTotal(int typeEmploye, double nombreHeures, double tauxHoraireMin,
-                                          double tauxHoraireMax, double distanceDeplacement, double overtime)
-            throws JsonException {
-
-        double montantregulier = calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
-        double montantDeplacement = calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantregulier);
-        double montantHeuresSupp = calculerMontantHeuresSupplementaires(typeEmploye, overtime, nombreHeures);
-
-        return montantregulier + montantDeplacement + montantHeuresSupp;
     }
 
 
