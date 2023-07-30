@@ -173,7 +173,6 @@ public class CalculEmploye {
     }
 
     public static double arrondirMontant(double montant) {
-
         double arrondi = Math.round(montant * 20) / 20.0; // Arrondi à 2 décimales
         double difference = arrondi - Math.floor(arrondi); // Partie décimale
 
@@ -182,12 +181,12 @@ public class CalculEmploye {
             int multiplicateur = (int) Math.round(arrondi * 20) % 5;
             if (multiplicateur == 0 || multiplicateur == 1) {
                 return Math.floor(arrondi * 20) / 20.0;
-            } else {
+            } else if (multiplicateur == 4) {
                 return Math.ceil(arrondi * 20) / 20.0;
             }
-        } else {
-            return arrondi; // Pas besoin d'arrondir, retourne le montant tel quel
         }
+
+        return arrondi;
     }
 
     public static void calculEtatClient(String argument2, int itterations, int[] nbrs, int[] distance_deplacement,
