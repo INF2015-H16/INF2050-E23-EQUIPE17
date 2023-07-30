@@ -34,14 +34,15 @@ public class TestCalculEmploye {
 
     @Test
     public void testCalculerEtatParClient_Type0() throws JsonException {
-        int typeEmploye = 0;
-        double nombreHeures = 40.0;
+        int typeEmploye =0;
+        double nombreHeures = 50.0;
         double tauxHoraireMin = 10.0;
         double tauxHoraireMax = 15.0;
-        double distanceDeplacement = 50.0;
-        double overtime = 0.0;
+        double distanceDeplacement = 70.0;
+        double overtime = 6.0;
 
-        double expectedEtatParClient = 400.0; // 40 * 10 (tauxHoraireMin)
+        // Expected Etat par client = montantRegulier + montantDeplacement + montantHeuresSupp
+        double expectedEtatParClient = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2) + (200 - (70 * (0.10 * (50 * ((tauxHoraireMin + tauxHoraireMax) / 2))))) + (50 * 6 * 100.0);
         double actualEtatParClient = CalculEmploye.calculerEtatParClient(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime);
         Assertions.assertEquals(expectedEtatParClient, actualEtatParClient, 0.001);
     }
