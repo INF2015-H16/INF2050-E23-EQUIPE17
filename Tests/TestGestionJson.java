@@ -98,7 +98,18 @@ public class TestGestionJson {
         expectedObservations.add("Le cout variable payable nécessite des ajustements");
         expectedObservations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
         expectedObservations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
-        Assertions.assertEquals(expectedObservations, observations);
+
+        // Compare the size of the expected and actual observations
+        int expectedObservationsSize = expectedObservations.size();
+        int actualObservationsSize = observations.size();
+        Assertions.assertEquals(expectedObservationsSize, actualObservationsSize, "Observations list size mismatch");
+
+        // Compare each element in the expected and actual observations
+        for (int i = 0; i < expectedObservationsSize; i++) {
+            Object expectedElement = expectedObservations.get(i);
+            Object actualElement = observations.get(i);
+            Assertions.assertEquals(expectedElement, actualElement, "Observation mismatch at index " + i);
+        }
     }
 
     @Test
@@ -130,12 +141,33 @@ public class TestGestionJson {
         expectedClients.add(expectedClient2);
         expectedClients.add(expectedClient3);
 
-        Assertions.assertEquals(expectedClients, actualClients);
+        // Compare the size of the expected and actual clients arrays
+        int expectedClientsSize = expectedClients.size();
+        int actualClientsSize = actualClients.size();
+        Assertions.assertEquals(expectedClientsSize, actualClientsSize, "Clients array size mismatch");
+
+        // Compare each client in the expected and actual clients arrays
+        for (int i = 0; i < expectedClientsSize; i++) {
+            JSONObject expectedClient = (JSONObject) expectedClients.get(i);
+            JSONObject actualClient = (JSONObject) actualClients.get(i);
+            Assertions.assertEquals(expectedClient, actualClient, "Client mismatch at index " + i);
+        }
 
         // Ensure that the observations are added correctly to the employee
         JSONArray expectedObservations = new JSONArray();
         expectedObservations.add("L’état par client du client C1002 est trop dispendieuse.");
-        Assertions.assertEquals(expectedObservations, observations);
+
+        // Compare the size of the expected and actual observations
+        int expectedObservationsSize = expectedObservations.size();
+        int actualObservationsSize = observations.size();
+        Assertions.assertEquals(expectedObservationsSize, actualObservationsSize, "Observations list size mismatch");
+
+        // Compare each observation in the expected and actual observations
+        for (int i = 0; i < expectedObservationsSize; i++) {
+            Object expectedObservation = expectedObservations.get(i);
+            Object actualObservation = observations.get(i);
+            Assertions.assertEquals(expectedObservation, actualObservation, "Observation mismatch at index " + i);
+        }
     }
 
 }
