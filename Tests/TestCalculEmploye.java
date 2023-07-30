@@ -41,9 +41,13 @@ public class TestCalculEmploye {
         double tauxHoraireMax = 15.0;
         double distanceDeplacement = 70.0;
         double overtime = 6.0;
+        double montantRegulier,montantDeplacement,montantHeuresSupp;
 
+        montantRegulier = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2);
+        montantDeplacement = (200 - (70 * (0.10 * montantRegulier)));;
+        montantHeuresSupp = (nombreHeures > 40) ? (nombreHeures - 40) * 100.0 * overtime : 0;
         // Expected Etat par client = montantRegulier + montantDeplacement + montantHeuresSupp
-        double expectedEtatParClient = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2) + (200 - (70 * (0.10 * (50 * ((tauxHoraireMin + tauxHoraireMax) / 2))))) + (50 * 6 * 100.0);
+        double expectedEtatParClient =  montantRegulier + montantDeplacement + montantHeuresSupp;
         double actualEtatParClient = CalculEmploye.calculerEtatParClient(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime);
         Assertions.assertEquals(expectedEtatParClient, actualEtatParClient, 0.001);
     }
@@ -56,9 +60,14 @@ public class TestCalculEmploye {
         double tauxHoraireMax = 15.0;
         double distanceDeplacement = 70.0;
         double overtime = 6.0;
-
+        double montantRegulier,montantDeplacement,montantHeuresSupp;
         // Expected Etat par client = montantRegulier + montantDeplacement + montantHeuresSupp
-        double expectedEtatParClient = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2) + (200 - (70 * (0.10 * (50 * ((tauxHoraireMin + tauxHoraireMax) / 2))))) + (50 * 6 * 100.0);
+
+        montantRegulier = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2);
+        montantDeplacement = (200 - (70 * (0.10 * montantRegulier)));;
+        montantHeuresSupp = (nombreHeures > 40) ? (nombreHeures - 40) * 100.0 * overtime : 0;
+
+        double expectedEtatParClient =  montantRegulier + montantDeplacement + montantHeuresSupp;
         double actualEtatParClient = CalculEmploye.calculerEtatParClient(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime);
         Assertions.assertEquals(expectedEtatParClient, actualEtatParClient, 0.001);
     }
