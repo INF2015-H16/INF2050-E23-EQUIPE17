@@ -48,17 +48,22 @@ public class CalculEmploye {
      * @return
      * @throws JsonException
      */
-    public static double calculerEtatParClient(int typeEmploye, double nombreHeures,
-                                               double tauxHoraireMin, double tauxHoraireMax,
-                                               double distanceDeplacement, double overtime) throws JsonException {
+    public static double calculerEtatParClient(int typeEmploye, double nombreHeures, double tauxHoraireMin, double tauxHoraireMax, double distanceDeplacement, double overtime) throws JsonException {
+        // Calcul des montants réguliers, de déplacement et des heures supplémentaires
+        double montantRegulier = nombreHeures * ((tauxHoraireMin + tauxHoraireMax) / 2);
+        double montantDeplacement = (200 - (distanceDeplacement * (0.10 * montantRegulier)));
+        double montantHeuresSupp = (nombreHeures > 40) ? (nombreHeures - 40) * 100.0 * overtime : 0;
 
-        double montantTotal = getMontantTotal(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax,
-                distanceDeplacement, overtime );
+        // Calcul du montant total
+        double montantTotal = montantRegulier + montantDeplacement + montantHeuresSupp;
 
-        if (montantTotal < 0) {
+        // Arrondi du montant total avec la méthode arrondirMontant
+        double montantTotalArrondi = arrondirMontant(montantTotal);
+
+        if (montantTotalArrondi < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
         }
-        double montantTotalArrondi = arrondirMontant(montantTotal);
+
         return montantTotalArrondi;
     }
 
