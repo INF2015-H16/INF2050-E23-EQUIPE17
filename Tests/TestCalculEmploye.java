@@ -34,6 +34,7 @@ public class TestCalculEmploye {
 
     @Test
     public void testCalculerEtatParClient_Type0() throws JsonException {
+
         int typeEmploye =0;
         double nombreHeures = 50.0;
         double tauxHoraireMin = 10.0;
