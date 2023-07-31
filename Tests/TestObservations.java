@@ -18,7 +18,7 @@ public class TestObservations {
     @Test
     public void testObservationTauxHorsRegle() {
         JSONArray observations = new JSONArray();
-        Observations.observationTaux(5, 1, observations);
+        Observations.observationTaux(2.1, 2.45, observations);
         assertEquals(1, observations.size());
         assertEquals("Le taux horaire maximum ne peut pas dépasser deux fois le taux horaire minimum.", observations.get(0));
     }
@@ -36,6 +36,21 @@ public class TestObservations {
         Observations.employeeObservation("C789", 0, 51, observations);
         assertEquals(1, observations.size());
         assertEquals("Le client C789 a une distance de deplacement plus que 50 km", observations.get(0));
+    }
+
+    @Test
+    public void testObservationDates() {
+        JSONArray observations = new JSONArray();
+        String[][] attributsJson = {
+                {"C123", "...", "2023-07-14"},
+                {"C456", "...", "2023-03-15"},
+                {"C789", "...", "2023-03-20"},
+                {"C123", "...", "2023-01-20"},
+                {"C789", "...", "2023-12-10"}
+        };
+        Observations.observationDates(attributsJson, observations);
+        assertEquals(1, observations.size());
+        assertEquals("L’écart maximal entre les dates d’intervention (date_intervention) du client C789 d’un même employé doit être de moins de 6 mois.", observations.get(0));
     }
 
     @Test
