@@ -74,7 +74,8 @@ public class Statistiques {
             statistiques = JSONObject.fromObject(contenuJson);
 
             reinitialiserValeurs(statistiques);
-
+            System.out.println("Statistiques après réinitialisation :");
+            affichageStatistique(statistiques);
             sauvegarderStatistiquesSous(statistiques, nomFichier);
         } else {
             System.out.println("Opération annulée. Les statistiques n'ont pas été réinitialisées.");
