@@ -26,9 +26,9 @@ public class TestStatistiques {
             JSONObject statistiques = new JSONObject();
             Statistiques.calculerHeureMaxPourIntervention(json, statistiques);
 
-            int expectedHeureMax = 7;
-            int actualHeureMax = statistiques.optInt("Heure maximal soumis pour une intervention: ", 0);
-            Assertions.assertEquals(expectedHeureMax, actualHeureMax);
+            int heureMaxAttendue = 7;
+            int heureMaxActuelle = statistiques.optInt("Heure maximal soumis pour une intervention: ", 0);
+            Assertions.assertEquals(heureMaxAttendue, heureMaxActuelle);
         }
 
         @Test
@@ -44,9 +44,9 @@ public class TestStatistiques {
             JSONObject employe = JSONObject.fromObject(json);
             Statistiques.calculerEtatParClientMax(employe, statistiques);
 
-            double expectedEtatParClientMax = 0.0;
-            double actualEtatParClientMax = statistiques.optDouble("l’état par client maximal retourné pour un client: ", 0.0);
-            Assertions.assertEquals(expectedEtatParClientMax, actualEtatParClientMax, 0.001);
+            double etatParClientMaxAttendu = 0.0;
+            double etatParClientMaxActuel = statistiques.optDouble("l’état par client maximal retourné pour un client: ", 0.0);
+            Assertions.assertEquals(etatParClientMaxAttendu, etatParClientMaxActuel, 0.001);
         }
 
         @Test
@@ -70,24 +70,25 @@ public class TestStatistiques {
                     "      \"etat_par_client\": \"1500$\"\n" +
                     "    }\n" +
                     "  ],\n" +
-                    "  \"observations\": [\"L’écart maximal entre les dates d’intervention (date_intervention) du client C789 d’un même employé doit être de moins de 6 mois.\"]\n" +
+                    "  \"observations\": [\"L’écart maximal entre les dates d’intervention (date_intervention) du " +
+                    "client C789 d’un même employé doit être de moins de 6 mois.\"]\n" +
                     "}";
 
             JSONObject employe = JSONObject.fromObject(json);
             JSONObject statistiques = new JSONObject();
             Statistiques.calculerOccurrencesEtatParClient(employe, statistiques);
 
-            int expectedEtatInf1000 = 1;
-            int expectedEtatEntreMinMax = 1 ;
-            int expectedEtatSup10000 = 1;
+            int etatInf1000Attendu = 1;
+            int etatEntreMinMaxAttendu = 1 ;
+            int etatSup10000Attendu = 1;
 
-            int actualEtatInf1000 = statistiques.optInt("Le nombre d'etats par client moins que 1000 est de : ");
-            int actualEtatEntreMinMax = statistiques.optInt("Le nombre d'etats par client entre 1000 et 10000 est de : ");
-            int actualEtatSup10000 = statistiques.optInt("Le nombre d'etats par client superieur a 10000 est de : ");
+            int etatInf1000Actuel = statistiques.optInt("Le nombre d'etats par client moins que 1000 est de : ");
+            int etatEntreMinMaxActuel = statistiques.optInt("Le nombre d'etats par client entre 1000 et 10000 est de : ");
+            int etatSup10000Actuel = statistiques.optInt("Le nombre d'etats par client superieur a 10000 est de : ");
 
-            Assertions.assertEquals(expectedEtatInf1000, actualEtatInf1000);
-            Assertions.assertEquals(expectedEtatEntreMinMax, actualEtatEntreMinMax);
-            Assertions.assertEquals(expectedEtatSup10000, actualEtatSup10000);
+            Assertions.assertEquals(etatInf1000Attendu, etatInf1000Actuel);
+            Assertions.assertEquals(etatEntreMinMaxAttendu, etatEntreMinMaxActuel);
+            Assertions.assertEquals(etatSup10000Attendu, etatSup10000Actuel);
         }
 
         @Test
@@ -103,11 +104,11 @@ public class TestStatistiques {
             JSONObject employe = JSONObject.fromObject(json);
             Statistiques.calculerTotalInterventions(employe, statistiques);
 
-            int expectedTotalInterventions = 4;
+            int totalInterventionsAttendu = 4;
 
-            int actualTotalInterventions = Statistiques.calculerTotalInterventions(employe, statistiques);
+            int totalInterventionsActuel = Statistiques.calculerTotalInterventions(employe, statistiques);
 
-            Assertions.assertEquals(expectedTotalInterventions, actualTotalInterventions);
+            Assertions.assertEquals(totalInterventionsAttendu, totalInterventionsActuel);
         }
 
         @Test
@@ -122,9 +123,9 @@ public class TestStatistiques {
             JSONObject statistiques = new JSONObject();
             Statistiques.calculerInterventionsParTypeEmploye(json, statistiques);
 
-            int expectedInterventionsType0 = 4;
-            int actualInterventionsType0 = statistiques.optInt("Le nombre d'interventions pour les employes de type 0 est de :", 0);
-            Assertions.assertEquals(expectedInterventionsType0, actualInterventionsType0);
+            int interventionsType0Attendues = 4;
+            int interventionsType0Actuelles = statistiques.optInt("Le nombre d'interventions pour les employes de type 0 est de :", 0);
+            Assertions.assertEquals(interventionsType0Attendues, interventionsType0Actuelles);
         }
 
         @Test
@@ -139,9 +140,9 @@ public class TestStatistiques {
             JSONObject statistiques = new JSONObject();
             Statistiques.calculerInterventionsParTypeEmploye(json, statistiques);
 
-            int expectedInterventionsType1 = 4;
-            int actualInterventionsType1 = statistiques.optInt("Le nombre d'interventions pour les employes de type 1 est de :", 0);
-            Assertions.assertEquals(expectedInterventionsType1, actualInterventionsType1);
+            int interventionsType1Attendues = 4;
+            int interventionsType1Actuelles = statistiques.optInt("Le nombre d'interventions pour les employes de type 1 est de :", 0);
+            Assertions.assertEquals(interventionsType1Attendues, interventionsType1Actuelles);
         }
 
         @Test
@@ -156,9 +157,9 @@ public class TestStatistiques {
             JSONObject statistiques = new JSONObject();
             Statistiques.calculerInterventionsParTypeEmploye(json, statistiques);
 
-            int expectedInterventionsType2 = 4;
-            int actualInterventionsType2 = statistiques.optInt("Le nombre d'interventions pour les employes de type 2 est de :", 0);
-            Assertions.assertEquals(expectedInterventionsType2, actualInterventionsType2);
+            int interventionsType2Attendues = 4;
+            int interventionsType2Actuelles = statistiques.optInt("Le nombre d'interventions pour les employes de type 2 est de :", 0);
+            Assertions.assertEquals(interventionsType2Attendues, interventionsType2Actuelles);
         }
 
         @Test
@@ -166,8 +167,8 @@ public class TestStatistiques {
             String nomFichier = "test_file_not_empty.txt";
             try {
                 FileUtils.writeStringToFile(new File(nomFichier), "Not empty content", "UTF-8");
-                boolean isFileEmpty = Statistiques.estFichierVide(nomFichier);
-                Assertions.assertFalse(isFileEmpty);
+                boolean estFichierVide = Statistiques.estFichierVide(nomFichier);
+                Assertions.assertFalse(estFichierVide);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -178,8 +179,8 @@ public class TestStatistiques {
             String nomFichier = "test_file_empty.txt";
             try {
                 FileUtils.writeStringToFile(new File(nomFichier), "", "UTF-8");
-                boolean isFileEmpty = Statistiques.estFichierVide(nomFichier);
-                Assertions.assertTrue(isFileEmpty);
+                boolean estFichiervide = Statistiques.estFichierVide(nomFichier);
+                Assertions.assertTrue(estFichiervide);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -188,8 +189,8 @@ public class TestStatistiques {
         @Test
         public void testEstFichierVide_FileDoesNotExist() {
             String nomFichier = "non_existent_file.txt";
-            boolean isFileEmpty = Statistiques.estFichierVide(nomFichier);
-            Assertions.assertFalse(isFileEmpty);
+            boolean estFichierVide = Statistiques.estFichierVide(nomFichier);
+            Assertions.assertFalse(estFichierVide);
         }
 
         @Test
@@ -210,9 +211,9 @@ public class TestStatistiques {
             statistiques.put("interventions", 10);
 
             Statistiques.mettreAJourNombreTotalInterventions(statistiques, 5);
-            int expectedTotalInterventions = 15;
-            int actualTotalInterventions = statistiques.optInt("interventions", 0);
-            Assertions.assertEquals(expectedTotalInterventions, actualTotalInterventions);
+            int totalInterventionsAttendu = 15;
+            int totalInterventionsActuel = statistiques.optInt("interventions", 0);
+            Assertions.assertEquals(totalInterventionsAttendu, totalInterventionsActuel);
         }
 
         @Test
@@ -227,17 +228,17 @@ public class TestStatistiques {
             Statistiques.mettreAJourOccurrencesEtatClient(statistiques, "5000", 2);
             Statistiques.mettreAJourOccurrencesEtatClient(statistiques, "10000", 1);
 
-            int expectedOccurrences1000 = 2;
-            int expectedOccurrences5000 = 5;
-            int expectedOccurrences10000 = 0;
+            int occurrences1000Attendu = 2;
+            int occurrences5000Attendu = 5;
+            int occurrences10000Attendu = 0;
 
-            int actualOccurrences1000 = occurrencesEtatClient.optInt("1000", 0);
-            int actualOccurrences5000 = occurrencesEtatClient.optInt("5000", 0);
-            int actualOccurrences10000 = occurrencesEtatClient.optInt("10000", 0);
+            int occurrencesActuelles1000 = occurrencesEtatClient.optInt("1000", 0);
+            int occurrencesActuelles5000 = occurrencesEtatClient.optInt("5000", 0);
+            int occurrencesActuelles10000 = occurrencesEtatClient.optInt("10000", 0);
 
-            Assertions.assertEquals(expectedOccurrences1000, actualOccurrences1000);
-            Assertions.assertEquals(expectedOccurrences5000, actualOccurrences5000);
-            Assertions.assertEquals(expectedOccurrences10000, actualOccurrences10000);
+            Assertions.assertEquals(occurrences1000Attendu, occurrencesActuelles1000);
+            Assertions.assertEquals(occurrences5000Attendu, occurrencesActuelles5000);
+            Assertions.assertEquals(occurrences10000Attendu, occurrencesActuelles10000);
         }
 
 
