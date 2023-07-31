@@ -89,6 +89,10 @@ public class Statistiques {
         return reponse.equals("oui");
     }
 
+    private static boolean reponseValide(String response) {
+        return response.equals("oui") || response.equals("non");
+    }
+
     private static String lireContenuFichier(String nomFichier) throws IOException {
 
         return new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
