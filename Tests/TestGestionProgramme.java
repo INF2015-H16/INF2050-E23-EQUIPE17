@@ -21,14 +21,14 @@ public class TestGestionProgramme {
 
         };
     }
-        @Test
-        public void testVerificationCodeClient() {
-            int[] nbrs = {123, 456, 789};
-            int codeClient1 = 999;
-            int codeClient2 = 123;
+    @Test
+    public void testVerificationCodeClient() {
+        int[] nbrs = {123, 456, 789};
+        int codeClient1 = 999;
+        int codeClient2 = 123;
 
-            Assertions.assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
-            assertFalse(GestionProgramme.verificationCodeClient(nbrs, codeClient2));
-        }
+        Assertions.assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
+        assertFalse(GestionProgramme.verificationCodeClient(nbrs, codeClient2));
+    }
 
 }
