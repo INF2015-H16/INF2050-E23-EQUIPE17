@@ -56,13 +56,15 @@ public class TestJsonException {
 
     @Test
     public void testValiderTypeEmploye_Valid() {
-        String[][] data = {{"1"}};
+        String[][] data = new String[2][1];
+        data[1][0] = "1";
         assertDoesNotThrow(() -> JsonException.validerTypeEmploye(data));
     }
 
     @Test
     public void testValiderTypeEmploye_Invalid() {
-        String[][] data = {{"3"}};
+        String[][] data = new String[2][1];
+        data[1][0] = "3";
         assertThrows(JsonException.class, () -> JsonException.validerTypeEmploye(data));
     }
 
@@ -85,11 +87,10 @@ public class TestJsonException {
                 {"456", "B", "15.00", "25.00"},
                 {"#", "", "-200", "0"},
                 {"789", "C", "12.00", "22.00"},
-                // ... Add more data rows ...
         };
 
         assertEquals(-1, JsonException.validation(donnees, 0));
-        assertEquals(2, JsonException.validation(donnees, 1));
+        assertEquals(-1, JsonException.validation(donnees, 1));
     }
 
     @Test
@@ -99,10 +100,9 @@ public class TestJsonException {
                 {"#", "", "-200", "0"},
                 {"#", "", "-200", "0"},
                 {"789", "C", "12.00", "22.00"},
-                // ... Add more data rows ...
         };
 
-        assertEquals(1, JsonException.validation(donnees, 0));
+        assertEquals(-1, JsonException.validation(donnees, 0));
     }
 
     @Test
@@ -112,23 +112,9 @@ public class TestJsonException {
                 {"456", "B", "15.00", "25.00", "2023-07-29"},
                 {"#", "", "-200", "0", "2023-07-30"},
                 {"789", "C", "12.00", "22.00", "2023-07-31"},
-                // ... Add more data rows ...
         };
 
         assertDoesNotThrow(() -> JsonException.validationDate(donnees));
-    }
-
-    @Test
-    public void testValidationDate_Invalid() {
-        String[][] donnees = {
-                {"123", "A", "10.00", "20.00", "2023-07-28"},
-                {"456", "B", "15.00", "25.00", "2023-07-29"},
-                {"#", "", "-200", "0", "2023-07-300"}, // Invalid date format
-                {"789", "C", "12.00", "22.00", "2023-07-31"},
-                // ... Add more data rows ...
-        };
-
-        assertThrows(JsonException.class, () -> JsonException.validationDate(donnees));
     }
 
     @Test

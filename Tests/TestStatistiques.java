@@ -88,10 +88,15 @@ public class TestStatistiques {
 
             JSONObject statistiques = new JSONObject();
             JSONObject employe = JSONObject.fromObject(json);
-            Statistiques.calculerTotalInterventions(employe, statistiques);
 
+
+<<<<<<< HEAD
             int expectedTotalInterventions = 0;
             int actualTotalInterventions = statistiques.optInt("Le total d'interventions dans le fichier JSON est : ", 0);
+=======
+            int expectedTotalInterventions = 4;
+            int actualTotalInterventions = Statistiques.calculerTotalInterventions(employe, statistiques);
+>>>>>>> f325b2cf2eb0e0578ae5acef33860c7f130f1d29
             Assertions.assertEquals(expectedTotalInterventions, actualTotalInterventions);
         }
 
