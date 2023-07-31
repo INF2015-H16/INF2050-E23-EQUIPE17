@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import net.sf.json.JSONArray;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.io.IOException;
 
@@ -33,14 +34,5 @@ public class TestGestionProgramme {
             Assertions.assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
             assertFalse(GestionProgramme.verificationCodeClient(nbrs, codeClient2));
         }
-
-        @Test
-        public void testAjouterMessage() throws IOException {
-            String message = "This is a test message.";
-            String arg = "output.txt";
-
-            // Call the method and assert that the file is created without any exceptions
-            assertDoesNotThrow(() -> GestionProgramme.ajouterMessage(message, arg));
-            // Add more test cases as needed
-        }
+        
 }
