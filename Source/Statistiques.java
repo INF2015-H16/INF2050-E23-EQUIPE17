@@ -241,6 +241,8 @@ public class Statistiques {
 
         JSONArray clients = employe.getJSONArray("clients");
 
+        System.out.println(employe.toString(2));
+
         for (int i = 0; i < clients.size(); i++) {
             JSONObject jsonObject = clients.getJSONObject(i);
             String etatParClient = jsonObject.getString("etat_par_client");
@@ -267,7 +269,6 @@ public class Statistiques {
     }
 
     private static void mettreStatistiquesAJour(int[] tableau, JSONObject statistique) {
-
         statistique.put("Le nombre d'etats par client moins que 1000 est de : ", tableau[0]);
         statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", tableau[1]);
         statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", tableau[2]);
