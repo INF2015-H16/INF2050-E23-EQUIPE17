@@ -5,18 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 public class TestGestionProgramme {
     private String[][] donnees;
 
     @BeforeEach
-    public void setUp() {
-        // Set up the test data for each test case
+    public void configurations() {
+
+        // Mets en place les donnees de test pour chaque cas de test.
         donnees = new String[][]{
                 {"C456", "1", "0", "1"},
                 {"C789", "1", "1", "1"},
