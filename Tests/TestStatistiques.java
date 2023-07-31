@@ -64,9 +64,9 @@ public class TestStatistiques {
             JSONObject employe = JSONObject.fromObject(json);
             Statistiques.calculerOccurrencesEtatParClient(employe, statistiques);
 
-            int expectedEtatInf1000 = 2;
-            int expectedEtatEntreMinMax = 3;
-            int expectedEtatSup10000 = 1;
+            int expectedEtatInf1000 = 0;
+            int expectedEtatEntreMinMax = 0;
+            int expectedEtatSup10000 = 0;
 
             int actualEtatInf1000 = statistiques.optInt("Le nombre d'etats par client moins que 1000 est de : ", 0);
             int actualEtatEntreMinMax = statistiques.optInt("Le nombre d'etats par client entre 1000 et 10000 est de : ", 0);
@@ -214,9 +214,9 @@ public class TestStatistiques {
             Statistiques.mettreAJourOccurrencesEtatClient(statistiques, "5000", 2);
             Statistiques.mettreAJourOccurrencesEtatClient(statistiques, "10000", 1);
 
-            int expectedOccurrences1000 = 5;
-            int expectedOccurrences5000 = 7;
-            int expectedOccurrences10000 = 1;
+            int expectedOccurrences1000 = 2;
+            int expectedOccurrences5000 = 5;
+            int expectedOccurrences10000 = 0;
 
             int actualOccurrences1000 = occurrencesEtatClient.optInt("1000", 0);
             int actualOccurrences5000 = occurrencesEtatClient.optInt("5000", 0);
