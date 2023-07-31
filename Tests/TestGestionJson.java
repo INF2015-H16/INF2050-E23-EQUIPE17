@@ -25,15 +25,18 @@ public class TestGestionJson {
                 "\"taux_horaire_min\": 20.00," +
                 "\"taux_horaire_max\": 30.00," +
                 "\"interventions\": [" +
-                "{\"code_client\": \"C1001\", \"distance_deplacement\": \"50.00%\", \"overtime\": \"1.25%\", \"nombre_heures\": \"3\", \"date_intervention\": \"2023-07-01\"}," +
-                "{\"code_client\": \"C1002\", \"distance_deplacement\": \"25.00%\", \"overtime\": \"1.10%\", \"nombre_heures\": \"5\", \"date_intervention\": \"2023-07-10\"}" +
+                "{\"code_client\": \"C1001\", \"distance_deplacement\": \"50.00%\", \"overtime\": \"1.25%\"," +
+                " \"nombre_heures\": \"3\", \"date_intervention\": \"2023-07-01\"}," +
+                "{\"code_client\": \"C1002\", \"distance_deplacement\": \"25.00%\", \"overtime\": \"1.10%\", " +
+                "\"nombre_heures\": \"5\", \"date_intervention\": \"2023-07-10\"}" +
                 "]}";
 
         JSONArray observations = new JSONArray();
         JSONArray interventions = new JSONArray();
 
         try {
-            String[][] attributsJson = GestionJson.lireFichierEntreeJson(json, "chemin_json", observations, interventions);
+            String[][] attributsJson = GestionJson.lireFichierEntreeJson(json, "chemin_json", observations,
+                    interventions);
 
             String matriculeEmployeAttendu = "123";
             String matriculeEmployeActuel = attributsJson[0][0];
@@ -74,7 +77,8 @@ public class TestGestionJson {
         JSONArray observations = new JSONArray();
 
         JSONObject employee = new JSONObject();
-        employee = GestionJson.employeeInfo(matriculeEmploye, etatCompte, coutFixe, coutVariable, employee, observations);
+        employee = GestionJson.employeeInfo(matriculeEmploye, etatCompte, coutFixe, coutVariable, employee,
+                observations);
 
         String matriculeEmployeAttendu = "123";
         String matriculeEmployeActuel = employee.getString("matricule_employe");
@@ -100,7 +104,8 @@ public class TestGestionJson {
 
         int tailleObservationsAttendues = observationsAttendues.size();
         int tailleObservationsActuelles = observations.size();
-        Assertions.assertEquals(tailleObservationsAttendues, tailleObservationsActuelles, "Observations list size mismatch");
+        Assertions.assertEquals(tailleObservationsAttendues, tailleObservationsActuelles,
+                "Observations list size mismatch");
 
         for (int i = 0; i < tailleObservationsAttendues; i++) {
             Object elementAttendu = observationsAttendues.get(i);
