@@ -88,8 +88,10 @@ public class Statistiques {
 
         System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
+
         while (true){
-        String reponse = scanner.nextLine().toLowerCase();
+            String reponse = scanner.nextLine().toLowerCase();
+
             if (reponseValide(reponse)) {
                 return reponse.equals("oui");
             } else {

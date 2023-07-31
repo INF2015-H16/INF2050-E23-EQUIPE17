@@ -55,7 +55,7 @@ public class CalculEmploye {
         double montantHeuresSupp = (nombreHeures > 40) ? (nombreHeures - 40) * 100.0 * overtime : 0;
 
         // Obtention du montant total en appelant la sous-méthode
-        double montantTotal = getMontantTotal(montantRegulier, montantDeplacement, montantHeuresSupp);
+        double montantTotal = calculMontantTotal(montantRegulier, montantDeplacement, montantHeuresSupp);
 
         if (montantTotal < 0) {
             throw new JsonException("Le montant total ne peut pas être négatif");
@@ -64,7 +64,7 @@ public class CalculEmploye {
         return montantTotal;
     }
 
-    private static double getMontantTotal(double montantRegulier, double montantDeplacement, double montantHeuresSupp) {
+    private static double calculMontantTotal(double montantRegulier, double montantDeplacement, double montantHeuresSupp) {
         // Calcul du montant total
         double montantTotal = montantRegulier + montantDeplacement + montantHeuresSupp;
 
