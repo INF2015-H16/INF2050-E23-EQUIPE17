@@ -57,7 +57,8 @@ public class Observations {
         }
     }
 
-    public static JSONObject employeeObservation(JSONObject employee, double cout_variable, double etat_compte, double cout_fixe, JSONArray observations){
+    public static JSONObject employeeObservation(JSONObject employee, double cout_variable, double etat_compte,
+                                                 double cout_fixe, JSONArray observations){
         if(cout_variable > 3000)
             observations.add("Le cout variable payable nécessite des ajustements");
         if(etat_compte > 30000)
@@ -67,10 +68,10 @@ public class Observations {
         return employee;
     }
 
-        public static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client, String
-                code){
-            if (etat_par_client > 15000)
-                observation.add("L’état par client du client " + code + " est trop dispendieuse.");
-        }
+    public static void etatClientObservation(JSONArray observation, JSONObject employee, double etat_par_client,
+                                             String code){
+        if (etat_par_client > 15000)
+            observation.add("L’état par client du client " + code + " est trop dispendieuse.");
+    }
 
 }

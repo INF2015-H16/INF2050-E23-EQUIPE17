@@ -18,7 +18,7 @@ public class GestionProgramme {
         }
         return true;
     }
-    
+
     public static void executerRecuperationInterventions(String[][] donnees, String argument2, String json,
                                                          JSONArray observations, String option, JSONArray interventions)
             throws JsonException {
