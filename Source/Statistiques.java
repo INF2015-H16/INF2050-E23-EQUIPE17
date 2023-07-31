@@ -46,12 +46,13 @@ public class Statistiques {
                 FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
                 affichageStatistique(statistiques);
             } catch (IOException e) {
-            System.out.println("Une erreur est survenue : " + e.getMessage());
-        }
+                System.out.println("Une erreur est survenue : " + e.getMessage());
+            }
 
     }
 
     private static void affichageStatistique(JSONObject statistiques) {
+
         JSONObject objetJson = (JSONObject) JSONSerializer.toJSON(statistiques);
 
         Map<String, Object> mappeJson = new LinkedHashMap<String, Object>();
@@ -247,14 +248,15 @@ public class Statistiques {
             String etatParClient = objetJson.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
 
-            mettreCompteOccurrencesAJour(tableauDonnees,etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
+            mettreCompteOccurrencesAJour(tableauDonnees,etatClient, nbrEtatInf1000, nbrEtatEntreMinMax,
+                    nbrEtatSup10000);
         }
 
         mettreStatistiquesAJour(tableauDonnees,statistique);
     }
 
-    private static void mettreCompteOccurrencesAJour(int[] tableau , double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax,
-                                                     int nbrEtatSup10000) {
+    private static void mettreCompteOccurrencesAJour(int[] tableau , double etatClient, int nbrEtatInf1000,
+                                                     int nbrEtatEntreMinMax, int nbrEtatSup10000) {
         if (etatClient < ETAT_PAR_CLIENT_1000) {
             nbrEtatInf1000++;
             tableau[0] = nbrEtatInf1000;
@@ -268,6 +270,7 @@ public class Statistiques {
     }
 
     private static void mettreStatistiquesAJour(int[] tableau, JSONObject statistique) {
+
         statistique.put("Le nombre d'etats par client moins que 1000 est de : ", tableau[0]);
         statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", tableau[1]);
         statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", tableau[2]);
