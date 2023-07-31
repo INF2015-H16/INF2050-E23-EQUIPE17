@@ -9,14 +9,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GestionProgramme {
-    /**
-     * Vérifie si un codeClient est présent dans le tableau `nbrs`.
-     *
-     * @param nbrs Le tableau d'entiers à vérifier.
-     * @param codeClient    L'entier à rechercher.
-     * @return `true` si le codeClient n'est pas présent dans le tableau `nbrs`, `false` sinon.
-     */
-
 
     public static boolean verificationCodeClient(int[] nbrs, int codeClient) {
 
@@ -26,18 +18,7 @@ public class GestionProgramme {
         }
         return true;
     }
-
-
-    /**
-     * Exécute la récupération des interventions à partir des données fournies.
-     *
-     * @param donnees       Les données d'entrée sous forme de tableau 2D.
-     * @param argument2     L'argument 2 spécifique à la récupération des interventions.
-     * @param json          Le fichier JSON contenant les informations nécessaires.
-     * @param option
-     * @param interventions
-     * @throws JsonException Si une exception JSON se produit lors de la récupération des données.
-     */
+    
     public static void executerRecuperationInterventions(String[][] donnees, String argument2, String json,
                                                          JSONArray observations, String option, JSONArray interventions)
             throws JsonException {
