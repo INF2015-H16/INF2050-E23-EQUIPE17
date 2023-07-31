@@ -51,26 +51,39 @@ public class TestStatistiques {
 
         @Test
         public void testCalculerOccurrencesEtatParClient() {
-            String json = "{\"clients\":[" +
-                    "{\"etat_par_client\": \"200.00$\"}," +
-                    "{\"etat_par_client\": \"500.00$\"}," +
-                    "{\"etat_par_client\": \"1000.00$\"}," +
-                    "{\"etat_par_client\": \"750.00$\"}," +
-                    "{\"etat_par_client\": \"8000.00$\"}," +
-                    "{\"etat_par_client\": \"15000.00$\"}" +
-                    "]}";
+            String json = "{\n" +
+                    "  \"matricule_employe\": 123456789,\n" +
+                    "  \"etat_compte\": \"1349.40$\",\n" +
+                    "  \"cout_fixe\": \"16.20$\",\n" +
+                    "  \"cout_variable\": \"33.75$\",\n" +
+                    "  \"clients\":   [\n" +
+                    "        {\n" +
+                    "      \"code_client\": \"C456\",\n" +
+                    "      \"etat_par_client\": \"100000$\"\n" +
+                    "    },\n" +
+                    "        {\n" +
+                    "      \"code_client\": \"C789\",\n" +
+                    "      \"etat_par_client\": \"209.40$\"\n" +
+                    "    },\n" +
+                    "        {\n" +
+                    "      \"code_client\": \"C123\",\n" +
+                    "      \"etat_par_client\": \"1500$\"\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"observations\": [\"L’écart maximal entre les dates d’intervention (date_intervention) du client C789 d’un même employé doit être de moins de 6 mois.\"]\n" +
+                    "}";
 
-            JSONObject statistiques = new JSONObject();
             JSONObject employe = JSONObject.fromObject(json);
+            JSONObject statistiques = new JSONObject();
             Statistiques.calculerOccurrencesEtatParClient(employe, statistiques);
 
-            int expectedEtatInf1000 = 0;
-            int expectedEtatEntreMinMax = 0;
-            int expectedEtatSup10000 = 0;
+            int expectedEtatInf1000 = 1;
+            int expectedEtatEntreMinMax = 1 ;
+            int expectedEtatSup10000 = 1;
 
-            int actualEtatInf1000 = statistiques.optInt("Le nombre d'etats par client moins que 1000 est de : ", 0);
-            int actualEtatEntreMinMax = statistiques.optInt("Le nombre d'etats par client entre 1000 et 10000 est de : ", 0);
-            int actualEtatSup10000 = statistiques.optInt("Le nombre d'etats par client superieur a 10000 est de : ", 0);
+            int actualEtatInf1000 = statistiques.optInt("Le nombre d'etats par client moins que 1000 est de : ");
+            int actualEtatEntreMinMax = statistiques.optInt("Le nombre d'etats par client entre 1000 et 10000 est de : ");
+            int actualEtatSup10000 = statistiques.optInt("Le nombre d'etats par client superieur a 10000 est de : ");
 
             Assertions.assertEquals(expectedEtatInf1000, actualEtatInf1000);
             Assertions.assertEquals(expectedEtatEntreMinMax, actualEtatEntreMinMax);
