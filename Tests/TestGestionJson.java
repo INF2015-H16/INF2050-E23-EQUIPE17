@@ -11,10 +11,10 @@ import java.io.IOException;
 public class TestGestionJson {
     @Test
     public void testConvertirMajusculesEnMinuscules() {
-        String input = "Hello World";
-        String expectedOutput = "helloworld";
-        String actualOutput = GestionJson.convertirMajusculesEnMinuscules(input);
-        Assertions.assertEquals(expectedOutput, actualOutput);
+        String entree = "Hello World";
+        String sortieAttendue = "helloworld";
+        String sortieActuelle = GestionJson.convertirMajusculesEnMinuscules(entree);
+        Assertions.assertEquals(sortieAttendue, sortieActuelle);
     }
 
     @Test
@@ -35,33 +35,33 @@ public class TestGestionJson {
         try {
             String[][] attributsJson = GestionJson.lireFichierEntreeJson(json, "chemin_json", observations, interventions);
 
-            String expectedMatriculeEmploye = "123";
-            String actualMatriculeEmploye = attributsJson[0][0];
-            Assertions.assertEquals(expectedMatriculeEmploye, actualMatriculeEmploye);
+            String matriculeEmployeAttendu = "123";
+            String matriculeEmployeActuel = attributsJson[0][0];
+            Assertions.assertEquals(matriculeEmployeAttendu, matriculeEmployeActuel);
 
-            String expectedTypeEmploye = "TYPE_1";
-            String actualTypeEmploye = attributsJson[1][0];
-            Assertions.assertEquals(expectedTypeEmploye, actualTypeEmploye);
+            String typeEmployeAttendu = "TYPE_1";
+            String typeEmployeActuel = attributsJson[1][0];
+            Assertions.assertEquals(typeEmployeAttendu, typeEmployeActuel);
 
-            String expectedTauxHoraireMin = "20.0";
-            String actualTauxHoraireMin = attributsJson[2][0];
-            Assertions.assertEquals(expectedTauxHoraireMin, actualTauxHoraireMin);
+            String tauxHoraierMinAttendu = "20.0";
+            String tauxHoraireMinActuel = attributsJson[2][0];
+            Assertions.assertEquals(tauxHoraierMinAttendu, tauxHoraireMinActuel);
 
-            String expectedTauxHoraireMax = "30.0";
-            String actualTauxHoraireMax = attributsJson[3][0];
-            Assertions.assertEquals(expectedTauxHoraireMax, actualTauxHoraireMax);
+            String tauxHoraieMaxAttendu = "30.0";
+            String tauxHoraireMaxActuel = attributsJson[3][0];
+            Assertions.assertEquals(tauxHoraieMaxAttendu, tauxHoraireMaxActuel);
 
-            String expectedCodeClient1 = "C1001";
-            String actualCodeClient1 = attributsJson[4][0];
-            Assertions.assertEquals(expectedCodeClient1, actualCodeClient1);
+            String codeClient1Attendu = "C1001";
+            String codeClient1Actuel = attributsJson[4][0];
+            Assertions.assertEquals(codeClient1Attendu, codeClient1Actuel);
 
-            String expectedDistanceDeplacement1 = "50.00%";
-            String actualDistanceDeplacement1 = attributsJson[4][1];
-            Assertions.assertEquals(expectedDistanceDeplacement1, actualDistanceDeplacement1);
+            String distanceDeplacement1Attendu = "50.00%";
+            String distanceDeplacement1Actuel = attributsJson[4][1];
+            Assertions.assertEquals(distanceDeplacement1Attendu, distanceDeplacement1Actuel);
 
 
         } catch (JsonException | IOException e) {
-            Assertions.fail("Exception should not be thrown during test: " + e.getMessage());
+            Assertions.fail("Exception ne devrait pas etre lancee durant les tests: " + e.getMessage());
         }
     }
     @Test
@@ -76,36 +76,36 @@ public class TestGestionJson {
         JSONObject employee = new JSONObject();
         employee = GestionJson.employeeInfo(matriculeEmploye, etatCompte, coutFixe, coutVariable, employee, observations);
 
-        String expectedMatriculeEmploye = "123";
-        String actualMatriculeEmploye = employee.getString("matricule_employe");
-        Assertions.assertEquals(expectedMatriculeEmploye, actualMatriculeEmploye);
+        String matriculeEmployeAttendu = "123";
+        String matriculeEmployeActuel = employee.getString("matricule_employe");
+        Assertions.assertEquals(matriculeEmployeAttendu, matriculeEmployeActuel);
 
-        String expectedEtatCompte = "50000.00$";
-        String actualEtatCompte = employee.getString("etat_compte");
-        Assertions.assertEquals(expectedEtatCompte, actualEtatCompte);
+        String etatCompteAttendu = "50000.00$";
+        String etatCompteActuel = employee.getString("etat_compte");
+        Assertions.assertEquals(etatCompteAttendu, etatCompteActuel);
 
-        String expectedCoutFixe = "1700.00$";
-        String actualCoutFixe = employee.getString("cout_fixe");
-        Assertions.assertEquals(expectedCoutFixe, actualCoutFixe);
+        String coutFixeAttendu = "1700.00$";
+        String coutFixeActuel = employee.getString("cout_fixe");
+        Assertions.assertEquals(coutFixeAttendu, coutFixeActuel);
 
-        String expectedCoutVariable = "3200.00$";
-        String actualCoutVariable = employee.getString("cout_variable");
-        Assertions.assertEquals(expectedCoutVariable, actualCoutVariable);
+        String coutVariableAttendu = "3200.00$";
+        String coutVariableActuel = employee.getString("cout_variable");
+        Assertions.assertEquals(coutVariableAttendu, coutVariableActuel);
 
         // Ensure that the observations are added correctly to the employee
-        JSONArray expectedObservations = new JSONArray();
-        expectedObservations.add("Le cout variable payable nécessite des ajustements");
-        expectedObservations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
-        expectedObservations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
+        JSONArray observationsAttendues = new JSONArray();
+        observationsAttendues.add("Le cout variable payable nécessite des ajustements");
+        observationsAttendues.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
+        observationsAttendues.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
 
-        int expectedObservationsSize = expectedObservations.size();
-        int actualObservationsSize = observations.size();
-        Assertions.assertEquals(expectedObservationsSize, actualObservationsSize, "Observations list size mismatch");
+        int tailleObservationsAttendues = observationsAttendues.size();
+        int tailleObservationsActuelles = observations.size();
+        Assertions.assertEquals(tailleObservationsAttendues, tailleObservationsActuelles, "Observations list size mismatch");
 
-        for (int i = 0; i < expectedObservationsSize; i++) {
-            Object expectedElement = expectedObservations.get(i);
-            Object actualElement = observations.get(i);
-            Assertions.assertEquals(expectedElement, actualElement, "Observation mismatch at index " + i);
+        for (int i = 0; i < tailleObservationsAttendues; i++) {
+            Object elementAttendu = observationsAttendues.get(i);
+            Object elementActuel = observations.get(i);
+            Assertions.assertEquals(elementAttendu, elementActuel, "Observation mismatch at index " + i);
         }
     }
 }
