@@ -44,28 +44,28 @@ public class TestJsonException {
 
     @Test
     public void testValiderTaux_Valid() {
-        String[][] data = {{"12.34"}};
-        assertDoesNotThrow(() -> JsonException.validerTaux(data, 0));
+        String[][] donnees = {{"12.34"}};
+        assertDoesNotThrow(() -> JsonException.validerTaux(donnees, 0));
     }
 
     @Test
     public void testValiderTaux_Invalid() {
-        String[][] data = {{"-1.0"}};
-        assertThrows(JsonException.class, () -> JsonException.validerTaux(data, 0));
+        String[][] donnees = {{"-1.0"}};
+        assertThrows(JsonException.class, () -> JsonException.validerTaux(donnees, 0));
     }
 
     @Test
     public void testValiderTypeEmploye_Valid() {
-        String[][] data = new String[2][1];
-        data[1][0] = "1";
-        assertDoesNotThrow(() -> JsonException.validerTypeEmploye(data));
+        String[][] donnees = new String[2][1];
+        donnees[1][0] = "1";
+        assertDoesNotThrow(() -> JsonException.validerTypeEmploye(donnees));
     }
 
     @Test
     public void testValiderTypeEmploye_Invalid() {
-        String[][] data = new String[2][1];
-        data[1][0] = "3";
-        assertThrows(JsonException.class, () -> JsonException.validerTypeEmploye(data));
+        String[][] donnees = new String[2][1];
+        donnees[1][0] = "3";
+        assertThrows(JsonException.class, () -> JsonException.validerTypeEmploye(donnees));
     }
 
     @Test
@@ -119,34 +119,34 @@ public class TestJsonException {
 
     @Test
     public void testValiderFichierSortieDispo_FileNotExists() {
-        String filePath = "output.json";
-        assertDoesNotThrow(() -> JsonException.validerFichierSortieDispo(filePath));
+        String cheminFichier = "output.json";
+        assertDoesNotThrow(() -> JsonException.validerFichierSortieDispo(cheminFichier));
     }
 
     @Test
     public void testValiderFichierSortieDispo_FileExists() throws IOException {
-        String filePath = "output.json";
-        File file = new File(filePath);
-        file.createNewFile();
-        assertDoesNotThrow(() -> JsonException.validerFichierSortieDispo(filePath));
-        file.delete();
+        String cheminFichier = "output.json";
+        File fichier = new File(cheminFichier);
+        fichier.createNewFile();
+        assertDoesNotThrow(() -> JsonException.validerFichierSortieDispo(cheminFichier));
+        fichier.delete();
     }
 
     @Test
     public void testValiderProprietesJsonPresentes_AllPropertiesPresent() {
-        String jsonObject = "{\"code_client\":\"123\",\"date_intervention\":\"2023-07-28\"," +
+        String objetJson = "{\"code_client\":\"123\",\"date_intervention\":\"2023-07-28\"," +
                 "\"nombre_heures\":5,\"overtime\":1.5,\"distance_deplacement\":40," +
                 "\"taux_horaire_max\":25.0,\"taux_horaire_min\":15.0,\"type_employe\":1}";
         String arg2 = "data.json";
-        assertDoesNotThrow(() -> JsonException.validerProprietesJsonPresentes(jsonObject, arg2));
+        assertDoesNotThrow(() -> JsonException.validerProprietesJsonPresentes(objetJson, arg2));
     }
 
     @Test
     public void testValiderProprietesJsonPresentes_SomePropertiesMissing() {
-        String jsonObject = "{\"code_client\":\"123\",\"date_intervention\":\"2023-07-28\"," +
+        String objetJson = "{\"code_client\":\"123\",\"date_intervention\":\"2023-07-28\"," +
                 "\"nombre_heures\":5,\"overtime\":1.5,\"distance_deplacement\":40}";
         String arg2 = "data.json";
-        assertThrows(IOException.class, () -> JsonException.validerProprietesJsonPresentes(jsonObject, arg2));
+        assertThrows(IOException.class, () -> JsonException.validerProprietesJsonPresentes(objetJson, arg2));
     }
 
 }
