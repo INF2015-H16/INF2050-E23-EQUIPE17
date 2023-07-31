@@ -19,7 +19,7 @@ public class TestGestionJson {
 
     @Test
     public void testLireFichierEntreeJson() {
-        // Sample JSON data for testing
+
         String json = "{\"matricule_employe\": 123," +
                 "\"type_employe\": \"TYPE_1\"," +
                 "\"taux_horaire_min\": 20.00," +
@@ -59,7 +59,6 @@ public class TestGestionJson {
             String actualDistanceDeplacement1 = attributsJson[4][1];
             Assertions.assertEquals(expectedDistanceDeplacement1, actualDistanceDeplacement1);
 
-            // Add more assertions for other attributes and interventions as needed
 
         } catch (JsonException | IOException e) {
             Assertions.fail("Exception should not be thrown during test: " + e.getMessage());
@@ -67,7 +66,7 @@ public class TestGestionJson {
     }
     @Test
     public void testEmployeeInfo() {
-        // Sample data for testing
+
         int matriculeEmploye = 123;
         double etatCompte = 50000.00;
         double coutFixe = 1700.00;
@@ -99,12 +98,10 @@ public class TestGestionJson {
         expectedObservations.add("L’état de compte total ne doit pas dépasser 30000.00 $.");
         expectedObservations.add("Le cout fixe payable ne doit pas dépasser 1500.00 $.");
 
-        // Compare the size of the expected and actual observations
         int expectedObservationsSize = expectedObservations.size();
         int actualObservationsSize = observations.size();
         Assertions.assertEquals(expectedObservationsSize, actualObservationsSize, "Observations list size mismatch");
 
-        // Compare each element in the expected and actual observations
         for (int i = 0; i < expectedObservationsSize; i++) {
             Object expectedElement = expectedObservations.get(i);
             Object actualElement = observations.get(i);

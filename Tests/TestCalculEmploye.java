@@ -63,7 +63,6 @@ public class TestCalculEmploye {
         double distanceDeplacement = 70.0;
         double overtime = 6.0;
         double montantRegulier,montantDeplacement,montantHeuresSupp;
-        // Expected Etat par client = montantRegulier + montantDeplacement + montantHeuresSupp
 
         montantRegulier = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2);
         montantDeplacement = (200 - (70 * (0.10 * montantRegulier)));;
@@ -81,7 +80,6 @@ public class TestCalculEmploye {
         double tauxHoraireMin = 20.0;
         double tauxHoraireMax = 30.0;
 
-        // Expected montantRegulier = tauxHoraireMax * nombreHeures
         double expectedMontantRegulier = tauxHoraireMax * nombreHeures;
         double actualMontantRegulier = CalculEmploye.calculerMontantRegulier(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax);
         Assertions.assertEquals(expectedMontantRegulier, actualMontantRegulier, 0.001);
@@ -93,7 +91,6 @@ public class TestCalculEmploye {
         double distanceDeplacement = 80.0;
         double montantRegulier = 1000.0;
 
-        // Expected montantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier))
         double expectedMontantDeplacement = 200 - (distanceDeplacement * (0.10 * montantRegulier));
         double actualMontantDeplacement = CalculEmploye.calculerMontantDeplacement(typeEmploye, distanceDeplacement, montantRegulier);
         Assertions.assertEquals(expectedMontantDeplacement, actualMontantDeplacement, 0.001);
@@ -103,7 +100,6 @@ public class TestCalculEmploye {
     public void testCalculerMontantHeuresSupplementairesType1() {
         double overtime = 5.0;
 
-        // Expected montantHeuresSupplementaires = 50.0 * overtime
         double expectedMontantHeuresSupplementaires = 50.0 * overtime;
         double actualMontantHeuresSupplementaires = CalculEmploye.calculerMontantHeuresSupplementairesType1(overtime);
         Assertions.assertEquals(expectedMontantHeuresSupplementaires, actualMontantHeuresSupplementaires, 0.001);
@@ -113,7 +109,6 @@ public class TestCalculEmploye {
     public void testCalculerMontantHeuresSupplementairesType2() {
         double overtime = 3.5;
 
-        // Expected montantHeuresSupplementaires = 75.0 * overtime
         double expectedMontantHeuresSupplementaires = 75.0 * overtime;
         double actualMontantHeuresSupplementaires = CalculEmploye.calculerMontantHeuresSupplementairesType2(overtime);
         Assertions.assertEquals(expectedMontantHeuresSupplementaires, actualMontantHeuresSupplementaires, 0.001);
@@ -123,7 +118,6 @@ public class TestCalculEmploye {
     public void testArrondirMontant() {
         double montant = 456.78;
 
-        // Expected arrondi = 456.80 (rounded to the nearest 0.05)
         double expectedArrondi = 456.80;
         double actualArrondi = CalculEmploye.arrondirMontant(montant);
         Assertions.assertEquals(expectedArrondi, actualArrondi, 0.001);

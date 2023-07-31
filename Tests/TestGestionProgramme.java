@@ -34,5 +34,5 @@ public class TestGestionProgramme {
             Assertions.assertTrue(GestionProgramme.verificationCodeClient(nbrs, codeClient1));
             assertFalse(GestionProgramme.verificationCodeClient(nbrs, codeClient2));
         }
-        
+
 }
