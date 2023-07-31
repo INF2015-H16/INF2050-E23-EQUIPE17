@@ -44,11 +44,11 @@ public class Statistiques {
         if(option.equals("-S"))
             try {
                 FileUtils.writeStringToFile(new File(nomFichier), statistiques.toString(2), "UTF-8");// le 2 dans tostring sert a ecrire le json d'une facon indente
-        } catch (IOException e) {
+                affichageStatistique(statistiques);
+            } catch (IOException e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
         }
 
-        affichageStatistique(statistiques);
     }
 
     private static void affichageStatistique(JSONObject statistiques) {
@@ -75,6 +75,8 @@ public class Statistiques {
 
             reinitialiserValeurs(statistiques);
             System.out.println("Statistiques après réinitialisation :");
+            System.out.println("Statistiques :");
+            System.out.println("-------------------------");
             affichageStatistique(statistiques);
             sauvegarderStatistiquesSous(statistiques, nomFichier);
         } else {
@@ -176,8 +178,9 @@ public class Statistiques {
                 objetJson.put(cle, valeur1 + valeur2);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Il y'a une erreur dans le fichier statistique.json");
+            System.exit(0);
         }
 
         return objetJson;
@@ -216,7 +219,7 @@ public class Statistiques {
                     parseDouble(etatParClient.substring(0,etatParClient.length()-1)));
         }
 
-        statistique.put("l’état par client maximal retourné pour un client: ", etatParClientMax);
+        statistique.put("L’état par client maximal retourné pour un client: ", etatParClientMax);
     }
 
     public static void calculerOccurrencesEtatParClient(JSONObject employe, JSONObject statistique) {
@@ -224,6 +227,7 @@ public class Statistiques {
         int nbrEtatInf1000 = 0;
         int nbrEtatEntreMinMax = 0;
         int nbrEtatSup10000 = 0;
+        int tableauDonnees[] =new int[3] ;
 
         JSONArray clients = employe.getJSONArray("clients");
 
@@ -232,29 +236,31 @@ public class Statistiques {
             String etatParClient = jsonObject.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
 
-            mettreCompteOccurrencesAJour(etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
+            mettreCompteOccurrencesAJour(tableauDonnees,etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
         }
 
-        mettreStatistiquesAJour(statistique, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
+        mettreStatistiquesAJour(tableauDonnees,statistique);
     }
 
-    private static void mettreCompteOccurrencesAJour(double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax,
+    private static void mettreCompteOccurrencesAJour(int[] tableau , double etatClient, int nbrEtatInf1000, int nbrEtatEntreMinMax,
                                                      int nbrEtatSup10000) {
         if (etatClient < ETAT_PAR_CLIENT_1000) {
             nbrEtatInf1000++;
+            tableau[0] = nbrEtatInf1000;
         } else if (etatClient > ETAT_PAR_CLIENT_1000 && etatClient < ETAT_PAR_CLIENT_10000) {
             nbrEtatEntreMinMax++;
+            tableau[1] = nbrEtatEntreMinMax;
         } else if (etatClient > ETAT_PAR_CLIENT_10000) {
             nbrEtatSup10000++;
+            tableau[2] = nbrEtatSup10000;
         }
     }
 
-    private static void mettreStatistiquesAJour(JSONObject statistique, int nbrEtatInf1000, int nbrEtatEntreMinMax,
-                                                int nbrEtatSup10000) {
+    private static void mettreStatistiquesAJour(int[] tableau, JSONObject statistique) {
 
-        statistique.put("Le nombre d'etats par client moins que 1000 est de : ", nbrEtatInf1000);
-        statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", nbrEtatEntreMinMax);
-        statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", nbrEtatSup10000);
+        statistique.put("Le nombre d'etats par client moins que 1000 est de : ", tableau[0]);
+        statistique.put("Le nombre d'etats par client entre 1000 et 10000 est de : ", tableau[1]);
+        statistique.put("Le nombre d'etats par client superieur a 10000 est de : ", tableau[2]);
     }
 
 
