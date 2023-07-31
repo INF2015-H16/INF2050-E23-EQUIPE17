@@ -52,16 +52,16 @@ public class Statistiques {
     }
 
     private static void affichageStatistique(JSONObject statistiques) {
-        JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(statistiques);
+        JSONObject objetJson = (JSONObject) JSONSerializer.toJSON(statistiques);
 
-        Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
-        for (Iterator<?> keys = jsonObject.keys(); keys.hasNext();) {
+        Map<String, Object> mappeJson = new LinkedHashMap<String, Object>();
+        for (Iterator<?> keys = objetJson.keys(); keys.hasNext();) {
             String key = (String) keys.next();
-            jsonMap.put(key, jsonObject.get(key));
+            mappeJson.put(key, objetJson.get(key));
         }
 
-        for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-            System.out.println(entry.getKey() + " " + entry.getValue());
+        for (Map.Entry<String, Object> entree : mappeJson.entrySet()) {
+            System.out.println(entree.getKey() + " " + entree.getValue());
         }
 
     }
@@ -99,8 +99,8 @@ public class Statistiques {
         }
     }
 
-    private static boolean reponseValide(String response) {
-        return response.equals("oui") || response.equals("non");
+    private static boolean reponseValide(String reponse) {
+        return reponse.equals("oui") || reponse.equals("non");
     }
 
     private static String lireContenuFichier(String nomFichier) throws IOException {
@@ -110,10 +110,10 @@ public class Statistiques {
 
     private static void reinitialiserValeurs(JSONObject statistiques) {
 
-        Iterator<String> keysIterator = statistiques.keys();
-        while (keysIterator.hasNext()) {
-            String key = keysIterator.next();
-            statistiques.put(key, 0);
+        Iterator<String> iterateurCles = statistiques.keys();
+        while (iterateurCles.hasNext()) {
+            String cle = iterateurCles.next();
+            statistiques.put(cle, 0);
         }
     }
 
@@ -178,12 +178,12 @@ public class Statistiques {
 
         JSONObject objetJson = null;
         try {
-            String jsonContent = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
-            objetJson = (JSONObject) JSONSerializer.toJSON(jsonContent);
+            String contenuJson = new String(Files.readAllBytes(Paths.get(nomFichier)), StandardCharsets.UTF_8);
+            objetJson = (JSONObject) JSONSerializer.toJSON(contenuJson);
 
-            Iterator<String> keysIterator = statistiques.keys();
-            while (keysIterator.hasNext()) {
-                String cle = keysIterator.next();
+            Iterator<String> iterateurCles = statistiques.keys();
+            while (iterateurCles.hasNext()) {
+                String cle = iterateurCles.next();
                 int valeur1 = statistiques.getInt(cle);
                 int valeur2 = objetJson.getInt(cle);
                 objetJson.put(cle, valeur1 + valeur2);
@@ -243,8 +243,8 @@ public class Statistiques {
         JSONArray clients = employe.getJSONArray("clients");
 
         for (int i = 0; i < clients.size(); i++) {
-            JSONObject jsonObject = clients.getJSONObject(i);
-            String etatParClient = jsonObject.getString("etat_par_client");
+            JSONObject objetJson = clients.getJSONObject(i);
+            String etatParClient = objetJson.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
 
             mettreCompteOccurrencesAJour(tableauDonnees,etatClient, nbrEtatInf1000, nbrEtatEntreMinMax, nbrEtatSup10000);
