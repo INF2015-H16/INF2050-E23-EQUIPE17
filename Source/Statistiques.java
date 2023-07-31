@@ -74,7 +74,6 @@ public class Statistiques {
             statistiques = JSONObject.fromObject(contenuJson);
 
             reinitialiserValeurs(statistiques);
-            System.out.println("Statistiques après réinitialisation :");
             System.out.println("Statistiques :");
             System.out.println("-------------------------");
             affichageStatistique(statistiques);
