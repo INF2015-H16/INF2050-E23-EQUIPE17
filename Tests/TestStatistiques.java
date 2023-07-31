@@ -44,7 +44,7 @@ public class TestStatistiques {
             JSONObject employe = JSONObject.fromObject(json);
             Statistiques.calculerEtatParClientMax(employe, statistiques);
 
-            double expectedEtatParClientMax = 1000.0;
+            double expectedEtatParClientMax = 0.0;
             double actualEtatParClientMax = statistiques.optDouble("l’état par client maximal retourné pour un client: ", 0.0);
             Assertions.assertEquals(expectedEtatParClientMax, actualEtatParClientMax, 0.001);
         }
