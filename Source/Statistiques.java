@@ -235,8 +235,6 @@ public class Statistiques {
 
         JSONArray clients = employe.getJSONArray("clients");
 
-        System.out.println(employe.toString(2));
-
         for (int i = 0; i < clients.size(); i++) {
             JSONObject jsonObject = clients.getJSONObject(i);
             String etatParClient = jsonObject.getString("etat_par_client");
