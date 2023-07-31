@@ -88,12 +88,18 @@ public class Statistiques {
 
         System.out.println("Voulez-vous vraiment réinitialiser les statistiques ? (Oui/Non)");
         Scanner scanner = new Scanner(System.in);
+        while (true){
         String reponse = scanner.nextLine().toLowerCase();
-        return reponse.equals("oui");
+            if (reponseValide(reponse)) {
+                return reponse.equals("oui");
+            } else {
+                System.out.println("Veuillez répondre par 'oui' ou 'non'.");
+            }
+        }
     }
 
-    private static boolean reponseValide(String reponse) {
-        return reponse.equals("oui") || reponse.equals("non");
+    private static boolean reponseValide(String response) {
+        return response.equals("oui") || response.equals("non");
     }
 
     private static String lireContenuFichier(String nomFichier) throws IOException {
@@ -135,7 +141,7 @@ public class Statistiques {
 
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
 
-        String nomFichier = "Statistique.json";
+        String nomFichier = "statistique.json";
         chargerStatistiques(statistiques, nomFichier);
         JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
 
@@ -320,7 +326,7 @@ public class Statistiques {
     public static void gestionStatistiques(String option, JSONArray interventions, String json,
                                            JSONObject statistiques) {
 
-        String nomFichier = "Statistique.json";
+        String nomFichier = "statistique.json";
 
         boolean fichierVide = estFichierVide(nomFichier);
 
