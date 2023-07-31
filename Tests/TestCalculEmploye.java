@@ -45,7 +45,9 @@ public class TestCalculEmploye {
         // Expected Etat par client = montantRegulier + montantDeplacement + montantHeuresSupp
         double expectedEtatParClient = 50 * ((tauxHoraireMin + tauxHoraireMax) / 2) + (200 - (70 * (0.10 * (50 * ((tauxHoraireMin + tauxHoraireMax) / 2))))) + (50 * 6 * 100.0);
         double actualEtatParClient = CalculEmploye.calculerEtatParClient(typeEmploye, nombreHeures, tauxHoraireMin, tauxHoraireMax, distanceDeplacement, overtime);
+        System.out.print(actualEtatParClient);
         Assertions.assertEquals(expectedEtatParClient, actualEtatParClient, 0.001);
+
     }
 
     @Test

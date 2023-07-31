@@ -128,7 +128,7 @@ public class Statistiques {
 
     public static void mettreAJourOccurrencesEtatClient(JSONObject statistiques, String plage, int compte) {
 
-        String nomFichier = "statistiques.json";
+        String nomFichier = "Statistique.json";
         chargerStatistiques(statistiques, nomFichier);
         JSONObject occurrencesEtatClient = statistiques.optJSONObject("etat_par_client");
 
