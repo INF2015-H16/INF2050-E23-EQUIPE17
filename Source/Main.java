@@ -10,7 +10,7 @@ public class Main {
 
         String[][] donnees;
         JSONArray observations = new JSONArray(),interventions = null;
-        String argument = "test.json",argument2 = "sortie.json",json = "",buffer = "",argument3 = "-S";
+        String argument = args[0],argument2 = args[1],json = "",buffer = "",argument3 = args[2];
 
         try {
             json = lecteurFichier(argument, json,buffer);
