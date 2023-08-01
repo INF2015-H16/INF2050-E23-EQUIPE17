@@ -87,18 +87,17 @@ public class GestionJson {
     public static void formattageFichierSortieJson(int matricule_employe, double etat_compte, double cout_fixe,
                                                    double cout_variable, String[] code, double[] etat_par_client, int j,
                                                    String arg, int[] nbrs, JSONArray observation,
-                                                   JSONObject statistique, String option) {
+                                                   JSONObject statistique, String option, String fichierEntree) {
 
         JSONObject employee = new JSONObject();
         employee = employeeInfo(matricule_employe, etat_compte, cout_fixe, cout_variable, employee,observation);
         JSONArray clients = new JSONArray();
         JSONObject client = new JSONObject();
-        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee,
-                observation));
+        employee.accumulate("clients", preparationJson(code, etat_par_client, j, nbrs, clients, client, employee, observation));
         employee.accumulate("observations",observation);
         Statistiques.calculerEtatParClientMax(employee,statistique);
         Statistiques.calculerOccurrencesEtatParClient(employee,statistique);
-        Statistiques.calculerTotalInterventions(employee,statistique);
+        Statistiques.calculerTotalInterventions(employee,statistique,fichierEntree );
         Statistiques.ecrireStatisques(statistique,"Statistique.json",option);
 
         ecritureFichierSortieJson(arg,employee);

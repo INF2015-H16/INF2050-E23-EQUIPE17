@@ -194,7 +194,7 @@ public class CalculEmploye {
                                         int[] overtime, int[] nombre_heures, String[] code, double taux_horaire_min,
                                         double taux_horaire_max, double[] etatParClient, int type_employe,
                                         int matricule_employe, JSONArray observations, String option,
-                                        JSONArray interventions, String json) throws JsonException {
+                                        JSONArray interventions, String json, String fichierEntree) throws JsonException {
 
         for (int i = 0; i < itterations; i++) {
 
@@ -206,12 +206,12 @@ public class CalculEmploye {
             }
         }
         calculCouts(argument2, itterations, nbrs, code, etatParClient, matricule_employe,observations,option,
-                interventions,json);
+                interventions,json, fichierEntree);
     }
 
     public static void calculCouts(String argument2, int itterations, int[] nbrs, String[] code,
                                    double[] etatParClient, int matricule_employe, JSONArray observations,
-                                   String option, JSONArray interventions, String json) {
+                                   String option, JSONArray interventions, String json, String fichierEntree) {
 
         JSONObject statistiques = new JSONObject();
         double etatCompteTotal = calculerEtatCompteTotal(etatParClient);
@@ -223,6 +223,6 @@ public class CalculEmploye {
         GestionJson.formattageFichierSortieJson(matricule_employe, arrondirMontant(etatCompteTotal),
                 arrondirMontant(coutFixe),
                 arrondirMontant(coutVariable), code, etatParClient, itterations, argument2,
-                nbrs,observations, statistiques, option);
+                nbrs,observations, statistiques, option, fichierEntree);
     }
 }

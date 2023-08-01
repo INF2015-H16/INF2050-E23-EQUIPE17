@@ -61,7 +61,7 @@ public class GestionProgramme {
         }
         recuperationInfoEmploye(donnees, argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures,
                 code, taux_horaire_min, taux_horaire_max, montantRegulier, EtatParClient,observations, option,
-                interventions,json);
+                interventions,json, json);
     }
 
     private static void sousMethodeInterventions1(int[] distance_deplacement, int[] overtime, int[] nombre_heures,
@@ -99,7 +99,7 @@ public class GestionProgramme {
                                                 int[] distance_deplacement, int[] overtime, int[] nombre_heures,
                                                 String[] code, double taux_horaire_min, double taux_horaire_max,
                                                 double montantRegulier, double[] EtatParClient, JSONArray observations,
-                                                String option, JSONArray interventions, String json)
+                                                String option, JSONArray interventions, String json, String fichierEntree)
             throws JsonException {
 
         int type_employe, matricule_employe;
@@ -111,7 +111,7 @@ public class GestionProgramme {
 
         CalculEmploye.calculEtatClient(argument2, itterations, nbrs, distance_deplacement, overtime, nombre_heures, code,
                 taux_horaire_min, taux_horaire_max, EtatParClient, type_employe, matricule_employe,observations,
-                option,interventions,json);
+                option,interventions,json, fichierEntree);
     }
 
 

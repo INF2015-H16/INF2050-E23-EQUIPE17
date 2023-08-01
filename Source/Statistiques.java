@@ -278,22 +278,21 @@ public class Statistiques {
     }
 
 
-    public static int calculerTotalInterventions(JSONObject employe, JSONObject statistique) {
+    public static int calculerTotalInterventions(JSONObject employe, JSONObject statistique, String fichierEntree) {
 
         int totalInterventions = 0;
-        JSONArray listeJson = employe.getJSONArray("clients");
+        JSONObject employeJson = (JSONObject) JSONSerializer.toJSON(fichierEntree);
 
-        for (Object obj : listeJson) {
-            JSONObject objetJson = (JSONObject) obj;
-            if (objetJson.containsKey("code_client")) {
-                totalInterventions++;
-            }
+        if (employeJson.containsKey("interventions")) {
+            JSONArray interventionsArray = employeJson.getJSONArray("interventions");
+            totalInterventions = interventionsArray.size();
         }
 
         statistique.put("Le total d'interventions soumises tous employés confondus est : ", totalInterventions);
 
         return totalInterventions;
     }
+
 
 
     public static void calculerInterventionsParTypeEmploye(String entreeJson, JSONObject statistique) {

@@ -105,11 +105,11 @@ public class TestStatistiques {
 
         JSONObject statistiques = new JSONObject();
         JSONObject employe = JSONObject.fromObject(json);
-        Statistiques.calculerTotalInterventions(employe, statistiques);
+        Statistiques.calculerTotalInterventions(employe, statistiques, json);
 
         int totalInterventionsAttendu = 4;
 
-        int totalInterventionsActuel = Statistiques.calculerTotalInterventions(employe, statistiques);
+        int totalInterventionsActuel = Statistiques.calculerTotalInterventions(employe, statistiques, json);
 
         Assertions.assertEquals(totalInterventionsAttendu, totalInterventionsActuel);
     }
