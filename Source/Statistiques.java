@@ -236,14 +236,15 @@ public class Statistiques {
 
     public static void calculerOccurrencesEtatParClient(JSONObject employe, JSONObject statistique) {
 
-        int nbrEtatInf1000 = 0;
-        int nbrEtatEntreMinMax = 0;
-        int nbrEtatSup10000 = 0;
-        int tableauDonnees[] =new int[3] ;
+        int nbrEtatInf1000 ,nbrEtatEntreMinMax ,nbrEtatSup10000 ;
+        int[] tableauDonnees =new int[3];
 
         JSONArray clients = employe.getJSONArray("clients");
 
         for (int i = 0; i < clients.size(); i++) {
+            nbrEtatInf1000 = tableauDonnees[0];
+            nbrEtatEntreMinMax = tableauDonnees[1];
+            nbrEtatSup10000 = tableauDonnees[2];
             JSONObject objetJson = clients.getJSONObject(i);
             String etatParClient = objetJson.getString("etat_par_client");
             double etatClient = parseDouble(etatParClient.substring(0, etatParClient.length() - 1));
